@@ -45,7 +45,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <footer className="py-6 text-center text-xs text-slate-500">Hecho para ITSON Guaymas</footer>
     </main>
   );
 }
