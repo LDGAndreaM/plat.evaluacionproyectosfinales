@@ -25,6 +25,8 @@ import {
   Copy,
   Eye,
   EyeOff,
+  FileDown,
+  FileUp,
   GitBranch,
   GripVertical,
   Loader2,
@@ -51,6 +53,8 @@ import type { Answers, Category, FormField, FormRow } from "@/lib/types";
 import { cn, readableTextColor } from "@/lib/utils";
 import { saveForm, setFormPublished } from "../actions";
 import { FieldSettings } from "./field-settings";
+import { CsvImport } from "./csv-import";
+import { downloadText, fieldsToCsv } from "@/lib/fields/csv";
 
 interface BuilderProps {
   eventId: string;
@@ -61,6 +65,7 @@ interface BuilderProps {
   submissionCount: number;
   brandColor: string;
   canEdit: boolean;
+  openImport?: boolean;
 }
 
 type Snapshot = { title: string; description: string; isDefault: boolean; categoryIds: string[]; fields: FormField[] };
@@ -253,6 +258,7 @@ export function FormBuilder({
   submissionCount,
   brandColor,
   canEdit,
+  openImport,
 }: BuilderProps) {
   const router = useRouter();
   const initial: Snapshot = useMemo(
@@ -281,6 +287,7 @@ export function FormBuilder({
   const [overId, setOverId] = useState<string | null>(null);
   const [status, setStatus] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, startSaving] = useTransition();
+  const [importOpen, setImportOpen] = useState(!!openImport && canEdit);
 
   const current: Snapshot = { title, description, isDefault, categoryIds, fields };
   const dirty = JSON.stringify(current) !== saved;
@@ -477,6 +484,22 @@ export function FormBuilder({
             </span>
           )}
           {dirty && !saving && <span className="text-sm text-amber-700">Cambios sin guardar</span>}
+          {canEdit && (
+            <Button variant="secondary" size="sm" onClick={() => setImportOpen(true)}>
+              <FileUp className="size-4" /> Importar CSV
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={!fields.length}
+            onClick={() => {
+              const name = (title || "formulario").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase();
+              downloadText(`${name}.csv`, fieldsToCsv(fields));
+            }}
+          >
+            <FileDown className="size-4" /> Exportar CSV
+          </Button>
           <Button variant="secondary" size="sm" onClick={() => { setPreviewAnswers({}); setPreview(true); }}>
             <Smartphone className="size-4" /> Vista previa
           </Button>
@@ -638,6 +661,22 @@ export function FormBuilder({
       </Modal>
       <Modal open={mobileSettings} onClose={() => setMobileSettings(false)} title={selected ? "Editar campo" : "Ajustes del formulario"}>
         <div className={cn(!canEdit && "pointer-events-none opacity-70")}>{settingsPanel}</div>
+      </Modal>
+
+      <Modal open={importOpen} onClose={() => setImportOpen(false)} title="Importar preguntas desde Excel (CSV)" size="xl">
+        {importOpen && (
+          <CsvImport
+            formId={form.id}
+            hasFields={fields.length > 0}
+            onClose={() => setImportOpen(false)}
+            onImport={(imported, mode) => {
+              setFields(mode === "replace" ? imported : [...fields, ...imported]);
+              setSelectedId(null);
+              setImportOpen(false);
+              setStatus({ ok: true, text: `Se importaron ${imported.length} elementos. Revisa y presiona Guardar.` });
+            }}
+          />
+        )}
       </Modal>
 
       {/* Vista previa móvil */}

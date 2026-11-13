@@ -20,7 +20,7 @@ async function editable(eventId: string) {
   return ctx;
 }
 
-export async function createForm(eventId: string, templateId: string): Promise<ActionResult> {
+export async function createForm(eventId: string, templateId: string, openImport = false): Promise<ActionResult> {
   const { supabase } = await editable(eventId);
   const template = FORM_TEMPLATES.find((t) => t.id === templateId) ?? FORM_TEMPLATES[2];
   const { count } = await supabase.from("forms").select("id", { count: "exact", head: true }).eq("event_id", eventId);
@@ -44,7 +44,7 @@ export async function createForm(eventId: string, templateId: string): Promise<A
     if (fe) return { ok: false, error: fe.message };
   }
   revalidatePath(`/eventos/${eventId}`, "layout");
-  redirect(`/eventos/${eventId}/formularios/${form.id}`);
+  redirect(`/eventos/${eventId}/formularios/${form.id}${openImport ? "?importar=1" : ""}`);
 }
 
 export async function duplicateForm(eventId: string, formId: string): Promise<ActionResult> {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ClipboardList, Copy, Eye, EyeOff, FilePlus2, Pencil, Star, Trash2 } from "lucide-react";
+import { ClipboardList, Copy, Eye, EyeOff, FilePlus2, FileUp, Pencil, Star, Trash2 } from "lucide-react";
 import { useState, useTransition } from "react";
 import { Badge, Card, EmptyState } from "@/components/ui/card";
 import { Button, LinkButton } from "@/components/ui/button";
@@ -149,6 +149,19 @@ export function FormsList({ eventId, forms, canEdit }: { eventId: string; forms:
             </button>
           ))}
         </div>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() => run(() => createForm(eventId, "blanco", true))}
+          className="mt-3 w-full rounded-xl border border-dashed border-slate-300 p-4 text-left hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50"
+        >
+          <div className="flex items-center gap-2 font-semibold text-slate-900">
+            <FileUp className="size-4" /> Importar desde Excel (CSV)
+          </div>
+          <div className="mt-0.5 text-sm text-slate-500">
+            Descarga la plantilla, llena tus preguntas en Excel y súbela. Ideal para rúbricas largas.
+          </div>
+        </button>
         {pending && <p className="mt-3 text-sm text-slate-500">Creando formulario…</p>}
       </Modal>
     </div>

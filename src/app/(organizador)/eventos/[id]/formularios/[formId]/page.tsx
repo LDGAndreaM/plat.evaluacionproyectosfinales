@@ -6,8 +6,9 @@ import { FormBuilder } from "./builder";
 
 export const metadata: Metadata = { title: "Editar formulario" };
 
-export default async function FormBuilderPage({ params }: PageProps<"/eventos/[id]/formularios/[formId]">) {
+export default async function FormBuilderPage({ params, searchParams }: PageProps<"/eventos/[id]/formularios/[formId]">) {
   const { id, formId } = await params;
+  const sp = await searchParams;
   const { supabase, event, canEdit } = await getEvent(id);
   if (!/^[0-9a-f-]{36}$/i.test(formId)) notFound();
 
@@ -39,6 +40,7 @@ export default async function FormBuilderPage({ params }: PageProps<"/eventos/[i
       submissionCount={count ?? 0}
       brandColor={event.primary_color}
       canEdit={canEdit}
+      openImport={sp.importar === "1"}
     />
   );
 }
