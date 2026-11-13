@@ -2,9 +2,8 @@ import Link from "next/link";
 import { CheckCircle2, Circle, ClipboardList, FolderKanban, Tags, Users } from "lucide-react";
 import { getEvent } from "@/lib/data";
 import { Card, CardHeader } from "@/components/ui/card";
-import { CopyButton } from "@/components/ui/copy-button";
+import { EventLink } from "@/components/events/event-link";
 import { StatusControl } from "@/components/events/status-control";
-import { siteUrl } from "@/lib/utils";
 
 export default async function EventSummaryPage({ params }: PageProps<"/eventos/[id]">) {
   const { id } = await params;
@@ -19,7 +18,6 @@ export default async function EventSummaryPage({ params }: PageProps<"/eventos/[
   ]);
   const projectCount = projects.count ?? 0;
   const publishedForms = (forms.data ?? []).filter((f) => f.is_published).length;
-  const link = `${siteUrl()}/e/${event.short_code}`;
 
   const stats = [
     { label: "Proyectos", value: projectCount, icon: FolderKanban, href: `/eventos/${id}/proyectos` },
@@ -80,10 +78,7 @@ export default async function EventSummaryPage({ params }: PageProps<"/eventos/[
             description="Compártelo o usa los códigos QR. Lleva a la lista de proyectos del evento."
           />
           <div className="space-y-3 p-5">
-            <div className="flex flex-wrap items-center gap-2">
-              <code className="min-w-0 flex-1 truncate rounded-lg bg-slate-100 px-3 py-2 text-sm">{link}</code>
-              <CopyButton value={link} />
-            </div>
+            <EventLink code={event.short_code} />
             <p className="text-sm text-slate-500">
               Código del evento: <strong className="font-mono text-slate-900">{event.short_code}</strong>
               {event.access_pin ? (

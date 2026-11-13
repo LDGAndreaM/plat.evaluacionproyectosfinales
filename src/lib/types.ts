@@ -103,3 +103,18 @@ export interface Submission {
 }
 
 export type ActionResult = { ok: true; message?: string } | { ok: false; error: string } | null;
+
+/** Datos públicos del evento que ve el evaluador (función get_public_event). */
+export interface PublicEvent {
+  id: string;
+  name: string;
+  description: string | null;
+  event_date: string | null;
+  venue: string | null;
+  logo_url: string | null;
+  cover_url: string | null;
+  primary_color: string;
+  status: EventStatus;
+  short_code: string;
+  requires_pin: boolean;
+}
