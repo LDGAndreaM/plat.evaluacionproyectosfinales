@@ -46,6 +46,7 @@ export interface Project {
   description: string | null;
   image_url: string | null;
   stand: string | null;
+  semester: string | null;
   code: string;
   manual_tiebreak: number | null;
   created_at: string;

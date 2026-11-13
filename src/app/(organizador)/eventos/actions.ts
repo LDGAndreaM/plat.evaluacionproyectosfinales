@@ -154,6 +154,7 @@ export async function duplicateEvent(eventId: string, _prev: ActionResult, formD
             description: p.description,
             image_url: p.image_url,
             stand: p.stand,
+            semester: p.semester,
           })),
         );
         if (e) throw e;

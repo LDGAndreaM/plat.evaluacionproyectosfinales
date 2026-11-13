@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FormRunner } from "@/components/form-fields/form-runner";
 import type { FileValue } from "@/components/form-fields/field-input";
 import { resolveFormId } from "@/lib/forms";
+import { semesterLabel } from "@/lib/utils";
 import type { Answers, Category, FormField, FormRow, Project, Submission } from "@/lib/types";
 import { useEvaluator } from "../../evaluator-context";
 import { EventStatusGate, JoinForm, Message, Spinner, WhoAmI, primaryButton, secondaryButton } from "../../shared";
@@ -241,6 +242,7 @@ function Evaluate({ projectCode }: { projectCode: string }) {
         <div className="p-4">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[var(--brand)]">
             {project.stand && <span>Stand {project.stand}</span>}
+            {project.semester && <span className="text-slate-500">· {semesterLabel(project.semester)}</span>}
             {category && <span className="text-slate-500">· {category.name}</span>}
           </div>
           <h1 className="mt-0.5 text-xl font-bold leading-tight text-slate-900">{project.name}</h1>

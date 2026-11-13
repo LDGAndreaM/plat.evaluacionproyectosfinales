@@ -10,6 +10,7 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { Modal } from "@/components/ui/modal";
 import { SubmitButton } from "@/components/ui/submit-button";
 import type { ActionResult, Category, Project } from "@/lib/types";
+import { SEMESTER_SUGGESTIONS, semesterLabel, semestersOf } from "@/lib/utils";
 import {
   deleteCategory,
   deleteProject,
@@ -34,6 +35,8 @@ export function ProjectsManager({
 }) {
   const [query, setQuery] = useState("");
   const [catFilter, setCatFilter] = useState("all");
+  const [semFilter, setSemFilter] = useState("all");
+  const semesters = useMemo(() => semestersOf(projects), [projects]);
   const [editing, setEditing] = useState<Project | "new" | null>(null);
   const [importOpen, setImportOpen] = useState(false);
   const [catsOpen, setCatsOpen] = useState(false);
@@ -49,7 +52,8 @@ export function ProjectsManager({
       p.members.some((m) => m.toLowerCase().includes(q)) ||
       (p.stand ?? "").toLowerCase().includes(q);
     const matchC = catFilter === "all" || (catFilter === "none" ? !p.category_id : p.category_id === catFilter);
-    return matchQ && matchC;
+    const matchS = semFilter === "all" || (semFilter === "none" ? !p.semester : p.semester === semFilter);
+    return matchQ && matchC && matchS;
   });
 
   function onDelete(p: ProjectWithCount) {
@@ -89,6 +93,22 @@ export function ProjectsManager({
               </option>
             ))}
             <option value="none">Sin categoría</option>
+          </Select>
+        )}
+        {semesters.length > 0 && (
+          <Select
+            value={semFilter}
+            onChange={(e) => setSemFilter(e.target.value)}
+            className="w-auto"
+            aria-label="Filtrar por semestre"
+          >
+            <option value="all">Todos los semestres</option>
+            {semesters.map((s) => (
+              <option key={s} value={s}>
+                {semesterLabel(s)}
+              </option>
+            ))}
+            <option value="none">Sin semestre</option>
           </Select>
         )}
         {canEdit && (
@@ -144,6 +164,7 @@ export function ProjectsManager({
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-medium text-slate-900">{p.name}</span>
                     {p.category_id && <Badge tone="violet">{catName.get(p.category_id)}</Badge>}
+                    {p.semester && <Badge tone="blue">{semesterLabel(p.semester)}</Badge>}
                     {p.stand && <Badge>Stand {p.stand}</Badge>}
                   </div>
                   <p className="truncate text-sm text-slate-500">
@@ -231,7 +252,17 @@ function ProjectForm({
       <Field label="Integrantes" htmlFor="p-members" hint="Uno por línea, o separados por coma.">
         <Textarea id="p-members" name="members" rows={3} defaultValue={project?.members.join("\n")} />
       </Field>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Field label="Semestre" htmlFor="p-sem" hint="Elige o escribe, ej. 7°">
+          <Input id="p-sem" name="semester" list="semestres" maxLength={40} defaultValue={project?.semester ?? ""} placeholder="7°" />
+          <datalist id="semestres">
+            {SEMESTER_SUGGESTIONS.map((s) => (
+              <option key={s} value={s}>
+                {semesterLabel(s)}
+              </option>
+            ))}
+          </datalist>
+        </Field>
         <Field label="Categoría" htmlFor="p-cat">
           <Select id="p-cat" name="category_id" defaultValue={project?.category_id ?? ""}>
             <option value="">Sin categoría</option>
@@ -277,6 +308,8 @@ const HEADER_ALIASES: Record<string, keyof ImportRow> = {
   stand: "stand",
   mesa: "stand",
   "stand/mesa": "stand",
+  semestre: "semester",
+  semester: "semester",
 };
 
 function normalizeHeader(h: string) {
@@ -295,9 +328,9 @@ function CsvImport({ eventId, onDone }: { eventId: string; onDone: () => void })
 
   function downloadTemplate() {
     const csv =
-      "﻿nombre,integrantes,categoria,descripcion,stand\n" +
-      '"Raíces del Mar","Ana Valenzuela; Diego Ruiz",Branding,"Identidad para cooperativa pesquera",A1\n' +
-      '"Revista Marea Alta","Valeria Ochoa; Jorge Armenta",Editorial,"Revista de cultura del Golfo",A2\n';
+      "﻿nombre,integrantes,semestre,categoria,descripcion,stand\n" +
+      '"Raíces del Mar","Ana Valenzuela; Diego Ruiz",7°,Branding,"Identidad para cooperativa pesquera",A1\n' +
+      '"Revista Marea Alta","Valeria Ochoa; Jorge Armenta",8°,Editorial,"Revista de cultura del Golfo",A2\n';
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
     const a = document.createElement("a");
     a.href = url;
@@ -322,7 +355,7 @@ function CsvImport({ eventId, onDone }: { eventId: string; onDone: () => void })
           return;
         }
         const out: ImportRow[] = res.data.map((r) => {
-          const row: ImportRow = { name: "", members: "", category: "", description: "", stand: "" };
+          const row: ImportRow = { name: "", members: "", category: "", description: "", stand: "", semester: "" };
           fields.forEach((f, i) => {
             const key = mapped[i];
             if (key) row[key] = (r[f] ?? "").toString().trim();
@@ -340,7 +373,7 @@ function CsvImport({ eventId, onDone }: { eventId: string; onDone: () => void })
       <div className="rounded-lg bg-slate-50 p-4 text-sm text-slate-600">
         <p>
           Prepara una hoja en Excel o Google Sheets con las columnas <strong>nombre</strong>, <strong>integrantes</strong>,{" "}
-          <strong>categoria</strong>, <strong>descripcion</strong> y <strong>stand</strong> (solo “nombre” es obligatoria).
+          <strong>semestre</strong>, <strong>categoria</strong>, <strong>descripcion</strong> y <strong>stand</strong> (solo “nombre” es obligatoria).
           Separa a los integrantes con punto y coma. Luego guárdala como <em>CSV UTF-8</em>.
         </p>
         <Button variant="secondary" size="sm" className="mt-3" onClick={downloadTemplate}>
@@ -370,6 +403,7 @@ function CsvImport({ eventId, onDone }: { eventId: string; onDone: () => void })
                 <tr>
                   <th className="px-3 py-2">Nombre</th>
                   <th className="px-3 py-2">Integrantes</th>
+                  <th className="px-3 py-2">Semestre</th>
                   <th className="px-3 py-2">Categoría</th>
                   <th className="px-3 py-2">Stand</th>
                 </tr>
@@ -379,6 +413,7 @@ function CsvImport({ eventId, onDone }: { eventId: string; onDone: () => void })
                   <tr key={i}>
                     <td className="px-3 py-1.5 font-medium">{r.name}</td>
                     <td className="px-3 py-1.5 text-slate-600">{r.members}</td>
+                    <td className="px-3 py-1.5 text-slate-600">{r.semester}</td>
                     <td className="px-3 py-1.5 text-slate-600">{r.category}</td>
                     <td className="px-3 py-1.5 text-slate-600">{r.stand}</td>
                   </tr>

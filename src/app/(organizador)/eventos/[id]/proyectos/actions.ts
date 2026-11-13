@@ -32,6 +32,7 @@ export async function saveProject(eventId: string, _prev: ActionResult, formData
     category_id: text(formData, "category_id") || null,
     description: text(formData, "description") || null,
     stand: text(formData, "stand") || null,
+    semester: text(formData, "semester") || null,
     image_url: text(formData, "image_url") || null,
   };
   if (!payload.name) return { ok: false, error: "El proyecto necesita un nombre." };
@@ -56,6 +57,7 @@ export interface ImportRow {
   category: string;
   description: string;
   stand: string;
+  semester: string;
 }
 
 export async function importProjects(eventId: string, rows: ImportRow[]): Promise<ActionResult> {
@@ -88,6 +90,7 @@ export async function importProjects(eventId: string, rows: ImportRow[]): Promis
       category_id: r.category?.trim() ? (byName.get(r.category.trim().toLowerCase()) ?? null) : null,
       description: r.description?.trim() || null,
       stand: r.stand?.trim() || null,
+      semester: r.semester?.trim().slice(0, 40) || null,
     })),
   );
   if (error) return { ok: false, error: `No se pudo importar: ${error.message}` };

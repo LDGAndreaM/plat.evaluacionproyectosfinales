@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { Field, FormMessage, Input } from "@/components/ui/form";
+import { PasswordInput } from "@/components/ui/password-input";
 import { SubmitButton } from "@/components/ui/submit-button";
 import { requestPasswordReset, signIn, signUp, updatePassword } from "./actions";
 
@@ -18,7 +19,7 @@ export function LoginForm({ next, linkError }: { next?: string; linkError?: bool
         <Input id="email" name="email" type="email" autoComplete="email" required />
       </Field>
       <Field label="Contraseña" htmlFor="password">
-        <Input id="password" name="password" type="password" autoComplete="current-password" required />
+        <PasswordInput id="password" name="password" autoComplete="current-password" required />
       </Field>
       <FormMessage state={state} />
       <SubmitButton className="w-full" size="lg" pendingText="Entrando…">
@@ -51,10 +52,10 @@ export function SignUpForm() {
         <Input id="email" name="email" type="email" autoComplete="email" required />
       </Field>
       <Field label="Contraseña" htmlFor="password" hint="Mínimo 8 caracteres." required>
-        <Input id="password" name="password" type="password" autoComplete="new-password" minLength={8} required />
+        <PasswordInput id="password" name="password" autoComplete="new-password" minLength={8} required />
       </Field>
       <Field label="Confirmar contraseña" htmlFor="confirm" required>
-        <Input id="confirm" name="confirm" type="password" autoComplete="new-password" minLength={8} required />
+        <PasswordInput id="confirm" name="confirm" autoComplete="new-password" minLength={8} required />
       </Field>
       <FormMessage state={state} />
       <SubmitButton className="w-full" size="lg" pendingText="Creando cuenta…">
@@ -95,10 +96,10 @@ export function UpdatePasswordForm() {
   return (
     <form action={action} className="space-y-4">
       <Field label="Nueva contraseña" htmlFor="password" hint="Mínimo 8 caracteres.">
-        <Input id="password" name="password" type="password" autoComplete="new-password" minLength={8} required />
+        <PasswordInput id="password" name="password" autoComplete="new-password" minLength={8} required />
       </Field>
       <Field label="Confirmar contraseña" htmlFor="confirm">
-        <Input id="confirm" name="confirm" type="password" autoComplete="new-password" minLength={8} required />
+        <PasswordInput id="confirm" name="confirm" autoComplete="new-password" minLength={8} required />
       </Field>
       <FormMessage state={state} />
       <SubmitButton className="w-full" size="lg">

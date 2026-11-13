@@ -16,7 +16,7 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | 1 | Registro/inicio de sesión del organizador, eventos, proyectos, categorías, CSV, co-organizadores, duplicar | ✅ |
 | 2 | Constructor de formularios con drag & drop, 19 tipos de campo, puntos, ponderación, lógica condicional, plantillas, importar/exportar preguntas en CSV y vista previa móvil | ✅ |
 | 3 | QR general y por proyecto (PNG/SVG), hoja PDF carta, PIN, vista del evaluador en celular con guardado automático | ✅ |
-| 4 | Puntajes, ranking, podio, pantalla de premiación y exportación | ⏳ |
+| 4 | Ranking en vivo (general, por categoría y por semestre), podio, empates, respuestas individuales, pantalla de premiación y exportación a Excel, CSV y PDF | ✅ |
 
 ## Desarrollo local
 

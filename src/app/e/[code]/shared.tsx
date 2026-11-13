@@ -60,7 +60,7 @@ export function EventStatusGate({ hasEvaluator }: { hasEvaluator: boolean }) {
         icon={<Trophy className="size-10" />}
         title="¡Resultados publicados!"
         action={
-          <Link href={`/e/${event.short_code}/resultados`} className={primaryButton}>
+          <Link href={`/premiacion/${event.short_code}`} className={primaryButton}>
             Ver resultados
           </Link>
         }

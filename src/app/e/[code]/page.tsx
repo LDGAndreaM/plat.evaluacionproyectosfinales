@@ -4,7 +4,7 @@ import { AlertCircle, CheckCircle2, ChevronRight, CircleDashed, PencilLine, Sear
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { Category, Project, Submission } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, semesterLabel, semestersOf } from "@/lib/utils";
 import { useEvaluator } from "./evaluator-context";
 import { EventIntro, EventStatusGate, JoinForm, Message, Spinner, WhoAmI, inputClass, secondaryButton } from "./shared";
 
@@ -52,6 +52,7 @@ function ProjectList() {
   const [query, setQuery] = useState("");
   const [tab, setTab] = useState<Tab>("pending");
   const [category, setCategory] = useState("all");
+  const [semester, setSemester] = useState("all");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ function ProjectList() {
     if (tab === "pending" && st === "submitted") return false;
     if (tab === "done" && st !== "submitted") return false;
     if (category !== "all" && p.category_id !== category) return false;
+    if (semester !== "all" && p.semester !== semester) return false;
     if (!q) return true;
     return (
       p.name.toLowerCase().includes(q) ||
@@ -184,6 +186,25 @@ function ProjectList() {
         </div>
       )}
 
+      {semestersOf(projects).length > 1 && (
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1" aria-label="Filtrar por semestre">
+          {[{ id: "all", name: "Todos los semestres" }, ...semestersOf(projects).map((s) => ({ id: s, name: semesterLabel(s) }))].map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setSemester(s.id)}
+              className={cn(
+                "shrink-0 rounded-full border px-3 py-1.5 text-sm",
+                semester === s.id
+                  ? "border-slate-800 bg-slate-800 text-white"
+                  : "border-slate-300 bg-white text-slate-700",
+              )}
+            >
+              {s.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       <ul className="space-y-2">
         {visible.map((p) => {
           const st = statusOf(p.id);
@@ -204,7 +225,7 @@ function ProjectList() {
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold leading-snug text-slate-900">{p.name}</div>
                   <div className="truncate text-sm text-slate-500">
-                    {[p.stand && `Stand ${p.stand}`, catName(p.category_id)].filter(Boolean).join(" · ")}
+                    {[p.stand && `Stand ${p.stand}`, semesterLabel(p.semester), catName(p.category_id)].filter(Boolean).join(" · ")}
                   </div>
                   <div className="mt-1">
                     {st === "submitted" ? (

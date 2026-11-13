@@ -53,6 +53,22 @@ export function readableTextColor(hex: string) {
   return L > 0.45 ? "#111827" : "#ffffff";
 }
 
+/** "7" o "7°" → "7° semestre"; cualquier otro texto se muestra tal cual. */
+export function semesterLabel(value: string | null | undefined) {
+  const v = (value ?? "").trim();
+  if (!v) return "";
+  const m = v.match(/^(\d{1,2})\s*(°|º|o)?$/i);
+  return m ? `${m[1]}° semestre` : v;
+}
+
+export const SEMESTER_SUGGESTIONS = ["1°", "2°", "3°", "4°", "5°", "6°", "7°", "8°", "9°", "10°"];
+
+/** Semestres distintos presentes en una lista de proyectos, en orden natural. */
+export function semestersOf(projects: { semester?: string | null }[]) {
+  const collator = new Intl.Collator("es-MX", { numeric: true, sensitivity: "base" });
+  return [...new Set(projects.map((p) => (p.semester ?? "").trim()).filter(Boolean))].sort(collator.compare);
+}
+
 export function uid() {
   return crypto.randomUUID();
 }

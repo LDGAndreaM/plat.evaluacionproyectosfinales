@@ -9,12 +9,14 @@ import { Input, Select } from "@/components/ui/form";
 import { Modal } from "@/components/ui/modal";
 import { downloadBlob, eventUrl, projectUrl, qrDataUrl, qrSvg, slugify } from "@/lib/qr";
 import { useOrigin } from "@/lib/use-origin";
+import { semesterLabel } from "@/lib/utils";
 
 export interface QrProject {
   id: string;
   name: string;
   code: string;
   stand: string | null;
+  semester: string | null;
   category: string | null;
   categoryId: string | null;
   hasForm: boolean;
@@ -202,6 +204,7 @@ export function QrManager({
                     {p.stand && <span className="text-xs font-semibold uppercase text-slate-500">Stand {p.stand}</span>}
                     <span className="line-clamp-2 font-medium text-slate-900">{p.name}</span>
                     <div className="mt-0.5 flex flex-wrap gap-1">
+                      {p.semester && <Badge tone="blue">{semesterLabel(p.semester)}</Badge>}
                       {p.category && <Badge tone="violet">{p.category}</Badge>}
                       {!p.hasForm && <Badge tone="amber">Sin formulario</Badge>}
                     </div>
@@ -270,7 +273,8 @@ function PrintOptions({
       const items = await Promise.all(
         selected.map(async (p) => {
           const url = projectUrl(origin, event.short_code, p.code);
-          return { name: p.name, stand: p.stand, category: p.category, url, qr: await qrDataUrl(url, 600) };
+          const detail = [semesterLabel(p.semester), p.category].filter(Boolean).join(" · ") || null;
+          return { name: p.name, stand: p.stand, category: detail, url, qr: await qrDataUrl(url, 600) };
         }),
       );
       const blob = await pdf(

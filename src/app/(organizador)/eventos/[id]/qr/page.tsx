@@ -20,6 +20,7 @@ export default async function QrPage({ params }: PageProps<"/eventos/[id]/qr">) 
       name: p.name,
       code: p.code,
       stand: p.stand,
+      semester: p.semester,
       categoryId: p.category_id,
       category: categories?.find((c) => c.id === p.category_id)?.name ?? null,
       hasForm: !!resolveFormId(p.category_id, forms ?? [], fcs ?? []),
