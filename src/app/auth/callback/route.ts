@@ -10,6 +10,11 @@ export async function GET(request: NextRequest) {
   const nextParam = searchParams.get("next") ?? "/eventos";
   const next = nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : "/eventos";
 
+  if (searchParams.get("error")) {
+    // Error devuelto por Google/Supabase (por ejemplo, la persona canceló)
+    return NextResponse.redirect(`${origin}/login?error=google`);
+  }
+
   const supabase = await createClient();
   let ok = false;
   if (code) {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SignUpForm } from "../forms";
+import { GoogleButton, OrDivider } from "../google-button";
 
 export const metadata: Metadata = { title: "Crear cuenta" };
 
@@ -10,6 +11,8 @@ export default function RegistroPage() {
       <p className="mb-6 mt-1 text-sm text-slate-500">
         Solo quienes organizan eventos necesitan cuenta. Los evaluadores entran con el QR.
       </p>
+      <GoogleButton label="Registrarme con Google" />
+      <OrDivider />
       <SignUpForm />
     </>
   );

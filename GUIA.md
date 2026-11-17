@@ -29,7 +29,33 @@ En **Authentication → Sign In / Providers**:
 - **Confirm email**: recomendamos **desactivarlo**. El plan gratuito de Supabase solo envía unos 2 correos por hora; con la confirmación activa, si varios maestros se registran el mismo día, algunos no recibirán el correo.
   - Si prefieres dejarlo activo, considera configurar un servicio de correo propio en **Authentication → Emails → SMTP Settings**.
 
-### 1.3 Antes de cada evento (importante)
+### 1.3 Iniciar sesión con Google (opcional)
+
+El botón **Continuar con Google** ya está en la página; solo falta activarlo. Se hace una sola vez:
+
+**A. En Google Cloud** (con tu cuenta de Gmail): https://console.cloud.google.com
+
+1. Arriba a la izquierda, en el selector de proyectos, elige **Proyecto nuevo**. Nombre: `EvaluaQR`. Presiona **Crear** y asegúrate de que quede seleccionado.
+2. Menú ☰ → **APIs y servicios → Pantalla de consentimiento de OAuth** (puede aparecer como **Google Auth Platform → Branding**). Presiona **Comenzar**:
+   - Nombre de la app: `EvalúaQR`; correo de asistencia: tu correo.
+   - Público: **Externo**.
+   - Información de contacto: tu correo. Acepta y presiona **Crear**.
+3. En **Público** (Audience) presiona **Publicar app** para que cualquier maestro pueda entrar (si la dejas en “Prueba”, solo entran los correos que agregues como usuarios de prueba).
+4. Ve a **Clientes** (o **Credenciales → Crear credenciales → ID de cliente de OAuth**):
+   - Tipo de aplicación: **Aplicación web**. Nombre: `EvalúaQR web`.
+   - **Orígenes de JavaScript autorizados**: `https://evaluaqr.vercel.app`
+   - **URI de redireccionamiento autorizados**: `https://iphvcgrkqgxatkpykzev.supabase.co/auth/v1/callback`
+   - Presiona **Crear**. Copia el **ID de cliente** y el **Secreto del cliente** (guárdalos en un lugar seguro; no los compartas).
+
+**B. En Supabase**: **Authentication → Sign In / Providers → Google**
+
+1. Activa **Enable Sign in with Google**.
+2. Pega el **Client ID** y el **Client Secret** del paso anterior.
+3. Presiona **Save**.
+
+Listo: abre https://evaluaqr.vercel.app/login y presiona **Continuar con Google**. Si alguien ya tenía cuenta con el mismo correo, Supabase une ambas formas de entrar en la misma cuenta.
+
+### 1.4 Antes de cada evento (importante)
 
 En el plan gratuito, Supabase **pausa el proyecto si no se usa en 7 días**. Unos días antes del evento:
 
