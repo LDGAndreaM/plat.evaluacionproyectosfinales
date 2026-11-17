@@ -29,31 +29,45 @@ En **Authentication → Sign In / Providers**:
 - **Confirm email**: recomendamos **desactivarlo**. El plan gratuito de Supabase solo envía unos 2 correos por hora; con la confirmación activa, si varios maestros se registran el mismo día, algunos no recibirán el correo.
   - Si prefieres dejarlo activo, considera configurar un servicio de correo propio en **Authentication → Emails → SMTP Settings**.
 
-### 1.3 Iniciar sesión con Google (opcional)
+### 1.3 Iniciar sesión con Google (con Firebase)
 
-El botón **Continuar con Google** ya está en la página; solo falta activarlo. Se hace una sola vez:
+El botón **Continuar con Google** ya está en la página. Firebase muestra la ventana de “Elige tu cuenta de Google” y Supabase sigue guardando las cuentas y los datos. Se configura una sola vez:
 
-**A. En Google Cloud** (con tu cuenta de Gmail): https://console.cloud.google.com
+**A. En Firebase** (con tu cuenta de Gmail): https://console.firebase.google.com
 
-1. Arriba a la izquierda, en el selector de proyectos, elige **Proyecto nuevo**. Nombre: `EvaluaQR`. Presiona **Crear** y asegúrate de que quede seleccionado.
-2. Menú ☰ → **APIs y servicios → Pantalla de consentimiento de OAuth** (puede aparecer como **Google Auth Platform → Branding**). Presiona **Comenzar**:
-   - Nombre de la app: `EvalúaQR`; correo de asistencia: tu correo.
-   - Público: **Externo**.
-   - Información de contacto: tu correo. Acepta y presiona **Crear**.
-3. En **Público** (Audience) presiona **Publicar app** para que cualquier maestro pueda entrar (si la dejas en “Prueba”, solo entran los correos que agregues como usuarios de prueba).
-4. Ve a **Clientes** (o **Credenciales → Crear credenciales → ID de cliente de OAuth**):
-   - Tipo de aplicación: **Aplicación web**. Nombre: `EvalúaQR web`.
-   - **Orígenes de JavaScript autorizados**: `https://evaluaqr.vercel.app`
-   - **URI de redireccionamiento autorizados**: `https://iphvcgrkqgxatkpykzev.supabase.co/auth/v1/callback`
-   - Presiona **Crear**. Copia el **ID de cliente** y el **Secreto del cliente** (guárdalos en un lugar seguro; no los compartas).
+1. **Crear un proyecto** (o “Agregar proyecto”). Nombre: `EvaluaQR`. Puedes desactivar Google Analytics. Presiona **Crear proyecto**.
+2. Menú izquierdo: **Compilación → Authentication → Comenzar**.
+3. Pestaña **Método de acceso** → **Google** → activa **Habilitar**.
+   - **Nombre público del proyecto**: `EvalúaQR` (es lo que verán los maestros en la ventana de Google).
+   - **Correo de asistencia**: tu correo. Presiona **Guardar**.
+4. Vuelve a abrir **Google** en esa misma lista y despliega **Configuración del SDK web**. Copia el **ID de cliente web** y el **Secreto de cliente web** (los usarás en Supabase).
+5. Pestaña **Configuración → Dominios autorizados → Agregar dominio**: escribe `evaluaqr.vercel.app` y agrégalo.
+6. Engranaje ⚙️ (arriba a la izquierda) → **Configuración del proyecto** → sección **Tus apps** → ícono **web `</>`**. Nombre: `EvalúaQR web` (no marques Hosting) → **Registrar app**. Aparece un bloque `firebaseConfig`; copia los valores de `apiKey`, `authDomain`, `projectId` y `appId`.
 
-**B. En Supabase**: **Authentication → Sign In / Providers → Google**
+**B. En Vercel**: proyecto → **Settings → Environment Variables**. Agrega:
+
+| Nombre | Valor (de `firebaseConfig`) |
+| --- | --- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | `apiKey` |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `authDomain` |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | `projectId` |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | `appId` |
+
+Después ve a **Deployments → ⋯ → Redeploy**.
+
+> Estos valores de `firebaseConfig` son públicos por diseño (los ve el navegador); no son contraseñas.
+
+**C. En Supabase**: **Authentication → Sign In / Providers → Google**
 
 1. Activa **Enable Sign in with Google**.
-2. Pega el **Client ID** y el **Client Secret** del paso anterior.
-3. Presiona **Save**.
+2. En **Client IDs** pega el **ID de cliente web** de Firebase (paso A.4).
+3. En **Client Secret** pega el **Secreto de cliente web** (paso A.4).
+4. Activa **Skip nonce checks** (necesario porque la ventana de Google la abre Firebase).
+5. Presiona **Save**.
 
-Listo: abre https://evaluaqr.vercel.app/login y presiona **Continuar con Google**. Si alguien ya tenía cuenta con el mismo correo, Supabase une ambas formas de entrar en la misma cuenta.
+Listo: abre https://evaluaqr.vercel.app/login y presiona **Continuar con Google**. Si un maestro ya tenía cuenta con el mismo correo, entra a esa misma cuenta con sus eventos y herramientas.
+
+Si aparece un aviso en amarillo al usar el botón, el mismo aviso dice qué paso falta (por ejemplo, “dominio no autorizado” = paso A.5).
 
 ### 1.4 Antes de cada evento (importante)
 

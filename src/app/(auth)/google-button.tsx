@@ -2,6 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { firebaseConfigured, getFirebaseApp } from "@/lib/firebase";
 import { createClient } from "@/lib/supabase/client";
 
 function GoogleLogo() {
@@ -15,35 +16,51 @@ function GoogleLogo() {
   );
 }
 
-/** Botón "Continuar con Google" (Supabase OAuth). */
+function friendlyError(code: string, message: string) {
+  if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return null;
+  if (code === "auth/popup-blocked") return "El navegador bloqueó la ventana de Google. Permite las ventanas emergentes e inténtalo de nuevo.";
+  if (code === "auth/unauthorized-domain")
+    return "Este dominio no está autorizado en Firebase. Agrégalo en Firebase → Authentication → Configuración → Dominios autorizados.";
+  if (code === "auth/operation-not-allowed") return "Falta activar Google en Firebase → Authentication → Método de acceso.";
+  if (/provider.*(not enabled|disabled)|unacceptable audience|audience/i.test(message))
+    return "Falta activar Google en Supabase (Authentication → Sign In / Providers → Google) con el ID de cliente de Firebase.";
+  if (/nonce/i.test(message)) return "En Supabase, activa “Skip nonce checks” en el proveedor de Google.";
+  return message || "No se pudo iniciar sesión con Google.";
+}
+
+/**
+ * "Continuar con Google": Firebase muestra la ventana de Google y Supabase crea/abre la cuenta
+ * con el token de Google (así las cuentas, permisos y datos siguen en Supabase).
+ */
 export function GoogleButton({ next, label = "Continuar con Google" }: { next?: string; label?: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function go() {
-    setBusy(true);
     setError(null);
+    if (!firebaseConfigured()) {
+      setError("El acceso con Google aún no está activado. Por ahora usa tu correo y contraseña.");
+      return;
+    }
+    setBusy(true);
     try {
-      // Verificar que el proveedor esté activado para no mostrar una página de error de Supabase
-      const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-      const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
-      const settings = await fetch(`${url}/auth/v1/settings`, { headers: { apikey: key } }).then((r) => r.json());
-      if (!settings?.external?.google) {
-        setError("El acceso con Google aún no está activado. Por ahora usa tu correo y contraseña.");
-        setBusy(false);
-        return;
-      }
-      const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/eventos";
-      const { error: err } = await createClient().auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}`,
-          queryParams: { prompt: "select_account" },
-        },
-      });
+      const app = await getFirebaseApp();
+      const { getAuth, GoogleAuthProvider, signInWithPopup, signOut } = await import("firebase/auth");
+      const auth = getAuth(app!);
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, provider);
+      const idToken = GoogleAuthProvider.credentialFromResult(result)?.idToken;
+      await signOut(auth).catch(() => {});
+      if (!idToken) throw new Error("Google no devolvió un token válido.");
+
+      const { error: err } = await createClient().auth.signInWithIdToken({ provider: "google", token: idToken });
       if (err) throw err;
+      const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/eventos";
+      window.location.assign(safeNext);
     } catch (e) {
-      setError((e as Error).message || "No se pudo conectar con Google.");
+      const err = e as { code?: string; message?: string };
+      setError(friendlyError(err.code ?? "", err.message ?? ""));
       setBusy(false);
     }
   }
