@@ -1,5 +1,7 @@
 # EvalúaQR — Plataforma de evaluación de proyectos finales
 
+**Sitio publicado:** https://evaluaqr.vercel.app · **Guía de configuración y uso:** [GUIA.md](GUIA.md)
+
 Plataforma web para calificar proyectos finales en eventos académicos (ej. *Expodiseño AD2026*) mediante códigos QR.
 
 - **Organizador (maestro):** crea eventos, da de alta proyectos, arma formularios de evaluación y ve el ranking.
