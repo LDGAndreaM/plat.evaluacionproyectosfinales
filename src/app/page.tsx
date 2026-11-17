@@ -1,4 +1,4 @@
-import { BarChart3, ClipboardList, QrCode, Smartphone } from "lucide-react";
+import { BarChart3, ClipboardList, Disc3, Grid3x3, LayoutGrid, QrCode, Smartphone } from "lucide-react";
 import { AppLogo } from "@/components/brand/logo";
 import { LinkButton } from "@/components/ui/button";
 
@@ -7,6 +7,12 @@ const FEATURES = [
   { icon: QrCode, title: "Un QR por stand", text: "Imprime los códigos y pégalos en cada proyecto." },
   { icon: Smartphone, title: "Evaluar desde el celular", text: "El jurado no necesita crear cuenta." },
   { icon: BarChart3, title: "Ranking en vivo", text: "Podio, desglose por criterio y exportación a Excel y PDF." },
+];
+
+const TOOLS = [
+  { icon: Disc3, title: "Ruleta de sorteos", text: "Elige al azar quién expone, equipos o temas." },
+  { icon: Grid3x3, title: "Sopa de letras", text: "Escribe tus palabras y obtén la hoja lista para imprimir." },
+  { icon: LayoutGrid, title: "Crucigrama", text: "Palabras y pistas; el crucigrama se arma solo." },
 ];
 
 export default function Home() {
@@ -40,6 +46,17 @@ export default function Home() {
             <div key={f.title} className="rounded-xl border border-slate-200 bg-white p-5">
               <f.icon className="size-6 text-violet-700" aria-hidden />
               <h2 className="mt-3 font-semibold text-slate-900">{f.title}</h2>
+              <p className="mt-1 text-sm text-slate-600">{f.text}</p>
+            </div>
+          ))}
+        </div>
+        <h2 className="mt-14 text-2xl font-bold text-slate-900">Además: herramientas gratuitas para tu clase</h2>
+        <p className="mt-1 text-slate-600">Con tu misma cuenta. Todo se guarda para que lo vuelvas a usar.</p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-3">
+          {TOOLS.map((f) => (
+            <div key={f.title} className="rounded-xl border border-slate-200 bg-white p-5">
+              <f.icon className="size-6 text-fuchsia-600" aria-hidden />
+              <h3 className="mt-3 font-semibold text-slate-900">{f.title}</h3>
               <p className="mt-1 text-sm text-slate-600">{f.text}</p>
             </div>
           ))}

@@ -35,3 +35,27 @@ dialog::backdrop {
     display: none !important;
   }
 }
+
+/* Impresión de hojas de trabajo (sopa de letras, crucigrama) */
+.print-root {
+  display: none;
+}
+@media print {
+  @page {
+    size: letter;
+    margin: 14mm;
+  }
+  body.printing > *:not(.print-root) {
+    display: none !important;
+  }
+  body.printing .print-root {
+    display: block;
+    color: #000;
+  }
+  body.printing {
+    background: #fff;
+  }
+  .print-break {
+    break-before: page;
+  }
+}

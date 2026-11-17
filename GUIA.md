@@ -93,7 +93,23 @@ La dirección de la premiación es `https://evaluaqr.vercel.app/premiacion/CÓDI
 
 ---
 
-## 4. Preguntas frecuentes
+## 4. Herramientas para maestros
+
+En el menú superior, **Herramientas**. Son gratuitas y todo lo que guardes queda en tu cuenta (sección **Mis creaciones**), donde puedes abrir, duplicar o eliminar.
+
+- **Ruleta**: escribe las opciones (una por línea), presiona **¡Girar!** o la barra espaciadora. Activa *Quitar al ganador después de cada giro* para sortear el orden de exposición sin repeticiones. **Pantalla completa** para proyectarla.
+- **Sopa de letras**: escribe las palabras (una por línea); la sopa se genera sola. Elige tamaño, diagonales y palabras al revés. **Nueva distribución** acomoda las palabras de otra forma.
+- **Crucigrama**: escribe cada palabra con su pista, o usa **Pegar lista** (por ejemplo, dos columnas copiadas de Excel). Si alguna palabra no se cruza, prueba **Nueva distribución** o agrega palabras que compartan letras.
+
+Para todas:
+
+- **Guardar** guarda en tu cuenta (aparece “Sin guardar” cuando hay cambios).
+- **Imprimir** (sopa y crucigrama) genera una hoja tamaño carta con espacio para nombre y fecha, y opcionalmente una hoja de respuestas. En la ventana de impresión puedes elegir “Guardar como PDF”.
+- **Compartir** activa un enlace (y QR) para que tus estudiantes resuelvan la sopa o el crucigrama, o giren la ruleta, desde su celular sin crear cuenta. Desactívalo cuando quieras.
+
+---
+
+## 5. Preguntas frecuentes
 
 **Un evaluador cambió de celular o borró su navegador.** Al volver a escanear se le pide su nombre otra vez y aparece como evaluador nuevo. Sus evaluaciones anteriores se conservan con su nombre original.
 
@@ -107,7 +123,7 @@ La dirección de la premiación es `https://evaluaqr.vercel.app/premiacion/CÓDI
 
 ---
 
-## 5. Instalarla desde cero en otro proyecto de Supabase (opcional)
+## 6. Instalarla desde cero en otro proyecto de Supabase (opcional)
 
 Solo si algún día quieres una copia independiente (por ejemplo, para otra escuela):
 

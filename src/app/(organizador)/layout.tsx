@@ -1,5 +1,6 @@
 import { LogOut } from "lucide-react";
 import { AppLogo } from "@/components/brand/logo";
+import { MainNav } from "@/components/brand/main-nav";
 import { requireOrganizer } from "@/lib/auth";
 import { signOut } from "@/app/(auth)/actions";
 
@@ -9,7 +10,12 @@ export default async function OrganizerLayout({ children }: LayoutProps<"/">) {
     <div className="flex min-h-screen flex-col">
       <header className="no-print sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-          <AppLogo href="/eventos" />
+          <div className="flex min-w-0 items-center gap-3 sm:gap-6">
+            <span className="hidden sm:inline">
+              <AppLogo href="/eventos" />
+            </span>
+            <MainNav />
+          </div>
           <div className="flex items-center gap-3">
             <div className="hidden text-right text-sm sm:block">
               <div className="font-medium leading-tight text-slate-900">{fullName}</div>
