@@ -14,10 +14,11 @@ import { PrintArea, printNow } from "@/components/tools/print";
 import { WheelTool } from "@/components/tools/wheel";
 import { WordSearchBoard, WordSearchSheet } from "@/components/tools/wordsearch-board";
 import { WorksheetEditor } from "@/components/worksheet/editor";
+import { TriviaTool } from "@/components/tools/trivia";
 import { qrDataUrl } from "@/lib/qr";
 import { generateCrossword, parseEntries, type CrosswordEntry } from "@/lib/tools/crossword";
 import { newSeed } from "@/lib/tools/text";
-import { TOOL_INFO, defaultData, type CrosswordData, type TeacherTool, type ToolData, type ToolKind, type WheelData, type WordSearchData, type WorksheetData } from "@/lib/tools/types";
+import { TOOL_INFO, defaultData, type CrosswordData, type TeacherTool, type ToolData, type ToolKind, type WheelData, type WordSearchData, type WorksheetData, type TriviaData } from "@/lib/tools/types";
 import { generateWordSearch } from "@/lib/tools/wordsearch";
 import { useOrigin } from "@/lib/use-origin";
 import { cn } from "@/lib/utils";
@@ -137,6 +138,7 @@ export function ToolEditor({ tool, kind }: { tool: TeacherTool | null; kind: Too
       {kind === "wheel" && <WheelTool data={data as WheelData} onChange={setData} canEdit title={title} />}
       {kind === "wordsearch" && <WordSearchEditor data={data as WordSearchData} onChange={setData} />}
       {kind === "crossword" && <CrosswordEditor data={data as CrosswordData} onChange={setData} />}
+      {kind === "trivia" && <TriviaTool data={data as TriviaData} onChange={setData} title={title} storageKey={id ?? "nuevo"} />}
       {kind === "worksheet" && <WorksheetEditor data={data as WorksheetData} onChange={setData} toolId={id} title={title} />}
 
       {/* Impresión */}
@@ -236,7 +238,9 @@ function SharePanel({
       <p className="text-sm text-slate-600">
         {kind === "wheel"
           ? "Con el enlace, cualquiera puede ver y girar esta ruleta (sin poder cambiar la tuya)."
-          : kind === "worksheet"
+          : kind === "trivia"
+            ? "Con el enlace se puede abrir el tablero para jugar desde otra computadora o pantalla (sin poder editar el tuyo)."
+            : kind === "worksheet"
             ? "Con el enlace, tus alumnos contestan la ficha desde su celular o computadora (sin crear cuenta) y sus respuestas te llegan en la pestaña Respuestas. Desactívalo para dejar de recibir respuestas."
             : "Con el enlace, tus estudiantes pueden resolverlo desde su celular o computadora, sin crear cuenta."}
       </p>

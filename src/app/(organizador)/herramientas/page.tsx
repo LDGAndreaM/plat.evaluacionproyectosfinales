@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { requireOrganizer } from "@/lib/auth";
-import { TOOL_INFO, type TeacherTool, type ToolKind, type CrosswordData, type WheelData, type WordSearchData, type WorksheetData } from "@/lib/tools/types";
+import { TOOL_INFO, type TeacherTool, type ToolKind, type CrosswordData, type WheelData, type WordSearchData, type WorksheetData, type TriviaData } from "@/lib/tools/types";
 import { TOOL_ICONS } from "@/lib/tools/icons";
 import { ToolsList, type ToolSummary } from "./tools-list";
 
@@ -14,6 +14,10 @@ function detail(t: TeacherTool) {
     return n > 1 ? `${n} ruletas` : `${(t.data as WheelData).entries?.length ?? 0} opciones`;
   }
   if (t.kind === "wordsearch") return `${(t.data as WordSearchData).words?.length ?? 0} palabras`;
+  if (t.kind === "trivia") {
+    const d = t.data as TriviaData;
+    return `${d.categories?.length ?? 0} categorías · ${d.teams?.length ?? 0} equipos`;
+  }
   if (t.kind === "worksheet") return `${(t.data as WorksheetData).pages?.length ?? 0} pág. · ${(t.data as WorksheetData).elements?.length ?? 0} elementos`;
   return `${(t.data as CrosswordData).entries?.length ?? 0} palabras`;
 }
@@ -36,8 +40,8 @@ export default async function ToolsHome() {
         <h1 className="text-2xl font-semibold text-slate-900">Herramientas para maestros</h1>
         <p className="text-sm text-slate-500">Gratuitas. Todo lo que guardes queda en tu cuenta para volver a usarlo.</p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {(["worksheet", "wheel", "wordsearch", "crossword"] as ToolKind[]).map((k) => {
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {(["worksheet", "trivia", "wheel", "wordsearch", "crossword"] as ToolKind[]).map((k) => {
           const Icon = TOOL_ICONS[k];
           return (
             <Link

@@ -1,8 +1,9 @@
 import type { CrosswordEntry, CrosswordResult } from "./crossword";
 import type { WordSearchOptions, WordSearchResult } from "./wordsearch";
 import { defaultWorksheet, type WorksheetData } from "@/lib/worksheet/types";
+import { defaultTrivia, type TriviaData } from "./trivia";
 
-export type ToolKind = "wheel" | "wordsearch" | "crossword" | "worksheet";
+export type ToolKind = "wheel" | "wordsearch" | "crossword" | "worksheet" | "trivia";
 
 export interface WheelEntry {
   id: string;
@@ -56,8 +57,8 @@ export interface CrosswordData {
   result: CrosswordResult | null;
 }
 
-export type ToolData = WheelData | WordSearchData | CrosswordData | WorksheetData;
-export type { WorksheetData };
+export type ToolData = WheelData | WordSearchData | CrosswordData | WorksheetData | TriviaData;
+export type { WorksheetData, TriviaData };
 
 export interface TeacherTool {
   id: string;
@@ -90,6 +91,12 @@ export const TOOL_INFO: Record<ToolKind, { name: string; plural: string; descrip
     description: "Escribe palabras con su pista y el crucigrama se arma solo.",
     defaultTitle: "Crucigrama",
   },
+  trivia: {
+    name: "Tablero de trivia",
+    plural: "Tableros de trivia",
+    description: "Juego de preguntas por categorías y puntos para competir por equipos en clase.",
+    defaultTitle: "Tablero de trivia",
+  },
   worksheet: {
     name: "Ficha interactiva",
     plural: "Fichas interactivas",
@@ -99,7 +106,7 @@ export const TOOL_INFO: Record<ToolKind, { name: string; plural: string; descrip
 };
 
 export function isToolKind(v: string): v is ToolKind {
-  return v === "wheel" || v === "wordsearch" || v === "crossword" || v === "worksheet";
+  return v === "wheel" || v === "wordsearch" || v === "crossword" || v === "worksheet" || v === "trivia";
 }
 
 export function defaultData(kind: ToolKind): ToolData {
@@ -121,6 +128,8 @@ export function defaultData(kind: ToolKind): ToolData {
       } satisfies WordSearchData;
     case "worksheet":
       return defaultWorksheet();
+    case "trivia":
+      return defaultTrivia();
     case "crossword":
       return {
         instructions: "Completa el crucigrama con ayuda de las pistas.",
