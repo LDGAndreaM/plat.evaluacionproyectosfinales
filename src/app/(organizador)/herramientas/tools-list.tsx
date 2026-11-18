@@ -39,7 +39,7 @@ export function ToolsList({ tools }: { tools: ToolSummary[] }) {
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <div className="flex gap-1 rounded-xl bg-slate-200/70 p-1">
-          {(["all", "worksheet", "trivia", "wheel", "wordsearch", "crossword"] as const).map((k) => (
+          {(["all", "worksheet", "trivia", "conceptmap", "flowchart", "wheel", "wordsearch", "crossword"] as const).map((k) => (
             <button
               key={k}
               type="button"

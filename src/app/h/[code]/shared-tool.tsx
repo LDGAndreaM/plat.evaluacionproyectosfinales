@@ -9,6 +9,8 @@ import { WheelTool } from "@/components/tools/wheel";
 import { WordSearchBoard, WordSearchSheet } from "@/components/tools/wordsearch-board";
 import type { CrosswordData, ToolKind, TriviaData, WheelData, WordSearchData, WorksheetData } from "@/lib/tools/types";
 import { TriviaGame } from "@/components/tools/trivia";
+import { DiagramTool } from "@/components/tools/diagram";
+import type { DiagramData } from "@/lib/tools/types";
 import { StudentWorksheet } from "@/components/worksheet/student";
 
 export function SharedTool({ kind, title, data, code }: { kind: ToolKind; title: string; data: unknown; code: string }) {
@@ -16,6 +18,7 @@ export function SharedTool({ kind, title, data, code }: { kind: ToolKind; title:
 
   if (kind === "wheel") return <WheelTool data={wheel} onChange={setWheel} canEdit={false} title={title} />;
   if (kind === "worksheet") return <StudentWorksheet code={code} data={data as WorksheetData} />;
+  if (kind === "conceptmap" || kind === "flowchart") return <DiagramTool kind={kind} data={data as DiagramData} readOnly title={title} />;
   if (kind === "trivia") return <TriviaGame data={data as TriviaData} title={title} storageKey={`h-${code}`} />;
 
   if (kind === "wordsearch") {

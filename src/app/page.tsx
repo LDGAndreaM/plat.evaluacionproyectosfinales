@@ -1,4 +1,4 @@
-import { BarChart3, CheckCircle2, ClipboardList, Disc3, Grid3x3, LayoutGrid, NotebookPen, QrCode, Smartphone, Trophy } from "lucide-react";
+import { BarChart3, CheckCircle2, ClipboardList, Disc3, Grid3x3, LayoutGrid, Network, NotebookPen, QrCode, Smartphone, Trophy, Workflow } from "lucide-react";
 import { AppLogo } from "@/components/brand/logo";
 import { LinkButton } from "@/components/ui/button";
 
@@ -13,6 +13,8 @@ const FEATURES = [
 const TOOLS = [
   { icon: NotebookPen, title: "Fichas interactivas", text: "Sube un PDF y conviértelo en una actividad que se califica sola.", color: "#6A11CB", tint: "#EDE9FE" },
   { icon: Trophy, title: "Tablero de trivia", text: "Preguntas por categorías y puntos para competir por equipos.", color: "#5A0EAE", tint: "#F3E8FF" },
+  { icon: Network, title: "Mapas conceptuales", text: "Conceptos y palabras de enlace que se acomodan solos.", color: "#008574", tint: "#C2F5EE" },
+  { icon: Workflow, title: "Diagramas de flujo", text: "Procesos paso a paso con decisiones Sí / No.", color: "#E0466A", tint: "#FFE4EA" },
   { icon: Disc3, title: "Ruleta de sorteos", text: "Elige al azar quién expone, equipos o temas.", color: "#E0466A", tint: "#FFE4EA" },
   { icon: Grid3x3, title: "Sopa de letras", text: "Escribe tus palabras y obtén la hoja lista para imprimir.", color: "#008574", tint: "#C2F5EE" },
   { icon: LayoutGrid, title: "Crucigrama", text: "Palabras y pistas; el crucigrama se arma solo.", color: "#B7791F", tint: "#FFF4D6" },
@@ -113,7 +115,7 @@ export default function Home() {
 
         <h2 className="mt-16 text-2xl font-bold text-violet-950">Además: herramientas gratuitas para tu clase</h2>
         <p className="mt-1 text-slate-600">Con tu misma cuenta. Todo se guarda para que lo vuelvas a usar.</p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {TOOLS.map((f) => (
             <Card key={f.title} f={f} />
           ))}

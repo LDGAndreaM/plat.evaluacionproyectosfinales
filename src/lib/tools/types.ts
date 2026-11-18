@@ -2,8 +2,9 @@ import type { CrosswordEntry, CrosswordResult } from "./crossword";
 import type { WordSearchOptions, WordSearchResult } from "./wordsearch";
 import { defaultWorksheet, type WorksheetData } from "@/lib/worksheet/types";
 import { defaultTrivia, type TriviaData } from "./trivia";
+import { defaultDiagram, type DiagramData } from "./diagram";
 
-export type ToolKind = "wheel" | "wordsearch" | "crossword" | "worksheet" | "trivia";
+export type ToolKind = "wheel" | "wordsearch" | "crossword" | "worksheet" | "trivia" | "conceptmap" | "flowchart";
 
 export interface WheelEntry {
   id: string;
@@ -57,8 +58,8 @@ export interface CrosswordData {
   result: CrosswordResult | null;
 }
 
-export type ToolData = WheelData | WordSearchData | CrosswordData | WorksheetData | TriviaData;
-export type { WorksheetData, TriviaData };
+export type ToolData = WheelData | WordSearchData | CrosswordData | WorksheetData | TriviaData | DiagramData;
+export type { WorksheetData, TriviaData, DiagramData };
 
 export interface TeacherTool {
   id: string;
@@ -91,6 +92,18 @@ export const TOOL_INFO: Record<ToolKind, { name: string; plural: string; descrip
     description: "Escribe palabras con su pista y el crucigrama se arma solo.",
     defaultTitle: "Crucigrama",
   },
+  conceptmap: {
+    name: "Mapa conceptual",
+    plural: "Mapas conceptuales",
+    description: "Conecta conceptos con palabras de enlace; se acomoda solo y se exporta como imagen.",
+    defaultTitle: "Mapa conceptual",
+  },
+  flowchart: {
+    name: "Diagrama de flujo",
+    plural: "Diagramas de flujo",
+    description: "Inicio, procesos, decisiones y flechas con Sí / No para explicar un proceso paso a paso.",
+    defaultTitle: "Diagrama de flujo",
+  },
   trivia: {
     name: "Tablero de trivia",
     plural: "Tableros de trivia",
@@ -106,7 +119,7 @@ export const TOOL_INFO: Record<ToolKind, { name: string; plural: string; descrip
 };
 
 export function isToolKind(v: string): v is ToolKind {
-  return v === "wheel" || v === "wordsearch" || v === "crossword" || v === "worksheet" || v === "trivia";
+  return ["wheel", "wordsearch", "crossword", "worksheet", "trivia", "conceptmap", "flowchart"].includes(v);
 }
 
 export function defaultData(kind: ToolKind): ToolData {
@@ -130,6 +143,9 @@ export function defaultData(kind: ToolKind): ToolData {
       return defaultWorksheet();
     case "trivia":
       return defaultTrivia();
+    case "conceptmap":
+    case "flowchart":
+      return defaultDiagram(kind);
     case "crossword":
       return {
         instructions: "Completa el crucigrama con ayuda de las pistas.",
