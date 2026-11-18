@@ -252,7 +252,7 @@ function ProjectForm({
       <Field label="Integrantes" htmlFor="p-members" hint="Uno por línea, o separados por coma.">
         <Textarea id="p-members" name="members" rows={3} defaultValue={project?.members.join("\n")} />
       </Field>
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Field label="Semestre" htmlFor="p-sem" hint="Elige o escribe, ej. 7°">
           <Input id="p-sem" name="semester" list="semestres" maxLength={40} defaultValue={project?.semester ?? ""} placeholder="7°" />
           <datalist id="semestres">

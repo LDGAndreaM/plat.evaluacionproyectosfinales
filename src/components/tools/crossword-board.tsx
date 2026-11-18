@@ -214,7 +214,7 @@ export function CrosswordBoard({ result }: { result: CrosswordResult }) {
           </Button>
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
         {clueList("Horizontales", across)}
         {clueList("Verticales", down)}
       </div>

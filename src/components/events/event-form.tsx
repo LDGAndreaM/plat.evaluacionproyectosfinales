@@ -26,7 +26,7 @@ export function EventForm({
   const [logo, setLogo] = useState(event?.logo_url ?? "");
 
   return (
-    <form action={formAction} className="grid gap-6 lg:grid-cols-[1fr_280px]">
+    <form action={formAction} className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
       <fieldset disabled={disabled} className="space-y-4">
         <Field label="Nombre del evento" htmlFor="name" required>
           <Input
@@ -47,7 +47,7 @@ export function EventForm({
             placeholder="Exposición de proyectos finales de la Licenciatura en Diseño Gráfico."
           />
         </Field>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Fecha" htmlFor="event_date">
             <Input id="event_date" name="event_date" type="date" defaultValue={event?.event_date ?? ""} />
           </Field>
@@ -55,7 +55,7 @@ export function EventForm({
             <Input id="venue" name="venue" defaultValue={event?.venue ?? ""} placeholder="ITSON Unidad Guaymas" />
           </Field>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <ImageUpload name="logo_url" label="Logo" defaultValue={event?.logo_url} onChange={setLogo} />
           <ImageUpload name="cover_url" label="Imagen de portada" aspect="wide" defaultValue={event?.cover_url} />
         </div>

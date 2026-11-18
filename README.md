@@ -22,6 +22,8 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | 4 | Ranking en vivo (general, por categoría y por semestre), podio, empates, respuestas individuales, pantalla de premiación y exportación a Excel, CSV y PDF | ✅ |
 | 5 | Herramientas para maestros: ruleta, sopa de letras y crucigrama (guardar, imprimir, compartir) | ✅ |
 | 6 | Fichas interactivas desde PDF: 16 tipos de elementos, calificación automática y respuestas de alumnos | ✅ |
+| Aula 1 | Roles docente/estudiante, grupos (crear, editar, archivar), invitación por enlace/código/QR, importación de alumnos por CSV con vista previa y reporte de errores, panel del estudiante | ✅ |
+| Aula 2–5 | Asistencia con QR y justificantes · actividades y tareas · calificaciones y reportes · notificaciones y calendario | ⏳ |
 
 ## Desarrollo local
 

@@ -2,22 +2,42 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
+import type { Role } from "@/lib/aula/types";
 
-/** Devuelve el organizador con sesión iniciada o redirige al login. */
-export const requireOrganizer = cache(async () => {
+/**
+ * Usuario con sesión iniciada (docente o estudiante). Redirige al login si no hay sesión
+ * y a /bienvenida si todavía no eligió si es docente o estudiante.
+ */
+export const requireUser = cache(async () => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
   if (!claims || claims.is_anonymous) redirect("/login");
-  const { data: profile } = await supabase
-    .from("organizers")
-    .select("id, full_name, institution, email")
-    .eq("id", claims.sub)
-    .maybeSingle();
+  const load = () =>
+    supabase.from("organizers").select("id, full_name, institution, email, role").eq("id", claims.sub).maybeSingle();
+  let { data: profile } = await load();
+  if (!profile?.role) {
+    // Si lo invitaron con su correo, queda como estudiante automáticamente
+    const { data: claimed } = await supabase.rpc("claim_invitations");
+    if (claimed) ({ data: profile } = await load());
+  }
+  const role = (profile?.role ?? null) as Role | null;
+  if (!role) redirect("/bienvenida");
   return {
     supabase,
     userId: claims.sub as string,
     email: (claims.email as string | undefined) ?? profile?.email ?? "",
     fullName: profile?.full_name || ((claims.email as string | undefined) ?? ""),
+    role,
   };
 });
+
+/** Solo docentes (eventos, herramientas y gestión de grupos). Los estudiantes van a su inicio. */
+export const requireTeacher = cache(async () => {
+  const user = await requireUser();
+  if (user.role !== "teacher") redirect("/inicio");
+  return user;
+});
+
+/** Alias histórico: las secciones de eventos y herramientas son solo para docentes. */
+export const requireOrganizer = requireTeacher;

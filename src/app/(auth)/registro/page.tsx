@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import { SignUpForm } from "../forms";
-import { GoogleButton, OrDivider } from "../google-button";
 
 export const metadata: Metadata = { title: "Crear cuenta" };
 
-export default function RegistroPage() {
+export default async function RegistroPage({ searchParams }: PageProps<"/registro">) {
+  const sp = await searchParams;
+  const next = typeof sp.next === "string" ? sp.next : undefined;
+  const rol = sp.rol === "estudiante" ? "student" : sp.rol === "docente" ? "teacher" : undefined;
   return (
     <>
-      <h1 className="text-2xl font-semibold text-slate-900">Crear cuenta de organizador</h1>
-      <p className="mb-6 mt-1 text-sm text-slate-500">
-        Solo quienes organizan eventos necesitan cuenta. Los evaluadores entran con el QR.
+      <h1 className="text-center text-3xl font-extrabold text-violet-950">Crear cuenta</h1>
+      <p className="mb-6 mt-2 text-center text-slate-600">
+        Gratis. Los evaluadores de eventos no necesitan cuenta: entran con el QR.
       </p>
-      <GoogleButton label="Registrarme con Google" />
-      <OrDivider />
-      <SignUpForm />
+      <SignUpForm next={next} initialRole={rol} />
     </>
   );
 }

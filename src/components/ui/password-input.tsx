@@ -1,15 +1,21 @@
 "use client";
 
 import { Eye, EyeOff } from "lucide-react";
-import { useState, type ComponentProps } from "react";
+import { useState, type ComponentProps, type ReactNode } from "react";
+import { cn } from "@/lib/utils";
 import { Input } from "./form";
 
-/** Campo de contraseña con botón para mostrarla u ocultarla. */
-export function PasswordInput(props: Omit<ComponentProps<"input">, "type">) {
+/** Campo de contraseña con botón para mostrarla u ocultarla (y un ícono opcional al inicio). */
+export function PasswordInput({ icon, className, ...props }: Omit<ComponentProps<"input">, "type"> & { icon?: ReactNode }) {
   const [visible, setVisible] = useState(false);
   return (
     <div className="relative">
-      <Input {...props} type={visible ? "text" : "password"} className="pr-11" />
+      {icon && (
+        <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-slate-400">
+          {icon}
+        </span>
+      )}
+      <Input {...props} type={visible ? "text" : "password"} className={cn("pr-11", icon ? "pl-11" : null, className)} />
       <button
         type="button"
         onClick={() => setVisible((v) => !v)}

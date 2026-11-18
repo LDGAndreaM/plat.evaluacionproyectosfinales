@@ -203,7 +203,7 @@ function SubmissionDetail({
         <div className="space-y-3 rounded-xl border border-teal-200 bg-teal-50/60 p-4">
           <h3 className="font-semibold text-teal-900">Respuestas abiertas</h3>
           {openEls.map((el, i) => (
-            <div key={el.id} className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_120px] sm:items-start">
+            <div key={el.id} className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_120px] sm:items-start">
               <div>
                 <div className="text-xs font-medium text-teal-800">
                   Pregunta abierta {i + 1} (página {el.page + 1})

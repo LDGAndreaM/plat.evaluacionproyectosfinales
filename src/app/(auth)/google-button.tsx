@@ -32,7 +32,16 @@ function friendlyError(code: string, message: string) {
  * "Continuar con Google": Firebase muestra la ventana de Google y Supabase crea/abre la cuenta
  * con el token de Google (así las cuentas, permisos y datos siguen en Supabase).
  */
-export function GoogleButton({ next, label = "Continuar con Google" }: { next?: string; label?: string }) {
+export function GoogleButton({
+  next,
+  label = "Continuar con Google",
+  role,
+}: {
+  next?: string;
+  label?: string;
+  /** Al registrarse: rol elegido ("teacher" | "student"). Solo se aplica si la cuenta aún no tiene uno. */
+  role?: "teacher" | "student";
+}) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,9 +63,11 @@ export function GoogleButton({ next, label = "Continuar con Google" }: { next?: 
       await signOut(auth).catch(() => {});
       if (!idToken) throw new Error("Google no devolvió un token válido.");
 
-      const { error: err } = await createClient().auth.signInWithIdToken({ provider: "google", token: idToken });
+      const supabase = createClient();
+      const { error: err } = await supabase.auth.signInWithIdToken({ provider: "google", token: idToken });
       if (err) throw err;
-      const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/eventos";
+      if (role) await supabase.rpc("set_my_role", { new_role: role });
+      const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/inicio";
       window.location.assign(safeNext);
     } catch (e) {
       const err = e as { code?: string; message?: string };
@@ -71,7 +82,7 @@ export function GoogleButton({ next, label = "Continuar con Google" }: { next?: 
         type="button"
         onClick={go}
         disabled={busy}
-        className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium text-slate-800 hover:bg-slate-50 disabled:opacity-60"
+        className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 disabled:opacity-60"
       >
         {busy ? <Loader2 className="size-5 animate-spin" /> : <GoogleLogo />}
         {label}
@@ -85,10 +96,10 @@ export function GoogleButton({ next, label = "Continuar con Google" }: { next?: 
   );
 }
 
-export function OrDivider() {
+export function OrDivider({ text = "o continúa con" }: { text?: string }) {
   return (
-    <div className="my-5 flex items-center gap-3 text-xs uppercase tracking-wide text-slate-400">
-      <span className="h-px flex-1 bg-slate-200" /> o con tu correo <span className="h-px flex-1 bg-slate-200" />
+    <div className="my-5 flex items-center gap-3 text-sm text-slate-500">
+      <span className="h-px flex-1 bg-slate-200" /> {text} <span className="h-px flex-1 bg-slate-200" />
     </div>
   );
 }

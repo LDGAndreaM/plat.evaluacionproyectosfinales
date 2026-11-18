@@ -36,7 +36,7 @@ export function StatusControl({ eventId, status, canEdit }: { eventId: string; s
 
   return (
     <div className="space-y-4">
-      <ol className="grid gap-2 sm:grid-cols-4">
+      <ol className="grid grid-cols-1 gap-2 sm:grid-cols-4">
         {STATUS_ORDER.map((s, i) => (
           <li
             key={s}

@@ -618,7 +618,7 @@ export function WorksheetEditor({
         ))}
 
       {mode === "design" && (
-        <div className="grid gap-5 lg:grid-cols-[190px_minmax(0,1fr)_300px]">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[190px_minmax(0,1fr)_300px]">
           <aside className="lg:sticky lg:top-20 lg:self-start">
             <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">Agregar elemento</div>
             <p className="mb-2 text-xs text-slate-500">Arrastra a la página o haz clic.</p>

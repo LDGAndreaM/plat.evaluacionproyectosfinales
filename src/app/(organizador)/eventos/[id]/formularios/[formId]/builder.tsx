@@ -527,7 +527,7 @@ export function FormBuilder({
       )}
 
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={onDragStart} onDragOver={onDragOver} onDragEnd={onDragEnd}>
-        <div className="grid gap-6 lg:grid-cols-[200px_minmax(0,1fr)_320px]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[200px_minmax(0,1fr)_320px]">
           {/* Paleta */}
           {canEdit && (
             <aside className="hidden lg:block">

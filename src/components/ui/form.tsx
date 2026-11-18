@@ -61,3 +61,15 @@ export function FormMessage({ state }: { state: ActionResult }) {
     </div>
   );
 }
+
+/** Input con un ícono al inicio (correo, usuario…). */
+export function IconInput({ icon, className, ...props }: ComponentProps<"input"> & { icon: ReactNode }) {
+  return (
+    <div className="relative">
+      <span className="pointer-events-none absolute inset-y-0 left-0 flex w-11 items-center justify-center text-slate-400">
+        {icon}
+      </span>
+      <Input {...props} className={cn("pl-11", className)} />
+    </div>
+  );
+}

@@ -297,7 +297,7 @@ function WordSearchEditor({ data, onChange }: { data: WordSearchData; onChange: 
     .filter(Boolean);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
       <aside className="space-y-4 rounded-xl border border-slate-200 bg-white p-4">
         <Field label={`Palabras (una por línea) · ${words.length}`} htmlFor="ws-words" hint="Se ignoran espacios y signos. Máximo recomendado: 25 palabras.">
           <Textarea
@@ -397,7 +397,7 @@ function CrosswordEditor({ data, onChange }: { data: CrosswordData; onChange: (d
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
         <section className="rounded-xl border border-slate-200 bg-white p-4">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-semibold text-slate-900">Palabras y pistas · {filled}</h2>

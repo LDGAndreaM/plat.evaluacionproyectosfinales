@@ -159,6 +159,23 @@ Para todas:
 
 ---
 
+## 4b. Aula: grupos y estudiantes
+
+**Cuentas.** Al registrarse, cada persona elige **Soy docente** o **Soy estudiante**. Los docentes ven Aula, Evaluación de proyectos y Herramientas; los estudiantes solo ven sus grupos. (Si alguien entra con Google por primera vez, se le pregunta una sola vez.)
+
+**Crear un grupo.** Menú → *Aula · Mis grupos* → **Crear nuevo grupo**: nombre, materia, periodo, semestre, color, descripción y días/horario.
+
+**Agregar estudiantes (3 formas):**
+1. **Importar CSV:** pestaña *Estudiantes* → **Importar CSV** → *Descargar plantilla*. Llénala en Excel (Nombre, Apellidos, Correo; opcional Matrícula, Grupo, ID), guárdala como **CSV UTF-8** y súbela. Verás una vista previa: las filas con errores (correo inválido, nombre vacío) o duplicadas no se importan y puedes descargar el **reporte de errores**.
+2. **Agregar uno por uno** con el botón *Agregar*.
+3. **Enlace o código:** en *Resumen* aparece el código del grupo (ej. `7J8ZS6E`), el enlace y un QR que puedes **proyectar en clase**.
+
+Los estudiantes importados o agregados aparecen como **Invitado**. Cuando crean su cuenta (o inician sesión) **con ese mismo correo**, entran al grupo solos y pasan a **Activo**. Si alguien usa otro correo, puede entrar con el código.
+
+**Configuración del grupo:** editar datos, cerrar inscripciones, generar un código nuevo, archivar al terminar el periodo (se conserva todo) o eliminar.
+
+> Próximas etapas: asistencia con QR y ubicación, justificantes, tareas, calificaciones, reportes y notificaciones.
+
 ## 5. Preguntas frecuentes
 
 **Un evaluador cambió de celular o borró su navegador.** Al volver a escanear se le pide su nombre otra vez y aparece como evaluador nuevo. Sus evaluaciones anteriores se conservan con su nombre original.

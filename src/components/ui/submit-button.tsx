@@ -12,7 +12,7 @@ export function SubmitButton({
 }: ComponentProps<typeof Button> & { pendingText?: string }) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending || props.disabled} {...props}>
+    <Button type="submit" {...props} disabled={pending || props.disabled}>
       {pending && <Loader2 className="size-4 animate-spin" aria-hidden />}
       {pending ? (pendingText ?? "Guardando…") : children}
     </Button>

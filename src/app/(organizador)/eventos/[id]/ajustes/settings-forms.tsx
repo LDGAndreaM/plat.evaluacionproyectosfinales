@@ -43,7 +43,7 @@ export function EvaluationSettingsForm({ event, disabled }: { event: EventRow; d
             ))}
           </Select>
         </Field>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Lugares a premiar (podio)" htmlFor="podium_size" hint="1 = solo ganador, 3 = top 3, etc.">
             <Input
               id="podium_size"

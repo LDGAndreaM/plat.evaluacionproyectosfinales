@@ -63,7 +63,7 @@ export function FormsList({ eventId, forms, canEdit }: { eventId: string; forms:
           }
         />
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {forms.map((f) => (
             <Card key={f.id} className="flex flex-col p-5">
               <div className="flex flex-wrap items-center gap-2">

@@ -471,7 +471,7 @@ export function TriviaTool({
       {mode === "play" ? (
         <TriviaGame data={data} title={title} storageKey={storageKey} />
       ) : (
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
           <section className="min-w-0 space-y-3">
             <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white p-3">
               <div className="grid min-w-[560px] gap-2" style={{ gridTemplateColumns: `4.5rem repeat(${data.categories.length}, minmax(0, 1fr))` }}>

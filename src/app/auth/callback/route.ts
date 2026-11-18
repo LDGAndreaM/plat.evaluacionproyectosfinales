@@ -7,8 +7,8 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const nextParam = searchParams.get("next") ?? "/eventos";
-  const next = nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : "/eventos";
+  const nextParam = searchParams.get("next") ?? "/inicio";
+  const next = nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : "/inicio";
 
   if (searchParams.get("error")) {
     // Error devuelto por Google/Supabase (por ejemplo, la persona canceló)

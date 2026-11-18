@@ -1,38 +1,12 @@
-import { LogOut } from "lucide-react";
-import { AppIcon, AppLogo } from "@/components/brand/logo";
-import { MainNav } from "@/components/brand/main-nav";
-import { requireOrganizer } from "@/lib/auth";
+import { AppShell } from "@/components/brand/app-shell";
+import { requireUser } from "@/lib/auth";
 import { signOut } from "@/app/(auth)/actions";
 
-export default async function OrganizerLayout({ children }: LayoutProps<"/">) {
-  const { fullName, email } = await requireOrganizer();
+export default async function AppLayout({ children }: LayoutProps<"/">) {
+  const { fullName, email, role } = await requireUser();
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="no-print sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
-          <div className="flex min-w-0 items-center gap-3 sm:gap-6">
-            <AppIcon href="/eventos" className="sm:hidden" />
-            <AppLogo href="/eventos" className="hidden sm:inline-flex" />
-            <MainNav />
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden text-right text-sm sm:block">
-              <div className="font-medium leading-tight text-slate-900">{fullName}</div>
-              <div className="text-xs leading-tight text-slate-500">{email}</div>
-            </div>
-            <form action={signOut}>
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm text-slate-600 hover:bg-slate-100"
-              >
-                <LogOut className="size-4" aria-hidden />
-                <span className="hidden sm:inline">Salir</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      </header>
-      <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:py-8">{children}</div>
-    </div>
+    <AppShell role={role} fullName={fullName} email={email} signOutAction={signOut}>
+      {children}
+    </AppShell>
   );
 }

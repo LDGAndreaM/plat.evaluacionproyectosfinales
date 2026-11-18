@@ -41,7 +41,7 @@ export default async function ToolsHome() {
         <h1 className="text-2xl font-semibold text-slate-900">Herramientas para maestros</h1>
         <p className="text-sm text-slate-500">Gratuitas. Todo lo que guardes queda en tu cuenta para volver a usarlo.</p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {(["worksheet", "trivia", "conceptmap", "flowchart", "wheel", "wordsearch", "crossword"] as ToolKind[]).map((k) => {
           const Icon = TOOL_ICONS[k];
           return (

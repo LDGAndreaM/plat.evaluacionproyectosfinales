@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PROTECTED_PREFIXES = ["/eventos", "/herramientas", "/perfil"];
+const PROTECTED_PREFIXES = ["/inicio", "/aula", "/eventos", "/herramientas", "/perfil", "/bienvenida"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
 
   if ((path === "/login" || path === "/registro") && isOrganizer) {
     const url = request.nextUrl.clone();
-    url.pathname = "/eventos";
+    url.pathname = "/inicio";
     url.search = "";
     return NextResponse.redirect(url);
   }

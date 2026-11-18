@@ -75,7 +75,7 @@ export function CsvImport({
       </div>
 
       {showGuide && (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <h3 className="mb-2 text-sm font-semibold text-slate-900">Columnas</h3>
             <dl className="divide-y divide-slate-100 rounded-lg border border-slate-200 text-sm">

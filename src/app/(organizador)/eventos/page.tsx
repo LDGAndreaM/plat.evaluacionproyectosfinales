@@ -52,7 +52,7 @@ export default async function EventosPage() {
           }
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {events.map((ev) => (
             <Link key={ev.id} href={`/eventos/${ev.id}`} className="group">
               <Card className="h-full overflow-hidden transition-shadow group-hover:shadow-md">

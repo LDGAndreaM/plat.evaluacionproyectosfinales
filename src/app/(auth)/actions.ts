@@ -15,7 +15,7 @@ async function origin() {
 
 function safeNext(value: FormDataEntryValue | null) {
   const next = typeof value === "string" ? value : "";
-  return next.startsWith("/") && !next.startsWith("//") ? next : "/eventos";
+  return next.startsWith("/") && !next.startsWith("//") ? next : "/inicio";
 }
 
 function translateAuthError(message: string) {
@@ -49,7 +49,10 @@ export async function signUp(_prev: ActionResult, formData: FormData): Promise<A
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const confirm = String(formData.get("confirm") ?? "");
+  const role = String(formData.get("role") ?? "");
+  const next = safeNext(formData.get("next"));
 
+  if (role !== "teacher" && role !== "student") return { ok: false, error: "Elige si eres docente o estudiante." };
   if (!fullName) return { ok: false, error: "Escribe tu nombre." };
   if (!email) return { ok: false, error: "Escribe tu correo." };
   if (password.length < 8) return { ok: false, error: "La contraseña debe tener al menos 8 caracteres." };
@@ -60,12 +63,12 @@ export async function signUp(_prev: ActionResult, formData: FormData): Promise<A
     email,
     password,
     options: {
-      data: { full_name: fullName, institution },
-      emailRedirectTo: `${await origin()}/auth/callback?next=/eventos`,
+      data: { full_name: fullName, institution, role },
+      emailRedirectTo: `${await origin()}/auth/callback?next=${encodeURIComponent(next)}`,
     },
   });
   if (error) return { ok: false, error: translateAuthError(error.message) };
-  if (data.session) redirect("/eventos");
+  if (data.session) redirect(next);
   return {
     ok: true,
     message: `¡Listo! Te enviamos un correo a ${email}. Abre el enlace para confirmar tu cuenta y después inicia sesión.`,
@@ -91,7 +94,7 @@ export async function updatePassword(_prev: ActionResult, formData: FormData): P
   const supabase = await createClient();
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return { ok: false, error: translateAuthError(error.message) };
-  redirect("/eventos");
+  redirect("/inicio");
 }
 
 export async function signOut() {

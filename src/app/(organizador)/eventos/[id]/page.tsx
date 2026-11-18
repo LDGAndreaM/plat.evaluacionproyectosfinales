@@ -54,7 +54,7 @@ export default async function EventSummaryPage({ params }: PageProps<"/eventos/[
         </div>
       </Card>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader title="Lista de preparación" />
           <ul className="divide-y divide-slate-100">

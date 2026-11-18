@@ -38,13 +38,13 @@ export function ToolsList({ tools }: { tools: ToolSummary[] }) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
-        <div className="flex gap-1 rounded-xl bg-slate-200/70 p-1">
+        <div className="flex max-w-full gap-1 overflow-x-auto rounded-xl bg-slate-200/70 p-1">
           {(["all", "worksheet", "trivia", "conceptmap", "flowchart", "wheel", "wordsearch", "crossword"] as const).map((k) => (
             <button
               key={k}
               type="button"
               onClick={() => setFilter(k)}
-              className={cn("rounded-lg px-3 py-1.5 text-sm font-medium", filter === k ? "bg-white text-slate-900 shadow-sm" : "text-slate-600")}
+              className={cn("shrink-0 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium", filter === k ? "bg-white text-slate-900 shadow-sm" : "text-slate-600")}
             >
               {k === "all" ? "Todas" : TOOL_INFO[k].plural}
             </button>
@@ -55,7 +55,7 @@ export function ToolsList({ tools }: { tools: ToolSummary[] }) {
           <Input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Buscar…" className="h-9 pl-9" aria-label="Buscar" />
         </div>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((t) => {
           const Icon = TOOL_ICONS[t.kind];
           return (
