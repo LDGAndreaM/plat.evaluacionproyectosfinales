@@ -58,6 +58,7 @@ export interface MyClass {
   description: string | null;
   schedule: ScheduleSlot[];
   color: string;
+  teacher_id: string;
   teacher: string;
   teacher_email: string | null;
   archived: boolean;

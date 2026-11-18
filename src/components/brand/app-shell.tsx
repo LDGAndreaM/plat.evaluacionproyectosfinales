@@ -14,11 +14,13 @@ import {
   Menu,
   QrCode,
   Trophy,
+  UserCog,
   Wrench,
   X,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Avatar } from "@/components/ui/avatar";
 import type { Role } from "@/lib/aula/types";
 
 interface NavItem {
@@ -45,18 +47,6 @@ const STUDENT_NAV: NavItem[] = [
   { href: "#justificantes", label: "Justificantes", icon: FileCheck2, soon: true },
   { href: "#calendario", label: "Calendario", icon: CalendarDays, soon: true },
 ];
-
-function initials(name: string) {
-  return (
-    name
-      .replace(/^(mtr[oa]\.?|dr[a]?\.?|lic\.?|ing\.?)\s+/i, "")
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((w) => w[0]?.toUpperCase())
-      .join("") || "?"
-  );
-}
 
 function NavLinks({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => void }) {
   const pathname = usePathname();
@@ -103,6 +93,8 @@ function SidebarContent({ role, onNavigate }: { role: Role; onNavigate?: () => v
       </Link>
       <nav aria-label="Secciones" className="flex-1 overflow-y-auto px-3">
         <NavLinks items={role === "teacher" ? TEACHER_NAV : STUDENT_NAV} onNavigate={onNavigate} />
+        <div className="my-3 border-t border-white/15" />
+        <NavLinks items={[{ href: "/perfil", label: "Mi perfil", icon: UserCog }]} onNavigate={onNavigate} />
       </nav>
       <div className="m-4 rounded-2xl bg-white/10 p-4 text-center text-sm font-semibold leading-snug text-white">
         {role === "teacher" ? "Evalúa, gestiona y da seguimiento a tus grupos." : "Organiza tus clases, tareas y asistencia en un solo lugar."}
@@ -115,12 +107,14 @@ export function AppShell({
   role,
   fullName,
   email,
+  avatarUrl,
   signOutAction,
   children,
 }: {
   role: Role;
   fullName: string;
   email: string;
+  avatarUrl?: string | null;
   signOutAction: () => Promise<void>;
   children: ReactNode;
 }) {
@@ -184,18 +178,20 @@ export function AppShell({
               </Link>
             </div>
             <div className="flex items-center gap-3">
-              <span
-                className="grid size-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-violet-600 to-lilac text-sm font-bold text-white"
-                aria-hidden
+              <Link
+                href="/perfil"
+                className="flex min-w-0 items-center gap-3 rounded-full py-1 pl-1 pr-1 hover:bg-violet-50 sm:pr-3"
+                title="Mi perfil"
+                aria-label="Mi perfil"
               >
-                {initials(fullName)}
-              </span>
-              <div className="hidden min-w-0 text-sm sm:block">
-                <div className="truncate font-semibold leading-tight text-slate-900">{fullName}</div>
-                <div className="truncate text-xs leading-tight text-slate-500" title={email}>
-                  {role === "teacher" ? "Docente" : "Estudiante"}
+                <Avatar url={avatarUrl} name={fullName} />
+                <div className="hidden min-w-0 text-sm sm:block">
+                  <div className="truncate font-semibold leading-tight text-slate-900">{fullName}</div>
+                  <div className="truncate text-xs leading-tight text-slate-500" title={email}>
+                    {role === "teacher" ? "Docente" : "Estudiante"}
+                  </div>
                 </div>
-              </div>
+              </Link>
               <form action={signOutAction}>
                 <button
                   type="submit"

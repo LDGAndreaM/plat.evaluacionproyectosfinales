@@ -2,6 +2,11 @@
 
 import {
   AlertTriangle,
+  AtSign,
+  GraduationCap,
+  Mail,
+  MessageCircle,
+  Phone,
   CheckCircle2,
   Download,
   FileDown,
@@ -15,6 +20,7 @@ import {
 } from "lucide-react";
 import Papa from "papaparse";
 import { useActionState, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge, Card, EmptyState } from "@/components/ui/card";
 import { Field, FormMessage, Input } from "@/components/ui/form";
@@ -24,6 +30,7 @@ import { errorReport, parseRoster, ROSTER_TEMPLATE, type RosterParse } from "@/l
 import { studentName, type ClassStudent } from "@/lib/aula/types";
 import { downloadBlob, slugify } from "@/lib/qr";
 import { cn, formatDate } from "@/lib/utils";
+import type { ProfileView } from "@/lib/profile";
 import { addStudent, importStudents, removeStudent, updateStudent } from "../../actions";
 
 type Filter = "all" | "active" | "invited";
@@ -36,12 +43,14 @@ export function StudentsManager({
   classId,
   className,
   students,
+  profiles = {},
   openImport,
   openAdd,
 }: {
   classId: string;
   className: string;
   students: ClassStudent[];
+  profiles?: Record<string, ProfileView>;
   openImport?: boolean;
   openAdd?: boolean;
 }) {
@@ -50,6 +59,8 @@ export function StudentsManager({
   const [importOpen, setImportOpen] = useState(!!openImport);
   const [addOpen, setAddOpen] = useState(!!openAdd);
   const [editing, setEditing] = useState<ClassStudent | null>(null);
+  const [viewing, setViewing] = useState<ClassStudent | null>(null);
+  const profileOf = (s: ClassStudent) => (s.user_id ? profiles[s.user_id] : undefined);
   const [pending, start] = useTransition();
 
   const counts = {
@@ -192,11 +203,14 @@ export function StudentsManager({
                   <tr key={s.id} className="hover:bg-violet-50/40">
                     <td className="px-4 py-2.5 text-slate-400">{i + 1}</td>
                     <td className="px-4 py-2.5">
-                      <div className="font-medium text-slate-900">
-                        {s.last_name}
-                        {s.last_name && ", "}
-                        {s.first_name}
-                      </div>
+                      <button type="button" onClick={() => setViewing(s)} className="flex items-center gap-3 text-left" title="Ver perfil">
+                        <Avatar url={profileOf(s)?.avatar_url} name={studentName(s)} className="size-9 text-xs" />
+                        <span className="font-medium text-slate-900 hover:text-violet-700 hover:underline">
+                          {s.last_name}
+                          {s.last_name && ", "}
+                          {s.first_name}
+                        </span>
+                      </button>
                     </td>
                     <td className="max-w-56 truncate px-4 py-2.5 text-slate-600">{s.email}</td>
                     <td className="px-4 py-2.5 text-slate-600">{s.student_number}</td>
@@ -216,8 +230,13 @@ export function StudentsManager({
           <ul className="divide-y divide-slate-100 md:hidden">
             {visible.map((s) => (
               <li key={s.id} className="flex items-start gap-3 p-4">
+                <button type="button" onClick={() => setViewing(s)} aria-label={`Ver perfil de ${studentName(s)}`}>
+                  <Avatar url={profileOf(s)?.avatar_url} name={studentName(s)} />
+                </button>
                 <div className="min-w-0 flex-1">
-                  <div className="font-medium text-slate-900">{studentName(s)}</div>
+                  <button type="button" onClick={() => setViewing(s)} className="text-left font-medium text-slate-900">
+                    {studentName(s)}
+                  </button>
                   <div className="truncate text-sm text-slate-500">{s.email}</div>
                   <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-500">
                     <StatusBadge s={s} />
@@ -232,6 +251,9 @@ export function StudentsManager({
         </>
       )}
 
+      <Modal open={!!viewing} onClose={() => setViewing(null)} title="Perfil del estudiante">
+        {viewing && <StudentProfile s={viewing} p={profileOf(viewing)} />}
+      </Modal>
       <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Agregar estudiante">
         {addOpen && <StudentForm classId={classId} onDone={() => setAddOpen(false)} />}
       </Modal>
@@ -249,6 +271,66 @@ export function StudentsManager({
         )}
       </Modal>
     </Card>
+  );
+}
+
+function StudentProfile({ s, p }: { s: ClassStudent; p?: ProfileView }) {
+  const wa = p?.phone?.replace(/[^0-9]/g, "");
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center gap-4">
+        <Avatar url={p?.avatar_url} name={studentName(s)} className="size-20 text-xl ring-4 ring-lavender" />
+        <div className="min-w-0">
+          <div className="text-lg font-bold text-slate-900">{studentName(s)}</div>
+          <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-500">
+            <StatusBadge s={s} />
+            {s.student_number && <span>Matrícula {s.student_number}</span>}
+            {s.section && <span>Grupo {s.section}</span>}
+          </div>
+        </div>
+      </div>
+      <dl className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
+        <Info icon={Mail} label="Correo de la cuenta" value={s.email} href={s.email ? `mailto:${s.email}` : undefined} />
+        <Info icon={AtSign} label="Correo de contacto" value={p?.contact_email} href={p?.contact_email ? `mailto:${p.contact_email}` : undefined} />
+        <Info icon={Phone} label="Teléfono" value={p?.phone} href={p?.phone ? `tel:${p.phone}` : undefined} />
+        <Info icon={GraduationCap} label="Carrera o programa" value={p?.program} />
+      </dl>
+      {wa && wa.length >= 10 && (
+        <a
+          href={`https://wa.me/${wa.length === 10 ? "52" + wa : wa}`}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-lg bg-[#1f9d55] px-3 py-2 text-sm font-semibold text-white hover:bg-[#18804a]"
+        >
+          <MessageCircle className="size-4" /> Escribir por WhatsApp
+        </a>
+      )}
+      {p?.about && (
+        <div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Sobre mí</div>
+          <p className="mt-1 whitespace-pre-line text-slate-700">{p.about}</p>
+        </div>
+      )}
+      {!s.user_id && (
+        <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          Aún no entra con su cuenta. Cuando lo haga, verás aquí su foto y datos de contacto.
+        </p>
+      )}
+      {s.user_id && !p && <p className="text-sm text-slate-500">Todavía no completa su perfil.</p>}
+    </div>
+  );
+}
+
+function Info({ icon: Icon, label, value, href }: { icon: typeof Mail; label: string; value?: string | null; href?: string }) {
+  return (
+    <div className="rounded-xl bg-slate-50 p-3">
+      <dt className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+        <Icon className="size-3.5" /> {label}
+      </dt>
+      <dd className="mt-0.5 break-all text-slate-900">
+        {value ? href ? <a href={href} className="text-violet-700 hover:underline">{value}</a> : value : <span className="text-slate-400">—</span>}
+      </dd>
+    </div>
   );
 }
 

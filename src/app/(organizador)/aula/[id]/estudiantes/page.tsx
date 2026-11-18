@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { InvitePanel } from "@/components/aula/invite-panel";
 import { getTeacherClass } from "@/lib/aula/data";
+import { requireUser } from "@/lib/auth";
+import { getProfiles } from "@/lib/profile";
 import { byLastName } from "@/lib/aula/types";
 import { StudentsManager } from "./students-manager";
 import { PartyPopper } from "lucide-react";
@@ -10,6 +12,8 @@ export default async function StudentsPage({ params, searchParams }: PageProps<"
   const sp = await searchParams;
   const { cls, students } = await getTeacherClass(id);
   const sorted = [...students].sort(byLastName);
+  const { supabase } = await requireUser();
+  const profiles = Object.fromEntries(await getProfiles(supabase, students.map((s) => s.user_id ?? "")));
   return (
     <div className="space-y-5">
       {sp.nuevo === "1" && (
@@ -27,6 +31,7 @@ export default async function StudentsPage({ params, searchParams }: PageProps<"
         classId={cls.id}
         className={cls.name}
         students={sorted}
+        profiles={profiles}
         openImport={sp.importar === "1"}
         openAdd={sp.agregar === "1"}
       />

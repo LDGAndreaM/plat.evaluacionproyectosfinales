@@ -8,7 +8,9 @@ import { getStudentClasses, getTeacherClass } from "@/lib/aula/data";
 import { scheduleSummary } from "@/lib/aula/types";
 import { semesterLabel } from "@/lib/utils";
 import { ClassTabs } from "./tabs";
-import { ClipboardList, QrCode, BarChart3 } from "lucide-react";
+import { ClipboardList, QrCode, BarChart3, Phone, AtSign } from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
+import { getProfile } from "@/lib/profile";
 
 export default async function ClassLayout({ children, params }: LayoutProps<"/aula/[id]">) {
   const { id } = await params;
@@ -53,6 +55,8 @@ async function StudentClassView({ id }: { id: string }) {
   const classes = await getStudentClasses();
   const c = classes.find((x) => x.id === id);
   if (!c) notFound();
+  const { supabase } = await requireUser();
+  const tp = c.teacher_id ? await getProfile(supabase, c.teacher_id) : null;
   const soon = [
     { icon: ClipboardList, title: "Actividades y tareas", text: "Aquí verás tus tareas, fechas de entrega y calificaciones." },
     { icon: QrCode, title: "Asistencia", text: "Registrarás tu asistencia escaneando el QR de la clase." },
@@ -71,14 +75,6 @@ async function StudentClassView({ id }: { id: string }) {
             <h1 className="text-2xl font-extrabold text-violet-950 sm:text-3xl">{c.name}</h1>
             <p className="text-slate-600">{[c.subject, semesterLabel(c.grade), c.period].filter(Boolean).join(" · ")}</p>
             <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-slate-700">
-              <span className="inline-flex items-center gap-1.5">
-                <GraduationCap className="size-4 text-violet-600" /> {c.teacher}
-              </span>
-              {c.teacher_email && (
-                <a href={`mailto:${c.teacher_email}`} className="inline-flex items-center gap-1.5 text-violet-700 hover:underline">
-                  <Mail className="size-4" /> {c.teacher_email}
-                </a>
-              )}
               {c.schedule.length > 0 && (
                 <span className="inline-flex items-center gap-1.5">
                   <CalendarClock className="size-4 text-turquoise-700" /> {scheduleSummary(c.schedule)}
@@ -86,6 +82,31 @@ async function StudentClassView({ id }: { id: string }) {
               )}
             </div>
             {c.description && <p className="mt-3 whitespace-pre-line text-slate-700">{c.description}</p>}
+          </div>
+        </div>
+      </Card>
+      <Card className="rounded-2xl p-5">
+        <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Tu docente</h2>
+        <div className="mt-3 flex flex-wrap items-start gap-4">
+          <Avatar url={tp?.avatar_url} name={c.teacher} className="size-16 text-lg ring-4 ring-lavender" />
+          <div className="min-w-0 flex-1 space-y-1 text-sm">
+            <div className="flex items-center gap-1.5 text-base font-bold text-slate-900">
+              <GraduationCap className="size-5 text-violet-600" /> {c.teacher}
+            </div>
+            {tp?.program && <div className="text-slate-600">{tp.program}</div>}
+            <div className="flex flex-wrap gap-x-5 gap-y-1">
+              {(tp?.contact_email || c.teacher_email) && (
+                <a href={`mailto:${tp?.contact_email || c.teacher_email}`} className="inline-flex items-center gap-1.5 break-all text-violet-700 hover:underline">
+                  {tp?.contact_email ? <AtSign className="size-4" /> : <Mail className="size-4" />} {tp?.contact_email || c.teacher_email}
+                </a>
+              )}
+              {tp?.phone && (
+                <a href={`tel:${tp.phone}`} className="inline-flex items-center gap-1.5 text-violet-700 hover:underline">
+                  <Phone className="size-4" /> {tp.phone}
+                </a>
+              )}
+            </div>
+            {tp?.about && <p className="whitespace-pre-line pt-1 text-slate-700">{tp.about}</p>}
           </div>
         </div>
       </Card>
