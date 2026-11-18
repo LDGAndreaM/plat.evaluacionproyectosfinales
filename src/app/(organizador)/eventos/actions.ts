@@ -24,7 +24,7 @@ function eventPayload(formData: FormData) {
     venue: text(formData, "venue") || null,
     logo_url: text(formData, "logo_url") || null,
     cover_url: text(formData, "cover_url") || null,
-    primary_color: COLOR_RE.test(color) ? color.toLowerCase() : "#6d28d9",
+    primary_color: COLOR_RE.test(color) ? color.toLowerCase() : "#6a11cb",
   };
 }
 

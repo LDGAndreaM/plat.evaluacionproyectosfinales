@@ -23,7 +23,7 @@ export function MainNav() {
             aria-current={active ? "page" : undefined}
             className={cn(
               "inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium",
-              active ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-100",
+              active ? "bg-violet-600 text-white" : "text-slate-600 hover:bg-violet-50 hover:text-violet-700",
             )}
           >
             <l.icon className="size-4" aria-hidden />

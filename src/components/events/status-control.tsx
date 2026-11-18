@@ -42,21 +42,21 @@ export function StatusControl({ eventId, status, canEdit }: { eventId: string; s
             key={s}
             className={cn(
               "rounded-lg border p-3",
-              i === idx ? "border-slate-900 bg-slate-900 text-white" : i < idx ? "border-slate-200 bg-slate-50" : "border-slate-200",
+              i === idx ? "border-violet-600 bg-violet-600 text-white" : i < idx ? "border-slate-200 bg-slate-50" : "border-slate-200",
             )}
           >
             <div className="flex items-center gap-2 text-sm font-semibold">
               <span
                 className={cn(
                   "grid size-5 place-items-center rounded-full text-xs",
-                  i === idx ? "bg-white text-slate-900" : i < idx ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-600",
+                  i === idx ? "bg-white text-violet-700" : i < idx ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-600",
                 )}
               >
                 {i < idx ? <Check className="size-3" /> : i + 1}
               </span>
               {STATUS_LABELS[s]}
             </div>
-            <p className={cn("mt-1 text-xs", i === idx ? "text-slate-200" : "text-slate-500")}>{STATUS_DESCRIPTIONS[s]}</p>
+            <p className={cn("mt-1 text-xs", i === idx ? "text-violet-100" : "text-slate-500")}>{STATUS_DESCRIPTIONS[s]}</p>
           </li>
         ))}
       </ol>

@@ -9,12 +9,36 @@ export interface WheelEntry {
   label: string;
 }
 
+/** Una ruleta dentro de la herramienta (puede haber varias en la misma pantalla). */
+export interface WheelSpec {
+  id: string;
+  title: string;
+  entries: WheelEntry[];
+  removeWinner: boolean;
+  palette: string;
+}
+
 export interface WheelData {
+  /** Campos de la primera ruleta (se conservan por compatibilidad con ruletas guardadas antes) */
   entries: WheelEntry[];
   removeWinner: boolean;
   spinSeconds: number;
   palette: string;
-  history: { label: string; at: string }[];
+  history: { label: string; at: string; wheel?: string }[];
+  /** Todas las ruletas; si no existe, solo hay una (la de los campos de arriba) */
+  wheels?: WheelSpec[];
+}
+
+/** Lista de ruletas, compatible con datos guardados de una sola ruleta. */
+export function getWheels(d: WheelData): WheelSpec[] {
+  if (d.wheels?.length) return d.wheels;
+  return [{ id: "w1", title: "", entries: d.entries ?? [], removeWinner: !!d.removeWinner, palette: d.palette || "vivo" }];
+}
+
+/** Guarda la lista de ruletas, reflejando la primera en los campos antiguos. */
+export function setWheels(d: WheelData, wheels: WheelSpec[]): WheelData {
+  const first = wheels[0];
+  return { ...d, wheels, entries: first?.entries ?? [], removeWinner: first?.removeWinner ?? false, palette: first?.palette ?? "vivo" };
 }
 
 export interface WordSearchData {
@@ -85,7 +109,7 @@ export function defaultData(kind: ToolKind): ToolData {
         entries: ["Equipo 1", "Equipo 2", "Equipo 3", "Equipo 4", "Equipo 5", "Equipo 6"].map((label, i) => ({ id: `e${i}`, label })),
         removeWinner: false,
         spinSeconds: 5,
-        palette: "vivo",
+        palette: "evaluaqr",
         history: [],
       } satisfies WheelData;
     case "wordsearch":

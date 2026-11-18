@@ -137,7 +137,7 @@ La dirección de la premiación es `https://evaluaqr.vercel.app/premiacion/CÓDI
 
 En el menú superior, **Herramientas**. Son gratuitas y todo lo que guardes queda en tu cuenta (sección **Mis creaciones**), donde puedes abrir, duplicar o eliminar.
 
-- **Ruleta**: escribe las opciones (una por línea), presiona **¡Girar!** o la barra espaciadora. Activa *Quitar al ganador después de cada giro* para sortear el orden de exposición sin repeticiones. **Pantalla completa** para proyectarla.
+- **Ruleta**: escribe las opciones (una por línea) y presiona **Girar** o la barra espaciadora. Con **Agregar ruleta** puedes tener hasta 4 ruletas en la misma pantalla (por ejemplo, *Temas* y *Alumnos*): cada una tiene su nombre, lista, colores y botón, y **Girar todas** las gira juntas y muestra los resultados juntos. Activa *Quitar al ganador después de cada giro* para no repetir; el ganador se quita al cerrar el resultado o al volver a girar. **Pantalla completa** para proyectarla.
 - **Sopa de letras**: escribe las palabras (una por línea); la sopa se genera sola. Elige tamaño, diagonales y palabras al revés. **Nueva distribución** acomoda las palabras de otra forma.
 - **Crucigrama**: escribe cada palabra con su pista, o usa **Pegar lista** (por ejemplo, dos columnas copiadas de Excel). Si alguna palabra no se cruza, prueba **Nueva distribución** o agrega palabras que compartan letras.
 

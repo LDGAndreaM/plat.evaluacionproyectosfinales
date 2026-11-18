@@ -1,15 +1,23 @@
-import { QrCode } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
-export function AppLogo({ href = "/" }: { href?: string }) {
+/** Logo de EvalúaQR (imagen en /public/brand). */
+export function AppLogo({ href = "/", size = "md", className }: { href?: string; size?: "sm" | "md" | "lg"; className?: string }) {
+  const h = size === "sm" ? "h-7" : size === "lg" ? "h-14 sm:h-16" : "h-9";
   return (
-    <Link href={href} className="inline-flex items-center gap-2 font-semibold text-slate-900">
-      <span className="grid size-8 place-items-center rounded-lg bg-slate-900 text-white">
-        <QrCode className="size-5" aria-hidden />
-      </span>
-      <span>
-        Evalúa<span className="text-violet-700">QR</span>
-      </span>
+    <Link href={href} className={cn("inline-flex shrink-0 items-center", className)} aria-label="EvalúaQR — inicio">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/evaluaqr-logo.png" alt="EvalúaQR" className={cn(h, "w-auto")} width={1200} height={365} />
+    </Link>
+  );
+}
+
+/** Solo el ícono (para espacios pequeños). */
+export function AppIcon({ href = "/", className }: { href?: string; className?: string }) {
+  return (
+    <Link href={href} className={cn("inline-flex shrink-0 items-center", className)} aria-label="EvalúaQR — inicio">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/evaluaqr-icon.png" alt="EvalúaQR" className="size-9" width={128} height={128} />
     </Link>
   );
 }

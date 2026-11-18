@@ -7,7 +7,7 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import type { ActionResult, EventRow } from "@/lib/types";
 import { readableTextColor } from "@/lib/utils";
 
-const PRESET_COLORS = ["#7c3aed", "#2563eb", "#0891b2", "#059669", "#ea580c", "#e11d48", "#db2777", "#0f172a"];
+const PRESET_COLORS = ["#6a11cb", "#00d6b8", "#a855f7", "#ffc93c", "#ff6b8a", "#2563eb", "#059669", "#0f172a"];
 
 export function EventForm({
   action,
@@ -21,7 +21,7 @@ export function EventForm({
   disabled?: boolean;
 }) {
   const [state, formAction] = useActionState(action, null);
-  const [color, setColor] = useState(event?.primary_color ?? "#7c3aed");
+  const [color, setColor] = useState(event?.primary_color ?? "#6a11cb");
   const [name, setName] = useState(event?.name ?? "");
   const [logo, setLogo] = useState(event?.logo_url ?? "");
 

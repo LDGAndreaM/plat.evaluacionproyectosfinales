@@ -9,7 +9,10 @@ import { ToolsList, type ToolSummary } from "./tools-list";
 export const metadata: Metadata = { title: "Herramientas para maestros" };
 
 function detail(t: TeacherTool) {
-  if (t.kind === "wheel") return `${(t.data as WheelData).entries?.length ?? 0} opciones`;
+  if (t.kind === "wheel") {
+    const n = (t.data as WheelData).wheels?.length ?? 1;
+    return n > 1 ? `${n} ruletas` : `${(t.data as WheelData).entries?.length ?? 0} opciones`;
+  }
   if (t.kind === "wordsearch") return `${(t.data as WordSearchData).words?.length ?? 0} palabras`;
   if (t.kind === "worksheet") return `${(t.data as WorksheetData).pages?.length ?? 0} pág. · ${(t.data as WorksheetData).elements?.length ?? 0} elementos`;
   return `${(t.data as CrosswordData).entries?.length ?? 0} palabras`;
@@ -42,7 +45,7 @@ export default async function ToolsHome() {
               href={`/herramientas/nueva/${k}`}
               className="group flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
             >
-              <span className="grid size-12 place-items-center rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white">
+              <span className="grid size-12 place-items-center rounded-xl bg-gradient-to-br from-violet-600 to-turquoise text-white">
                 <Icon className="size-6" />
               </span>
               <span className="mt-3 text-lg font-semibold text-slate-900">{TOOL_INFO[k].name}</span>

@@ -29,7 +29,7 @@ export function EventTabs({ eventId }: { eventId: string }) {
                 className={cn(
                   "-mb-px flex items-center gap-1.5 border-b-2 px-3 py-2.5 text-sm font-medium",
                   active
-                    ? "border-slate-900 text-slate-900"
+                    ? "border-violet-600 text-violet-700"
                     : "border-transparent text-slate-500 hover:border-slate-300 hover:text-slate-800",
                 )}
               >

@@ -3,7 +3,7 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --brand: #6d28d9;
+  --brand: #6a11cb;
   --brand-contrast: #ffffff;
 }
 
@@ -13,6 +13,33 @@
   --color-brand: var(--brand);
   --color-brand-contrast: var(--brand-contrast);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Paleta EvalúaQR */
+  --color-primary: #6a11cb; /* Morado principal · innovación y confianza */
+  --color-turquoise: #00d6b8; /* Turquesa · tecnología y dinamismo */
+  --color-lilac: #a855f7; /* Lila · creatividad */
+  --color-sun: #ffc93c; /* Amarillo · energía y aprendizaje */
+  --color-coral: #ff6b8a; /* Coral · cercanía y diversión */
+  --color-lavender: #ede9fe; /* Lavanda claro · fondos y superficies */
+
+  /* La escala "violet" de la interfaz usa el morado de la marca */
+  --color-violet-50: #f7f2ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd0fd;
+  --color-violet-300: #c7a7fb;
+  --color-violet-400: #a855f7;
+  --color-violet-500: #8a2be2;
+  --color-violet-600: #6a11cb;
+  --color-violet-700: #5a0eae;
+  --color-violet-800: #4a0c8f;
+  --color-violet-900: #3a0a71;
+  --color-violet-950: #24054a;
+
+  /* Turquesa en tonos */
+  --color-turquoise-50: #e6fbf8;
+  --color-turquoise-100: #c2f5ee;
+  --color-turquoise-600: #00a891;
+  --color-turquoise-700: #008574;
 }
 
 body {
