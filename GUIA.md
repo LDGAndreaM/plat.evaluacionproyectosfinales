@@ -141,6 +141,14 @@ En el menú superior, **Herramientas**. Son gratuitas y todo lo que guardes qued
 - **Sopa de letras**: escribe las palabras (una por línea); la sopa se genera sola. Elige tamaño, diagonales y palabras al revés. **Nueva distribución** acomoda las palabras de otra forma.
 - **Crucigrama**: escribe cada palabra con su pista, o usa **Pegar lista** (por ejemplo, dos columnas copiadas de Excel). Si alguna palabra no se cruza, prueba **Nueva distribución** o agrega palabras que compartan letras.
 
+- **Ficha interactiva** (como las “worksheets” en línea): escribe el nombre, instrucciones y tema, y sube tu **PDF** (o imágenes). Cada página se convierte en imagen y encima colocas, arrastrando desde la izquierda:
+  - **Que se califican solos**: Texto (respuesta corta), Opción única, Casillas, Lista, Sopa de letras, Hablar (el alumno responde en voz alta, en Chrome/Edge), Arrastrar + Soltar y Unir.
+  - **Que calificas tú**: Respuesta abierta.
+  - **De apoyo**: Audio MP3, Escuchar (lee un texto en voz alta), Texto simple, Enlace, PowerPoint/Google Slides y YouTube.
+  - Selecciona un elemento para escribir su respuesta correcta y sus **puntos** (para que una pregunta valga más). Arrastra la esquina para cambiar el tamaño.
+  - **Probar como alumno** te deja contestarla y calificarla sin guardar nada.
+  - Con **Compartir**, tus alumnos la contestan desde el celular escribiendo su nombre y grupo (sin cuenta), ven su calificación al terminar y la ficha te llega en la pestaña **Respuestas**, donde calificas las respuestas abiertas, dejas un comentario y descargas todo en Excel.
+
 Para todas:
 
 - **Guardar** guarda en tu cuenta (aparece “Sin guardar” cuando hay cambios).

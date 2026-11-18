@@ -7,12 +7,14 @@ import { CrosswordBoard, CrosswordSheet } from "@/components/tools/crossword-boa
 import { PrintArea, printNow } from "@/components/tools/print";
 import { WheelTool } from "@/components/tools/wheel";
 import { WordSearchBoard, WordSearchSheet } from "@/components/tools/wordsearch-board";
-import type { CrosswordData, ToolKind, WheelData, WordSearchData } from "@/lib/tools/types";
+import type { CrosswordData, ToolKind, WheelData, WordSearchData, WorksheetData } from "@/lib/tools/types";
+import { StudentWorksheet } from "@/components/worksheet/student";
 
-export function SharedTool({ kind, title, data }: { kind: ToolKind; title: string; data: unknown }) {
+export function SharedTool({ kind, title, data, code }: { kind: ToolKind; title: string; data: unknown; code: string }) {
   const [wheel, setWheel] = useState<WheelData>(() => ({ ...(data as WheelData), history: [] }));
 
   if (kind === "wheel") return <WheelTool data={wheel} onChange={setWheel} canEdit={false} title={title} />;
+  if (kind === "worksheet") return <StudentWorksheet code={code} data={data as WorksheetData} />;
 
   if (kind === "wordsearch") {
     const d = data as WordSearchData;

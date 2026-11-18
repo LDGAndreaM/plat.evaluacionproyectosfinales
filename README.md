@@ -6,7 +6,7 @@ Plataforma web para calificar proyectos finales en eventos académicos (ej. *Exp
 
 - **Organizador (maestro):** crea eventos, da de alta proyectos, arma formularios de evaluación y ve el ranking.
 - **Evaluador / jurado:** escanea el QR, escribe su nombre y evalúa desde el celular, sin crear cuenta.
-- **Herramientas para maestros:** ruleta de sorteos, sopa de letras y crucigrama, guardados en la cuenta, imprimibles y con enlace para estudiantes.
+- **Herramientas para maestros:** fichas interactivas a partir de PDF, ruleta de sorteos, sopa de letras y crucigrama, guardados en la cuenta y con enlace para estudiantes.
 
 ## Tecnología
 
@@ -21,6 +21,7 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | 3 | QR general y por proyecto (PNG/SVG), hoja PDF carta, PIN, vista del evaluador en celular con guardado automático | ✅ |
 | 4 | Ranking en vivo (general, por categoría y por semestre), podio, empates, respuestas individuales, pantalla de premiación y exportación a Excel, CSV y PDF | ✅ |
 | 5 | Herramientas para maestros: ruleta, sopa de letras y crucigrama (guardar, imprimir, compartir) | ✅ |
+| 6 | Fichas interactivas desde PDF: 16 tipos de elementos, calificación automática y respuestas de alumnos | ✅ |
 
 ## Desarrollo local
 

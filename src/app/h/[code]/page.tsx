@@ -33,7 +33,7 @@ export default async function SharedToolPage({ params }: PageProps<"/h/[code]">)
         {tool ? (
           <>
             <h1 className="mb-4 text-2xl font-semibold text-slate-900">{tool.title}</h1>
-            <SharedTool kind={tool.kind} title={tool.title} data={tool.data} />
+            <SharedTool kind={tool.kind} title={tool.title} data={tool.data} code={code} />
           </>
         ) : (
           <div className="flex flex-col items-center gap-3 py-20 text-center">

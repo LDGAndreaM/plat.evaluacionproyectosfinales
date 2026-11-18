@@ -1,7 +1,8 @@
 import type { CrosswordEntry, CrosswordResult } from "./crossword";
 import type { WordSearchOptions, WordSearchResult } from "./wordsearch";
+import { defaultWorksheet, type WorksheetData } from "@/lib/worksheet/types";
 
-export type ToolKind = "wheel" | "wordsearch" | "crossword";
+export type ToolKind = "wheel" | "wordsearch" | "crossword" | "worksheet";
 
 export interface WheelEntry {
   id: string;
@@ -31,7 +32,8 @@ export interface CrosswordData {
   result: CrosswordResult | null;
 }
 
-export type ToolData = WheelData | WordSearchData | CrosswordData;
+export type ToolData = WheelData | WordSearchData | CrosswordData | WorksheetData;
+export type { WorksheetData };
 
 export interface TeacherTool {
   id: string;
@@ -64,10 +66,16 @@ export const TOOL_INFO: Record<ToolKind, { name: string; plural: string; descrip
     description: "Escribe palabras con su pista y el crucigrama se arma solo.",
     defaultTitle: "Crucigrama",
   },
+  worksheet: {
+    name: "Ficha interactiva",
+    plural: "Fichas interactivas",
+    description: "Sube un PDF y coloca respuestas encima: tus alumnos lo contestan en línea y te llegan calificados.",
+    defaultTitle: "Ficha interactiva",
+  },
 };
 
 export function isToolKind(v: string): v is ToolKind {
-  return v === "wheel" || v === "wordsearch" || v === "crossword";
+  return v === "wheel" || v === "wordsearch" || v === "crossword" || v === "worksheet";
 }
 
 export function defaultData(kind: ToolKind): ToolData {
@@ -87,6 +95,8 @@ export function defaultData(kind: ToolKind): ToolData {
         options: { size: 0, diagonal: true, backwards: false, removeAccents: true, seed: 1 },
         result: null,
       } satisfies WordSearchData;
+    case "worksheet":
+      return defaultWorksheet();
     case "crossword":
       return {
         instructions: "Completa el crucigrama con ayuda de las pistas.",
