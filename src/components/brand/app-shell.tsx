@@ -42,9 +42,9 @@ const STUDENT_NAV: NavItem[] = [
   { href: "/inicio", label: "Inicio", icon: Home },
   { href: "/aula", label: "Mis grupos", icon: GraduationCap },
   { href: "#actividades", label: "Actividades", icon: ClipboardList, soon: true },
-  { href: "#asistencia", label: "Asistencia", icon: QrCode, soon: true },
+  { href: "/asistencia", label: "Asistencia", icon: QrCode },
   { href: "#calificaciones", label: "Calificaciones", icon: BarChart3, soon: true },
-  { href: "#justificantes", label: "Justificantes", icon: FileCheck2, soon: true },
+  { href: "/justificantes", label: "Justificantes", icon: FileCheck2 },
   { href: "#calendario", label: "Calendario", icon: CalendarDays, soon: true },
 ];
 

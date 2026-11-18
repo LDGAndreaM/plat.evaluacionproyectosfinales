@@ -1,19 +1,8 @@
 import { notFound } from "next/navigation";
-import { BarChart3, ClipboardList, FileSpreadsheet, QrCode } from "lucide-react";
+import { BarChart3, ClipboardList, FileSpreadsheet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const SECTIONS = {
-  asistencia: {
-    icon: QrCode,
-    title: "Asistencia con QR",
-    stage: "Etapa 2",
-    items: [
-      "QR dinámico que caduca (2, 5 o 10 minutos) y solo se usa una vez por estudiante.",
-      "Ubicación opcional al registrar, con consentimiento y radio del aula.",
-      "Presente, retardo, falta, falta justificada y pendiente de revisión; tolerancia configurable.",
-      "Pase de lista manual y justificantes (PDF/JPG/PNG) que puedes aprobar o rechazar.",
-    ],
-  },
   actividades: {
     icon: ClipboardList,
     title: "Actividades y tareas",

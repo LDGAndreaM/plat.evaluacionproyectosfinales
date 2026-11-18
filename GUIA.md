@@ -174,7 +174,25 @@ Los estudiantes importados o agregados aparecen como **Invitado**. Cuando crean 
 
 **Configuración del grupo:** editar datos, cerrar inscripciones, generar un código nuevo, archivar al terminar el periodo (se conserva todo) o eliminar.
 
-> Próximas etapas: asistencia con QR y ubicación, justificantes, tareas, calificaciones, reportes y notificaciones.
+**Mi perfil** (menú lateral o tu foto arriba a la derecha): foto, teléfono, correo de contacto y "sobre mí". Solo te ven tus estudiantes (si eres docente) o tus docentes (si eres estudiante).
+
+## 4c. Asistencia con QR
+
+**Antes de la primera clase (opcional):** grupo → *Asistencia* → *Ajustes*.
+- **Tolerancia:** minutos para contar como *Presente*; después es *Retardo*.
+- **Ubicación del aula:** estando en el salón, toca *Usar mi ubicación actual*, ajusta el radio (80–150 m) y guarda. Si activas *Exigir ubicación*, quien se registre sin ubicación o fuera del radio queda *Pendiente de revisión*.
+
+**En clase:** *Asistencia* → elige 2, 5, 10 o 15 min → **Mostrar QR de asistencia**. Proyecta en *Pantalla completa*. El QR y el código de 6 dígitos **cambian cada 30 segundos**, así que una foto enviada por WhatsApp deja de servir. Ves en vivo quién se registra; puedes dar más minutos o **Cerrar pase de lista** (quien no se registró queda con *Falta*).
+
+**Los estudiantes** escanean con la cámara del celular (o escriben el código en *Asistencia*) y eligen *Registrar con mi ubicación* o *sin ubicación*. La ubicación se toma una sola vez y solo la ve el docente.
+
+**Corregir:** abre cualquier sesión y toca P (Presente), R (Retardo), F (Falta), J (Justificada) o ? (Revisión). Cada cambio queda en el **historial** (ícono de reloj).
+
+**Justificantes:** el estudiante los envía desde *Justificantes* (motivo + PDF/JPG/PNG). Tú los ves en *Asistencia → Justificantes*: **Aprobar** (las faltas de esas fechas pasan a *Falta justificada*), **Pedir más información** o **Rechazar** (con comentario). Los archivos son privados.
+
+**Descargar:** *Asistencia* → *Descargar (CSV)*: lista con una columna por sesión y el % de cada estudiante.
+
+> Próximas etapas: tareas, calificaciones, reportes y notificaciones.
 
 ## 5. Preguntas frecuentes
 

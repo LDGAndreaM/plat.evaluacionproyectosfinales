@@ -24,6 +24,8 @@ import { ClassBadge, StatCard } from "@/components/aula/stat-card";
 import { JoinForm } from "@/components/aula/join-form";
 import { requireUser } from "@/lib/auth";
 import { getStudentClasses, getTeacherClasses } from "@/lib/aula/data";
+import { getMyAttendance } from "@/lib/aula/attendance-data";
+import { countStatuses, formatRate } from "@/lib/aula/attendance";
 import { scheduleSummary } from "@/lib/aula/types";
 import type { EventRow } from "@/lib/types";
 import { cn, formatDate, semesterLabel, STATUS_LABELS } from "@/lib/utils";
@@ -116,7 +118,7 @@ async function TeacherHome({ name }: { name: string }) {
           <QuickAction href={firstClass ? `/aula/${firstClass.id}/estudiantes?importar=1` : "/aula/nuevo"} icon={Upload} label="Importar lista (CSV)" tone="lilac" />
           <QuickAction href="/eventos/nuevo" icon={Trophy} label="Evaluar proyectos (feria/expo)" tone="sun" />
           <QuickAction href="/herramientas" icon={Sparkles} label="Crear actividad" tone="coral" />
-          <QuickAction href="#" icon={QrCode} label="Tomar asistencia" tone="turquoise" soon />
+          <QuickAction href={firstClass ? `/aula/${firstClass.id}/asistencia` : "/aula/nuevo"} icon={QrCode} label="Tomar asistencia" tone="turquoise" />
           <QuickAction href="#" icon={ClipboardList} label="Asignar tarea" tone="violet" soon />
           <QuickAction href="#" icon={BarChart3} label="Ver reportes" tone="lilac" soon />
         </div>
@@ -192,15 +194,34 @@ async function TeacherHome({ name }: { name: string }) {
   );
 }
 
+/** Sesiones abiertas cuyo QR sigue vigente. */
+function stillOpen<T extends { status: string; expires_at: string }>(sessions: T[]) {
+  const now = new Date().getTime();
+  return sessions.filter((s) => s.status === "open" && Date.parse(s.expires_at) > now);
+}
+
 async function StudentHome({ name }: { name: string }) {
-  const classes = await getStudentClasses();
+  const [classes, att] = await Promise.all([getStudentClasses(), getMyAttendance()]);
   const active = classes.filter((c) => !c.archived);
+  const mine = new Set(att.studentIds.values());
+  const myCounts = countStatuses(att.records.filter((r) => mine.has(r.student_id)).map((r) => r.status));
+  const openNow = stillOpen(att.sessions);
   return (
     <div className="space-y-7">
       <Greeting name={name} subtitle="Este es el resumen de tus clases y actividades." />
+      {openNow.length > 0 && (
+        <Link href="/asistencia" className="flex items-center gap-4 rounded-2xl bg-turquoise-700 p-5 text-white shadow-md hover:bg-[#006b5d]">
+          <QrCode className="size-10 shrink-0" />
+          <div className="min-w-0 flex-1">
+            <div className="text-lg font-extrabold">¡Pase de lista abierto!</div>
+            <div className="text-sm text-turquoise-50">Escanea el QR de tu docente o toca aquí para escribir el código.</div>
+          </div>
+          <ArrowRight className="size-6" />
+        </Link>
+      )}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={GraduationCap} value={active.length} label="Grupos activos" tone="violet" />
-        <StatCard icon={QrCode} value="—" label="Asistencia" tone="turquoise" hint="Muy pronto" />
+        <StatCard icon={QrCode} value={formatRate(myCounts.rate)} label="Asistencia" tone="turquoise" hint={myCounts.absent ? `${myCounts.absent} falta${myCounts.absent === 1 ? "" : "s"}` : undefined} />
         <StatCard icon={ClipboardList} value="—" label="Tareas pendientes" tone="coral" hint="Muy pronto" />
         <StatCard icon={Star} value="—" label="Promedio general" tone="sun" hint="Muy pronto" />
       </div>
@@ -244,7 +265,7 @@ async function StudentHome({ name }: { name: string }) {
           <div className="rounded-2xl bg-gradient-to-br from-lavender to-[#f3ecff] p-6 text-center">
             <CalendarCheck className="mx-auto size-12 text-violet-600" />
             <h2 className="mt-2 text-lg font-extrabold text-violet-950">¡Mantente al día!</h2>
-            <p className="text-sm text-slate-600">Pronto verás aquí tus tareas, fechas y calificaciones.</p>
+            <p className="text-sm text-slate-600">Revisa tu asistencia y envía justificantes desde el menú. Pronto: tareas y calificaciones.</p>
           </div>
         </div>
       </div>

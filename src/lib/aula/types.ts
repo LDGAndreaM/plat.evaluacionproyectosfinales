@@ -31,6 +31,11 @@ export interface ClassRow {
   archived_at: string | null;
   created_at: string;
   updated_at: string;
+  att_late_after_min: number;
+  att_lat: number | null;
+  att_lng: number | null;
+  att_radius_m: number;
+  att_require_location: boolean;
 }
 
 export interface ClassStudent {

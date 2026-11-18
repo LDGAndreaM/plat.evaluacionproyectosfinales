@@ -36,3 +36,21 @@ export function downloadBlob(filename: string, blob: Blob) {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+/**
+ * Abre una pestaña en el mismo clic (para que el navegador no la bloquee)
+ * y la dirige a la URL cuando termina de obtenerse.
+ */
+export async function openAfter(getUrl: () => Promise<string | null>) {
+  const w = window.open("about:blank", "_blank");
+  const url = await getUrl();
+  if (!url) {
+    w?.close();
+    return false;
+  }
+  if (w) {
+    w.opener = null;
+    w.location.href = url;
+  } else window.location.href = url;
+  return true;
+}

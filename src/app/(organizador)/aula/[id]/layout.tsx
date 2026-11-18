@@ -11,6 +11,8 @@ import { ClassTabs } from "./tabs";
 import { ClipboardList, QrCode, BarChart3, Phone, AtSign } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { getProfile } from "@/lib/profile";
+import { getMyAttendance } from "@/lib/aula/attendance-data";
+import { countStatuses, formatRate } from "@/lib/aula/attendance";
 
 export default async function ClassLayout({ children, params }: LayoutProps<"/aula/[id]">) {
   const { id } = await params;
@@ -57,9 +59,10 @@ async function StudentClassView({ id }: { id: string }) {
   if (!c) notFound();
   const { supabase } = await requireUser();
   const tp = c.teacher_id ? await getProfile(supabase, c.teacher_id) : null;
+  const att = await getMyAttendance();
+  const myRate = countStatuses(att.records.filter((r) => r.student_id === att.studentIds.get(c.id)).map((r) => r.status)).rate;
   const soon = [
     { icon: ClipboardList, title: "Actividades y tareas", text: "Aquí verás tus tareas, fechas de entrega y calificaciones." },
-    { icon: QrCode, title: "Asistencia", text: "Registrarás tu asistencia escaneando el QR de la clase." },
     { icon: BarChart3, title: "Calificaciones", text: "Tu avance y promedio del grupo." },
   ];
   return (
@@ -113,7 +116,19 @@ async function StudentClassView({ id }: { id: string }) {
       {c.archived && (
         <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">Este grupo pertenece a un periodo que ya terminó.</p>
       )}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <Link href="/asistencia" className="block">
+        <Card className="flex items-center gap-4 rounded-2xl p-5 hover:shadow-md">
+          <span className="grid size-12 place-items-center rounded-2xl bg-turquoise-50 text-turquoise-700">
+            <QrCode className="size-6" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="font-bold text-slate-900">Mi asistencia</div>
+            <div className="text-sm text-slate-500">Regístrate con el QR, revisa tus faltas y envía justificantes.</div>
+          </div>
+          <span className="text-2xl font-extrabold text-violet-950">{formatRate(myRate)}</span>
+        </Card>
+      </Link>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {soon.map((s) => (
           <EmptyState key={s.title} icon={<s.icon className="size-9 text-violet-300" />} title={s.title} description={`${s.text} Muy pronto.`} />
         ))}

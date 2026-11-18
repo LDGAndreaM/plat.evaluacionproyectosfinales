@@ -23,7 +23,9 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | 5 | Herramientas para maestros: ruleta, sopa de letras y crucigrama (guardar, imprimir, compartir) | ✅ |
 | 6 | Fichas interactivas desde PDF: 16 tipos de elementos, calificación automática y respuestas de alumnos | ✅ |
 | Aula 1 | Roles docente/estudiante, grupos (crear, editar, archivar), invitación por enlace/código/QR, importación de alumnos por CSV con vista previa y reporte de errores, panel del estudiante | ✅ |
-| Aula 2–5 | Asistencia con QR y justificantes · actividades y tareas · calificaciones y reportes · notificaciones y calendario | ⏳ |
+| Mi perfil | Foto, datos de contacto; visibles solo entre docente y sus estudiantes | ✅ |
+| Aula 2 | Asistencia con QR dinámico (código cada 30 s), ubicación opcional con radio, tolerancia, edición manual con historial, justificantes con archivo privado, CSV | ✅ |
+| Aula 3–5 | Actividades y tareas · calificaciones y reportes · notificaciones y calendario | ⏳ |
 
 ## Desarrollo local
 

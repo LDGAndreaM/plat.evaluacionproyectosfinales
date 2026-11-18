@@ -5,12 +5,17 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { InvitePanel } from "@/components/aula/invite-panel";
 import { StatCard } from "@/components/aula/stat-card";
 import { getTeacherClass } from "@/lib/aula/data";
+import { getClassAttendance } from "@/lib/aula/attendance-data";
+import { countStatuses, formatRate } from "@/lib/aula/attendance";
 import { studentName } from "@/lib/aula/types";
 import { formatDate } from "@/lib/utils";
 
 export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]">) {
   const { id } = await params;
   const { cls, students } = await getTeacherClass(id);
+  const att = await getClassAttendance(id);
+  const attRate = countStatuses(att.records.map((r) => r.status)).rate;
+  const pendingExcuses = att.excuses.filter((e) => e.status === "pending").length;
   const active = students.filter((s) => s.status === "active");
   const invited = students.filter((s) => s.status === "invited");
   const recent = [...active].sort((a, b) => (b.joined_at ?? "").localeCompare(a.joined_at ?? "")).slice(0, 6);
@@ -20,7 +25,13 @@ export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={Users} value={active.length} label="Estudiantes activos" tone="violet" />
         <StatCard icon={Hourglass} value={invited.length} label="Invitaciones pendientes" tone="sun" />
-        <StatCard icon={QrCode} value="—" label="Asistencia promedio" tone="turquoise" hint="Disponible en la etapa 2" />
+        <StatCard
+          icon={QrCode}
+          value={formatRate(attRate)}
+          label="Asistencia promedio"
+          tone="turquoise"
+          hint={`${att.sessions.length} sesión${att.sessions.length === 1 ? "" : "es"}${pendingExcuses ? ` · ${pendingExcuses} justificante${pendingExcuses === 1 ? "" : "s"} por revisar` : ""}`}
+        />
         <StatCard icon={ClipboardList} value="—" label="Actividades activas" tone="coral" hint="Disponible en la etapa 3" />
       </div>
 
@@ -32,6 +43,9 @@ export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]
             <div className="mt-5 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
               <LinkButton href={`/aula/${id}/estudiantes?importar=1`} variant="secondary" size="sm">
                 <Upload className="size-4" /> Importar lista (CSV)
+              </LinkButton>
+              <LinkButton href={`/aula/${id}/asistencia`} size="sm" className="bg-turquoise-700 hover:bg-[#006b5d]">
+                <QrCode className="size-4" /> Tomar asistencia
               </LinkButton>
               <LinkButton href={`/aula/${id}/estudiantes?agregar=1`} variant="secondary" size="sm">
                 <UserPlus className="size-4" /> Agregar estudiante

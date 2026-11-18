@@ -27,10 +27,16 @@ export const SCORE_METHOD_LABELS: Record<ScoreMethod, string> = {
   trimmed: "Promedio sin la calificación más alta y la más baja",
 };
 
+/** Acepta "AAAA-MM-DD" (fecha sin hora) o una marca de tiempo completa (se muestra en hora de Sonora). */
 export function formatDate(date: string | null | undefined) {
   if (!date) return "";
-  const [y, m, d] = date.split("-").map(Number);
-  return new Intl.DateTimeFormat("es-MX", { dateStyle: "long" }).format(new Date(y, m - 1, d));
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    const [y, m, d] = date.split("-").map(Number);
+    return new Intl.DateTimeFormat("es-MX", { dateStyle: "long" }).format(new Date(y, m - 1, d));
+  }
+  const t = new Date(date);
+  if (Number.isNaN(t.getTime())) return "";
+  return new Intl.DateTimeFormat("es-MX", { dateStyle: "long", timeZone: "America/Hermosillo" }).format(t);
 }
 
 export function formatDateTime(date: string | null | undefined) {
