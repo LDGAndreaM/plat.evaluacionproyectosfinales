@@ -79,6 +79,43 @@ function Scale({
   ariaLabel: string;
 }) {
   const cols = items.length;
+  // Con descripciones largas (rúbricas), cada nivel va en su propia fila: el más bajo arriba, el más alto abajo.
+  const asRows = items.some((it) => (it.bottom ?? "").trim().length > 14);
+  if (asRows) {
+    return (
+      <div role="radiogroup" aria-label={ariaLabel} className="flex flex-col gap-2">
+        {items.map((it) => {
+          const selected = value === it.id;
+          return (
+            <button
+              key={it.id}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              disabled={disabled}
+              onClick={() => onChange(it.id)}
+              className={cn(
+                "flex w-full items-start gap-3 rounded-xl border px-3 py-3 text-left transition-colors",
+                selected
+                  ? "border-[var(--brand)] bg-[var(--brand)] text-[var(--brand-contrast)]"
+                  : "border-slate-300 bg-white text-slate-700 hover:border-slate-400",
+              )}
+            >
+              <span
+                className={cn(
+                  "grid size-9 shrink-0 place-items-center rounded-lg text-base font-bold",
+                  selected ? "bg-white/20" : "bg-slate-100 text-slate-900",
+                )}
+              >
+                {it.top}
+              </span>
+              {it.bottom && <span className="min-w-0 flex-1 pt-1.5 text-sm leading-snug">{it.bottom}</span>}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <div
       role="radiogroup"
