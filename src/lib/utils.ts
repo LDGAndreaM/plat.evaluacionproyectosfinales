@@ -78,3 +78,30 @@ export function semestersOf(projects: { semester?: string | null }[]) {
 export function uid() {
   return crypto.randomUUID();
 }
+
+/** Colores por semestre (fondo claro + texto oscuro legible). 1° a 10°; otros textos se asignan por hash. */
+const SEMESTER_COLORS = [
+  { bg: "#EDE9FE", fg: "#5A0EAE", dot: "#6A11CB" }, // 1° morado
+  { bg: "#C2F5EE", fg: "#006B5D", dot: "#00A891" }, // 2° turquesa
+  { bg: "#FFE4EA", fg: "#B4234A", dot: "#FF6B8A" }, // 3° coral
+  { bg: "#FFF1C7", fg: "#8A5A00", dot: "#FFC93C" }, // 4° amarillo
+  { bg: "#DBEAFE", fg: "#1E4FB8", dot: "#3B82F6" }, // 5° azul
+  { bg: "#F3E8FF", fg: "#7E22CE", dot: "#A855F7" }, // 6° lila
+  { bg: "#DCFCE7", fg: "#166534", dot: "#22C55E" }, // 7° verde
+  { bg: "#FFEDD5", fg: "#9A3412", dot: "#F97316" }, // 8° naranja
+  { bg: "#E0F2FE", fg: "#075985", dot: "#0EA5E9" }, // 9° celeste
+  { bg: "#FCE7F3", fg: "#9D174D", dot: "#EC4899" }, // 10° rosa
+];
+
+export function semesterColor(value: string | null | undefined) {
+  const v = (value ?? "").trim();
+  const m = v.match(/^(\d{1,2})/);
+  let i: number;
+  if (m) i = (Number(m[1]) - 1) % SEMESTER_COLORS.length;
+  else {
+    let h = 0;
+    for (const ch of v) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    i = h % SEMESTER_COLORS.length;
+  }
+  return SEMESTER_COLORS[Math.max(0, i)];
+}

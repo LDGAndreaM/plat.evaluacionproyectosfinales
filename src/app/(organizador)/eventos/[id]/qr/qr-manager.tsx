@@ -1,5 +1,6 @@
 "use client";
 
+import { SemesterBadge } from "@/components/ui/semester-badge";
 import { AlertTriangle, Download, ExternalLink, FileText, Loader2, Printer, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Badge, Card, CardHeader, EmptyState } from "@/components/ui/card";
@@ -204,7 +205,7 @@ export function QrManager({
                     {p.stand && <span className="text-xs font-semibold uppercase text-slate-500">Stand {p.stand}</span>}
                     <span className="line-clamp-2 font-medium text-slate-900">{p.name}</span>
                     <div className="mt-0.5 flex flex-wrap gap-1">
-                      {p.semester && <Badge tone="blue">{semesterLabel(p.semester)}</Badge>}
+                      <SemesterBadge value={p.semester} />
                       {p.category && <Badge tone="violet">{p.category}</Badge>}
                       {!p.hasForm && <Badge tone="amber">Sin formulario</Badge>}
                     </div>

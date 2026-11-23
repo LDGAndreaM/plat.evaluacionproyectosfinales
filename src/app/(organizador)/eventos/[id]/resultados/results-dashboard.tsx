@@ -1,5 +1,6 @@
 "use client";
 
+import { SemesterBadge } from "@/components/ui/semester-badge";
 import {
   AlertTriangle,
   ArrowDown,
@@ -329,7 +330,7 @@ export function ResultsDashboard({ data, canEdit }: { data: ResultsData; canEdit
                         <div className="font-medium text-slate-900">{r.project.name}</div>
                         <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
                           {r.project.stand && <span>Stand {r.project.stand}</span>}
-                          {r.project.semester && semester === "all" && <Badge tone="blue">{semesterLabel(r.project.semester)}</Badge>}
+                          {semester === "all" && <SemesterBadge value={r.project.semester} />}
                           {catName(r.project.category_id) && view === "general" && <Badge tone="violet">{catName(r.project.category_id)}</Badge>}
                           {r.tied && (
                             <button

@@ -1,5 +1,6 @@
 "use client";
 
+import { SemesterBadge } from "@/components/ui/semester-badge";
 import Papa from "papaparse";
 import { Download, FileUp, FolderKanban, Pencil, Plus, Search, Tags, Trash2, Users } from "lucide-react";
 import { useActionState, useEffect, useMemo, useState, useTransition } from "react";
@@ -10,7 +11,7 @@ import { ImageUpload } from "@/components/ui/image-upload";
 import { Modal } from "@/components/ui/modal";
 import { SubmitButton } from "@/components/ui/submit-button";
 import type { ActionResult, Category, Project } from "@/lib/types";
-import { SEMESTER_SUGGESTIONS, semesterLabel, semestersOf } from "@/lib/utils";
+import { SEMESTER_SUGGESTIONS, semesterColor, semesterLabel, semestersOf } from "@/lib/utils";
 import {
   deleteCategory,
   deleteProject,
@@ -151,12 +152,19 @@ export function ProjectsManager({
           </div>
           <ul className="divide-y divide-slate-100">
             {filtered.map((p) => (
-              <li key={p.id} className="flex items-center gap-3 px-4 py-3">
+              <li
+                key={p.id}
+                className="flex items-center gap-3 border-l-4 px-4 py-3"
+                style={{ borderLeftColor: p.semester ? semesterColor(p.semester).dot : "transparent" }}
+              >
                 {p.image_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={p.image_url} alt="" className="size-12 shrink-0 rounded-lg object-cover" />
                 ) : (
-                  <div className="grid size-12 shrink-0 place-items-center rounded-lg bg-slate-100 text-sm font-semibold text-slate-500">
+                  <div
+                    className="grid size-12 shrink-0 place-items-center rounded-lg bg-slate-100 text-sm font-semibold text-slate-500"
+                    style={p.semester ? { background: semesterColor(p.semester).bg, color: semesterColor(p.semester).fg } : undefined}
+                  >
                     {p.stand || "—"}
                   </div>
                 )}
@@ -164,7 +172,7 @@ export function ProjectsManager({
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-medium text-slate-900">{p.name}</span>
                     {p.category_id && <Badge tone="violet">{catName.get(p.category_id)}</Badge>}
-                    {p.semester && <Badge tone="blue">{semesterLabel(p.semester)}</Badge>}
+                    <SemesterBadge value={p.semester} />
                     {p.stand && <Badge>Stand {p.stand}</Badge>}
                   </div>
                   <p className="truncate text-sm text-slate-500">

@@ -1,5 +1,6 @@
 "use client";
 
+import { SemesterBadge } from "@/components/ui/semester-badge";
 import { AlertCircle, CheckCircle2, ChevronRight, CircleDashed, PencilLine, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -225,8 +226,9 @@ function ProjectList() {
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold leading-snug text-slate-900">{p.name}</div>
                   <div className="truncate text-sm text-slate-500">
-                    {[p.stand && `Stand ${p.stand}`, semesterLabel(p.semester), catName(p.category_id)].filter(Boolean).join(" · ")}
+                    {[p.stand && `Stand ${p.stand}`, catName(p.category_id)].filter(Boolean).join(" · ")}
                   </div>
+                  {p.semester && <SemesterBadge value={p.semester} className="mt-1" />}
                   <div className="mt-1">
                     {st === "submitted" ? (
                       <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-700">
