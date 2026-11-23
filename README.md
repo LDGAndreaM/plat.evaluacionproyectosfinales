@@ -26,7 +26,8 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | Mi perfil | Foto, datos de contacto; visibles solo entre docente y sus estudiantes | ✅ |
 | Aula 2 | Asistencia con QR dinámico (código cada 30 s), ubicación opcional con radio, tolerancia, edición manual con historial, justificantes con archivo privado, CSV | ✅ |
 | Aula 3 | Actividades (tarea, investigación, interactiva con tus herramientas), equipos, entregas con archivos/enlace, intentos, retraso con descuento, rúbricas, calificación automática de fichas en servidor, seguimiento | ✅ |
-| Aula 4–5 | Calificaciones y reportes · notificaciones y calendario | ⏳ |
+| Aula 4 | Calificaciones con rubros ponderados (actividades, asistencia, captura manual), escala 0–10/0–100, indicadores de asistencia y entregas, vista del estudiante, 9 reportes en Excel/CSV/PDF | ✅ |
+| Aula 5 | Notificaciones y calendario | ⏳ |
 
 ## Desarrollo local
 

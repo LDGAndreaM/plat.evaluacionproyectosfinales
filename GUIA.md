@@ -210,7 +210,21 @@ Agrega instrucciones, archivos o enlaces de apoyo, fecha límite (hora de Sonora
 
 **Colores por semestre:** en los eventos, cada semestre tiene su color en Proyectos, Códigos QR, Resultados y en la vista del jurado.
 
-> Próximas etapas: calificaciones (ponderaciones), reportes, notificaciones y calendario.
+## 4e. Calificaciones y reportes
+
+**Calificaciones** (grupo → *Calificaciones* → **Ponderaciones y escala**):
+- Escala **0–10 o 0–100** y calificación aprobatoria.
+- **Rubros** con su porcentaje (deben sumar 100). Cada rubro es de un tipo: *Promedio de actividades*, *% de asistencia* o *Captura manual* (examen, participación, proyecto…).
+- Si tienes más de un rubro de actividades, eliges a cuál pertenece cada actividad (también al crearla).
+- Opciones: si las actividades vencidas sin entregar cuentan como 0, y si los estudiantes ven su calificación.
+
+En la tabla capturas los rubros manuales (escribe y presiona Enter) y ves por estudiante cada rubro, la **calificación final**, su **asistencia** y su **% de entregas** por separado. En rojo, quien va reprobando; abajo de su nombre, los motivos de riesgo. Un rubro sin datos (examen aún no capturado) no cuenta todavía.
+
+**Reportes** (grupo → *Reportes*, o menú *Reportes y resultados*): Lista de estudiantes, Asistencia por sesión, Resumen de asistencia, Justificantes, Seguimiento de entregas, Calificaciones por actividad, Calificación final, **Estudiantes en riesgo** (reprobando, asistencia < 80 % o 2+ entregas faltantes) y **Reporte individual** de un estudiante. Cada uno en **Excel, CSV o PDF**.
+
+**Estudiantes:** en el menú *Calificaciones* ven su calificación actual con el desglose por rubro, su asistencia y sus entregas (si tú lo permites).
+
+> Próxima etapa: notificaciones y calendario.
 
 ## 5. Preguntas frecuentes
 

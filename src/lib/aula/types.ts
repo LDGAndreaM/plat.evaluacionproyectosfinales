@@ -36,6 +36,7 @@ export interface ClassRow {
   att_lng: number | null;
   att_radius_m: number;
   att_require_location: boolean;
+  grade_settings?: unknown;
 }
 
 export interface ClassStudent {

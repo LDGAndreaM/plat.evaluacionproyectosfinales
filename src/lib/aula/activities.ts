@@ -50,6 +50,7 @@ export interface Activity {
   resources: Resource[];
   created_at: string;
   updated_at: string;
+  grade_category?: string | null;
 }
 
 export interface Submission {

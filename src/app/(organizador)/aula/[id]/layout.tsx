@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Archive, ArrowLeft, CalendarClock, GraduationCap, Mail } from "lucide-react";
-import { Badge, Card, EmptyState } from "@/components/ui/card";
+import { Badge, Card } from "@/components/ui/card";
 import { ClassBadge } from "@/components/aula/stat-card";
 import { requireUser } from "@/lib/auth";
 import { getStudentClasses, getTeacherClass } from "@/lib/aula/data";
@@ -13,6 +13,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { getProfile } from "@/lib/profile";
 import { getMyAttendance } from "@/lib/aula/attendance-data";
 import { getMyActivities } from "@/lib/aula/activities-data";
+import { getMyGrades } from "@/lib/aula/gradebook-data";
 import { finalScore, formatScore, trackStatus, TRACK_INFO } from "@/lib/aula/activities";
 import { dueLabel } from "@/lib/aula/attendance";
 import { countStatuses, formatRate } from "@/lib/aula/attendance";
@@ -65,6 +66,7 @@ async function StudentClassView({ id }: { id: string }) {
   const att = await getMyAttendance();
   const myRate = countStatuses(att.records.filter((r) => r.student_id === att.studentIds.get(c.id)).map((r) => r.status)).rate;
   const acts = await getMyActivities();
+  const myGrade = (await getMyGrades()).find((x) => x.cls.id === c.id);
   const now = new Date().getTime();
   const classActs = acts.activities
     .filter((a) => a.class_id === c.id)
@@ -163,7 +165,20 @@ async function StudentClassView({ id }: { id: string }) {
           </ul>
         )}
       </Card>
-      <EmptyState icon={<BarChart3 className="size-9 text-violet-300" />} title="Calificaciones" description="Tu promedio del grupo con todas tus actividades. Muy pronto." />
+      <Link href="/calificaciones" className="block">
+        <Card className="flex items-center gap-4 rounded-2xl p-5 hover:shadow-md">
+          <span className="grid size-12 place-items-center rounded-2xl bg-[#fff8e6] text-[#9a6400]">
+            <BarChart3 className="size-6" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="font-bold text-slate-900">Mi calificación</div>
+            <div className="text-sm text-slate-500">
+              {myGrade?.grades ? "Desglose por rubro, asistencia y entregas." : "Tu docente aún no publica las calificaciones."}
+            </div>
+          </div>
+          {myGrade?.grades && <span className="text-2xl font-extrabold text-violet-950">{myGrade.grades.final ?? "—"}</span>}
+        </Card>
+      </Link>
     </div>
   );
 }

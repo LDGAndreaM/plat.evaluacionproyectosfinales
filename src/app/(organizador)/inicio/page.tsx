@@ -26,6 +26,7 @@ import { requireUser } from "@/lib/auth";
 import { getStudentClasses, getTeacherClasses } from "@/lib/aula/data";
 import { getMyAttendance } from "@/lib/aula/attendance-data";
 import { getMyActivities } from "@/lib/aula/activities-data";
+import { getMyGrades } from "@/lib/aula/gradebook-data";
 import { dueBadge, trackStatus } from "@/lib/aula/activities";
 import { countStatuses, formatRate } from "@/lib/aula/attendance";
 import { scheduleSummary } from "@/lib/aula/types";
@@ -224,7 +225,9 @@ function stillOpen<T extends { status: string; expires_at: string }>(sessions: T
 }
 
 async function StudentHome({ name }: { name: string }) {
-  const [classes, att, acts] = await Promise.all([getStudentClasses(), getMyAttendance(), getMyActivities()]);
+  const [classes, att, acts, myGrades] = await Promise.all([getStudentClasses(), getMyAttendance(), getMyActivities(), getMyGrades()]);
+  const finals = myGrades.filter((x) => !x.cls.archived_at && x.grades?.final != null).map((x) => (x.grades!.final! / x.settings.scale) * 10);
+  const generalAvg = finals.length ? Math.round((finals.reduce((a, b) => a + b, 0) / finals.length) * 10) / 10 : null;
   const active = classes.filter((c) => !c.archived);
   const mine = new Set(att.studentIds.values());
   const myCounts = countStatuses(att.records.filter((r) => mine.has(r.student_id)).map((r) => r.status));
@@ -248,7 +251,7 @@ async function StudentHome({ name }: { name: string }) {
         <StatCard icon={GraduationCap} value={active.length} label="Grupos activos" tone="violet" />
         <StatCard icon={QrCode} value={formatRate(myCounts.rate)} label="Asistencia" tone="turquoise" hint={myCounts.absent ? `${myCounts.absent} falta${myCounts.absent === 1 ? "" : "s"}` : undefined} />
         <StatCard icon={ClipboardList} value={pendingActs.length} label="Tareas pendientes" tone="coral" hint={pendingActs.some((p) => p.status === "missing") ? "Tienes entregas vencidas" : undefined} />
-        <StatCard icon={Star} value="—" label="Promedio general" tone="sun" hint="Muy pronto" />
+        <StatCard icon={Star} value={generalAvg ?? "—"} label="Promedio general" tone="sun" hint={generalAvg != null ? "Escala 0–10" : undefined} />
       </div>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
         <Card className="rounded-2xl">

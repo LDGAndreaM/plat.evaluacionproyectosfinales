@@ -90,6 +90,7 @@ export async function saveActivity(_prev: ActionResult, fd: FormData): Promise<A
     accept_files,
     accept_link,
     resources: cleanResources(parseJson<Resource[]>(fd.get("resources"), []), classId),
+    ...(fd.has("grade_category") ? { grade_category: String(fd.get("grade_category") ?? "").slice(0, 40) || null } : {}),
   };
 
   let activityId = id;

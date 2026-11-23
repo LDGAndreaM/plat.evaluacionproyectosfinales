@@ -35,7 +35,7 @@ const TEACHER_NAV: NavItem[] = [
   { href: "/aula", label: "Aula · Mis grupos", icon: GraduationCap },
   { href: "/eventos", label: "Evaluación de proyectos", icon: Trophy },
   { href: "/herramientas", label: "Herramientas de actividades", icon: Wrench },
-  { href: "#reportes", label: "Reportes y resultados", icon: BarChart3, soon: true },
+  { href: "/reportes", label: "Reportes y resultados", icon: BarChart3 },
 ];
 
 const STUDENT_NAV: NavItem[] = [
@@ -43,7 +43,7 @@ const STUDENT_NAV: NavItem[] = [
   { href: "/aula", label: "Mis grupos", icon: GraduationCap },
   { href: "/actividades", label: "Actividades", icon: ClipboardList },
   { href: "/asistencia", label: "Asistencia", icon: QrCode },
-  { href: "#calificaciones", label: "Calificaciones", icon: BarChart3, soon: true },
+  { href: "/calificaciones", label: "Calificaciones", icon: BarChart3 },
   { href: "/justificantes", label: "Justificantes", icon: FileCheck2 },
   { href: "#calendario", label: "Calendario", icon: CalendarDays, soon: true },
 ];

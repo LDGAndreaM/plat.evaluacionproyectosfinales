@@ -43,11 +43,13 @@ export function ActivityForm({
   activity,
   newId,
   tools,
+  gradeCategories = [],
 }: {
   classId: string;
   activity?: Activity;
   newId?: string;
   tools: ToolOption[];
+  gradeCategories?: { id: string; name: string }[];
 }) {
   const [state, action] = useActionState(saveActivity, null);
   const activityId = activity?.id ?? newId!;
@@ -260,6 +262,17 @@ export function ActivityForm({
         <Field label="Calificación máxima" htmlFor="max_score" hint="Ej. 10 o 100.">
           <Input id="max_score" name="max_score" type="number" min={0.1} max={1000} step="0.1" value={maxScore} onChange={(e) => setMaxScore(e.target.value)} required className="w-32" />
         </Field>
+        {gradeCategories.length > 1 && (
+          <Field label="Rubro de calificación" htmlFor="grade_category" hint="En qué rubro de la calificación final cuenta.">
+            <Select id="grade_category" name="grade_category" defaultValue={activity?.grade_category ?? gradeCategories[0].id}>
+              {gradeCategories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </Select>
+          </Field>
+        )}
         <Field label="Intentos permitidos" htmlFor="max_attempts" hint="0 = ilimitados. Si devuelves una entrega, se permite un intento más.">
           <Input id="max_attempts" name="max_attempts" type="number" min={0} max={20} defaultValue={activity?.max_attempts ?? 1} className="w-28" />
         </Field>
