@@ -6,6 +6,8 @@ import { InvitePanel } from "@/components/aula/invite-panel";
 import { StatCard } from "@/components/aula/stat-card";
 import { getTeacherClass } from "@/lib/aula/data";
 import { getClassAttendance } from "@/lib/aula/attendance-data";
+import { getClassActivities } from "@/lib/aula/activities-data";
+import { isPastDue, isVisible, latestByOwner } from "@/lib/aula/activities";
 import { countStatuses, formatRate } from "@/lib/aula/attendance";
 import { studentName } from "@/lib/aula/types";
 import { formatDate } from "@/lib/utils";
@@ -16,6 +18,13 @@ export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]
   const att = await getClassAttendance(id);
   const attRate = countStatuses(att.records.map((r) => r.status)).rate;
   const pendingExcuses = att.excuses.filter((e) => e.status === "pending").length;
+  const acts = await getClassActivities(id);
+  const now = new Date().getTime();
+  const openActs = acts.activities.filter((a) => a.status === "published" && isVisible(a, now) && !isPastDue(a, now)).length;
+  const toGrade = acts.activities.reduce(
+    (n, a) => n + [...latestByOwner(acts.submissions.filter((s) => s.activity_id === a.id), a.mode).values()].filter((s) => s.status === "submitted").length,
+    0,
+  );
   const active = students.filter((s) => s.status === "active");
   const invited = students.filter((s) => s.status === "invited");
   const recent = [...active].sort((a, b) => (b.joined_at ?? "").localeCompare(a.joined_at ?? "")).slice(0, 6);
@@ -32,7 +41,7 @@ export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]
           tone="turquoise"
           hint={`${att.sessions.length} sesión${att.sessions.length === 1 ? "" : "es"}${pendingExcuses ? ` · ${pendingExcuses} justificante${pendingExcuses === 1 ? "" : "s"} por revisar` : ""}`}
         />
-        <StatCard icon={ClipboardList} value="—" label="Actividades activas" tone="coral" hint="Disponible en la etapa 3" />
+        <StatCard icon={ClipboardList} value={openActs} label="Actividades activas" tone="coral" hint={toGrade ? `${toGrade} entrega${toGrade === 1 ? "" : "s"} por calificar` : `${acts.activities.length} en total`} />
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">

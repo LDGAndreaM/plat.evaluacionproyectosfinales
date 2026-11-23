@@ -41,7 +41,7 @@ const TEACHER_NAV: NavItem[] = [
 const STUDENT_NAV: NavItem[] = [
   { href: "/inicio", label: "Inicio", icon: Home },
   { href: "/aula", label: "Mis grupos", icon: GraduationCap },
-  { href: "#actividades", label: "Actividades", icon: ClipboardList, soon: true },
+  { href: "/actividades", label: "Actividades", icon: ClipboardList },
   { href: "/asistencia", label: "Asistencia", icon: QrCode },
   { href: "#calificaciones", label: "Calificaciones", icon: BarChart3, soon: true },
   { href: "/justificantes", label: "Justificantes", icon: FileCheck2 },

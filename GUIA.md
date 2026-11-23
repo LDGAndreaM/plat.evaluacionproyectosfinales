@@ -192,7 +192,25 @@ Los estudiantes importados o agregados aparecen como **Invitado**. Cuando crean 
 
 **Descargar:** *Asistencia* → *Descargar (CSV)*: lista con una columna por sesión y el % de cada estudiante.
 
-> Próximas etapas: tareas, calificaciones, reportes y notificaciones.
+## 4d. Actividades y tareas
+
+**Crear:** grupo → *Actividades y tareas* → **Nueva actividad**. Elige el tipo:
+- **Tarea** o **Investigación:** el estudiante entrega texto, archivos (hasta 25 MB c/u) y/o un enlace; tú eliges qué formas aceptas.
+- **Interactiva:** asigna una de tus creaciones (ficha, trivia, sopa de letras, crucigrama, mapa, diagrama, ruleta). Las **fichas se califican solas** (en el servidor, no se puede hacer trampa); las demás el estudiante las marca como completadas.
+
+Agrega instrucciones, archivos o enlaces de apoyo, fecha límite (hora de Sonora), si aceptas entregas tardías y con cuánto **descuento**, cuántos **intentos**, la calificación máxima y una **rúbrica** por criterios (la suma se convierte a la calificación máxima). Puedes **publicar ahora, programar** una fecha o guardar como **borrador**.
+
+**En equipos:** marca *En equipos*, guarda y en la actividad usa **Formar al azar** (eliges cuántos por equipo) o mueve a cada estudiante a mano. Cualquier integrante entrega por todo el equipo y la calificación es para el equipo.
+
+**Calificar:** abre la actividad y toca a un estudiante (o equipo): ves su texto, enlace y archivos, llenas la rúbrica o la calificación y dejas comentarios. **Devolver para corregir** le permite un intento más. En las fichas, **Usar calificación automática** califica a todos de una vez.
+
+**Seguimiento:** *Actividades y tareas → Seguimiento* muestra una tabla con cada estudiante y actividad: Pendiente, Entregado, Tarde, No entregado, Devuelto o su calificación.
+
+**Estudiantes:** en el menú *Actividades* ven Pendientes / Entregadas / Calificadas con avisos de vencimiento, entregan desde el celular y ven su calificación, la rúbrica y tus comentarios.
+
+**Colores por semestre:** en los eventos, cada semestre tiene su color en Proyectos, Códigos QR, Resultados y en la vista del jurado.
+
+> Próximas etapas: calificaciones (ponderaciones), reportes, notificaciones y calendario.
 
 ## 5. Preguntas frecuentes
 

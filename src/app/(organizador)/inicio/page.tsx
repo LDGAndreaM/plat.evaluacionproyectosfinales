@@ -25,6 +25,8 @@ import { JoinForm } from "@/components/aula/join-form";
 import { requireUser } from "@/lib/auth";
 import { getStudentClasses, getTeacherClasses } from "@/lib/aula/data";
 import { getMyAttendance } from "@/lib/aula/attendance-data";
+import { getMyActivities } from "@/lib/aula/activities-data";
+import { dueBadge, trackStatus } from "@/lib/aula/activities";
 import { countStatuses, formatRate } from "@/lib/aula/attendance";
 import { scheduleSummary } from "@/lib/aula/types";
 import type { EventRow } from "@/lib/types";
@@ -119,7 +121,7 @@ async function TeacherHome({ name }: { name: string }) {
           <QuickAction href="/eventos/nuevo" icon={Trophy} label="Evaluar proyectos (feria/expo)" tone="sun" />
           <QuickAction href="/herramientas" icon={Sparkles} label="Crear actividad" tone="coral" />
           <QuickAction href={firstClass ? `/aula/${firstClass.id}/asistencia` : "/aula/nuevo"} icon={QrCode} label="Tomar asistencia" tone="turquoise" />
-          <QuickAction href="#" icon={ClipboardList} label="Asignar tarea" tone="violet" soon />
+          <QuickAction href={firstClass ? `/aula/${firstClass.id}/actividades/nueva` : "/aula/nuevo"} icon={ClipboardList} label="Asignar tarea" tone="violet" />
           <QuickAction href="#" icon={BarChart3} label="Ver reportes" tone="lilac" soon />
         </div>
       </section>
@@ -194,6 +196,27 @@ async function TeacherHome({ name }: { name: string }) {
   );
 }
 
+function nowForBadges() {
+  return new Date().getTime();
+}
+
+/** Actividades por hacer del estudiante (pendientes, vencidas o devueltas), las más próximas primero. */
+function pendingActivities(
+  activities: Awaited<ReturnType<typeof getMyActivities>>["activities"],
+  submissions: Awaited<ReturnType<typeof getMyActivities>>["submissions"],
+  classIds: Set<string>,
+) {
+  const now = new Date().getTime();
+  return activities
+    .filter((a) => classIds.has(a.class_id) && a.status === "published")
+    .map((a) => {
+      const latest = submissions.filter((s) => s.activity_id === a.id).sort((x, y) => Date.parse(y.submitted_at) - Date.parse(x.submitted_at))[0];
+      return { a, status: trackStatus(latest, a, now) };
+    })
+    .filter((x) => x.status === "pending" || x.status === "missing" || x.status === "returned")
+    .sort((x, y) => Date.parse(x.a.due_at ?? "9999-12-31") - Date.parse(y.a.due_at ?? "9999-12-31"));
+}
+
 /** Sesiones abiertas cuyo QR sigue vigente. */
 function stillOpen<T extends { status: string; expires_at: string }>(sessions: T[]) {
   const now = new Date().getTime();
@@ -201,11 +224,13 @@ function stillOpen<T extends { status: string; expires_at: string }>(sessions: T
 }
 
 async function StudentHome({ name }: { name: string }) {
-  const [classes, att] = await Promise.all([getStudentClasses(), getMyAttendance()]);
+  const [classes, att, acts] = await Promise.all([getStudentClasses(), getMyAttendance(), getMyActivities()]);
   const active = classes.filter((c) => !c.archived);
   const mine = new Set(att.studentIds.values());
   const myCounts = countStatuses(att.records.filter((r) => mine.has(r.student_id)).map((r) => r.status));
   const openNow = stillOpen(att.sessions);
+  const pendingActs = pendingActivities(acts.activities, acts.submissions, new Set(active.map((c) => c.id)));
+  const classById = new Map(active.map((c) => [c.id, c]));
   return (
     <div className="space-y-7">
       <Greeting name={name} subtitle="Este es el resumen de tus clases y actividades." />
@@ -222,7 +247,7 @@ async function StudentHome({ name }: { name: string }) {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={GraduationCap} value={active.length} label="Grupos activos" tone="violet" />
         <StatCard icon={QrCode} value={formatRate(myCounts.rate)} label="Asistencia" tone="turquoise" hint={myCounts.absent ? `${myCounts.absent} falta${myCounts.absent === 1 ? "" : "s"}` : undefined} />
-        <StatCard icon={ClipboardList} value="—" label="Tareas pendientes" tone="coral" hint="Muy pronto" />
+        <StatCard icon={ClipboardList} value={pendingActs.length} label="Tareas pendientes" tone="coral" hint={pendingActs.some((p) => p.status === "missing") ? "Tienes entregas vencidas" : undefined} />
         <StatCard icon={Star} value="—" label="Promedio general" tone="sun" hint="Muy pronto" />
       </div>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
@@ -262,11 +287,44 @@ async function StudentHome({ name }: { name: string }) {
             <p className="mb-3 text-sm text-slate-500">Escribe el código que te dio tu docente.</p>
             <JoinForm />
           </Card>
-          <div className="rounded-2xl bg-gradient-to-br from-lavender to-[#f3ecff] p-6 text-center">
-            <CalendarCheck className="mx-auto size-12 text-violet-600" />
-            <h2 className="mt-2 text-lg font-extrabold text-violet-950">¡Mantente al día!</h2>
-            <p className="text-sm text-slate-600">Revisa tu asistencia y envía justificantes desde el menú. Pronto: tareas y calificaciones.</p>
-          </div>
+          <Card className="rounded-2xl">
+            <div className="flex items-center justify-between px-5 pb-2 pt-5">
+              <h2 className="text-lg font-extrabold text-violet-950">Mis actividades</h2>
+              <Link href="/actividades" className="inline-flex items-center gap-1 text-sm font-semibold text-violet-700 hover:underline">
+                Ver todas <ArrowRight className="size-4" />
+              </Link>
+            </div>
+            {pendingActs.length === 0 ? (
+              <div className="px-5 pb-5 text-center">
+                <CalendarCheck className="mx-auto size-10 text-violet-300" />
+                <p className="mt-1 text-sm text-slate-500">¡Estás al día! No tienes actividades pendientes.</p>
+              </div>
+            ) : (
+              <ul className="divide-y divide-slate-100 px-2 pb-3">
+                {pendingActs.slice(0, 5).map(({ a, status }) => {
+                  const due = dueBadge(a, status, nowForBadges());
+                  return (
+                    <li key={a.id}>
+                      <Link href={`/actividades/${a.id}`} className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-violet-50/60">
+                        <span className="h-9 w-1.5 shrink-0 rounded-full" style={{ background: classById.get(a.class_id)?.color }} aria-hidden />
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate font-semibold text-slate-900">{a.title}</div>
+                          <div className="truncate text-xs text-slate-500">{classById.get(a.class_id)?.name}</div>
+                        </div>
+                        {status === "missing" ? (
+                          <span className="shrink-0 rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-800">Vencida</span>
+                        ) : status === "returned" ? (
+                          <span className="shrink-0 rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-800">Corregir</span>
+                        ) : due ? (
+                          <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${due.cls}`}>{due.text}</span>
+                        ) : null}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </Card>
         </div>
       </div>
     </div>

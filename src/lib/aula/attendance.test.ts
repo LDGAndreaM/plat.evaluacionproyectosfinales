@@ -27,3 +27,12 @@ describe("formatDate", () => {
     expect(formatDate("basura")).toBe("");
   });
 });
+
+import { fromLocalInput, toLocalInput } from "./attendance";
+describe("fechas locales", () => {
+  it("convierte la hora de Sonora", () => {
+    expect(fromLocalInput("2026-11-23T23:59")).toBe("2026-11-24T06:59:00.000Z");
+    expect(toLocalInput("2026-11-24T06:59:00.000Z")).toBe("2026-11-23T23:59");
+    expect(fromLocalInput("")).toBeNull();
+  });
+});

@@ -1,18 +1,8 @@
 import { notFound } from "next/navigation";
-import { BarChart3, ClipboardList, FileSpreadsheet } from "lucide-react";
+import { BarChart3, FileSpreadsheet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const SECTIONS = {
-  actividades: {
-    icon: ClipboardList,
-    title: "Actividades y tareas",
-    stage: "Etapa 3",
-    items: [
-      "Tareas tradicionales, de investigación e interactivas (fichas, trivia, sopa de letras…).",
-      "Entregas individuales o por equipo, con fecha límite, intentos y rúbrica.",
-      "Tabla de seguimiento automática: entregado, tarde, pendiente, calificado.",
-    ],
-  },
   calificaciones: {
     icon: BarChart3,
     title: "Calificaciones",

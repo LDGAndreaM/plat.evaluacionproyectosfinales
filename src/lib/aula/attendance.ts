@@ -122,3 +122,23 @@ export function dateRangeLabel(from: string, to: string) {
     new Intl.DateTimeFormat("es-MX", { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" }).format(new Date(s + "T12:00:00Z"));
   return from === to ? f(from) : `${f(from)} – ${f(to)}`;
 }
+
+/** "2026-11-23T14:30" (hora de Sonora, UTC-7 todo el año) → ISO UTC. */
+export function fromLocalInput(v: string | null | undefined) {
+  if (!v || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(v)) return null;
+  const d = new Date(`${v}:00-07:00`);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+}
+
+/** ISO → valor para <input type="datetime-local"> en hora de Sonora. */
+export function toLocalInput(iso: string | null | undefined) {
+  if (!iso) return "";
+  const d = new Date(Date.parse(iso) - 7 * 3600 * 1000);
+  return d.toISOString().slice(0, 16);
+}
+
+/** "lun 24 nov, 23:59" en hora de Sonora. */
+export function dueLabel(iso: string) {
+  const d = new Date(iso);
+  return new Intl.DateTimeFormat("es-MX", { timeZone: APP_TZ, weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(d);
+}

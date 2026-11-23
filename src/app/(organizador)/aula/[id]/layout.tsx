@@ -12,6 +12,9 @@ import { ClipboardList, QrCode, BarChart3, Phone, AtSign } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { getProfile } from "@/lib/profile";
 import { getMyAttendance } from "@/lib/aula/attendance-data";
+import { getMyActivities } from "@/lib/aula/activities-data";
+import { finalScore, formatScore, trackStatus, TRACK_INFO } from "@/lib/aula/activities";
+import { dueLabel } from "@/lib/aula/attendance";
 import { countStatuses, formatRate } from "@/lib/aula/attendance";
 
 export default async function ClassLayout({ children, params }: LayoutProps<"/aula/[id]">) {
@@ -61,10 +64,14 @@ async function StudentClassView({ id }: { id: string }) {
   const tp = c.teacher_id ? await getProfile(supabase, c.teacher_id) : null;
   const att = await getMyAttendance();
   const myRate = countStatuses(att.records.filter((r) => r.student_id === att.studentIds.get(c.id)).map((r) => r.status)).rate;
-  const soon = [
-    { icon: ClipboardList, title: "Actividades y tareas", text: "Aquí verás tus tareas, fechas de entrega y calificaciones." },
-    { icon: BarChart3, title: "Calificaciones", text: "Tu avance y promedio del grupo." },
-  ];
+  const acts = await getMyActivities();
+  const now = new Date().getTime();
+  const classActs = acts.activities
+    .filter((a) => a.class_id === c.id)
+    .map((a) => {
+      const latest = acts.submissions.filter((s) => s.activity_id === a.id).sort((x, y) => Date.parse(y.submitted_at) - Date.parse(x.submitted_at))[0];
+      return { a, latest, status: trackStatus(latest, a, now) };
+    });
   return (
     <div className="space-y-5">
       <Link href="/aula" className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900">
@@ -128,11 +135,35 @@ async function StudentClassView({ id }: { id: string }) {
           <span className="text-2xl font-extrabold text-violet-950">{formatRate(myRate)}</span>
         </Card>
       </Link>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {soon.map((s) => (
-          <EmptyState key={s.title} icon={<s.icon className="size-9 text-violet-300" />} title={s.title} description={`${s.text} Muy pronto.`} />
-        ))}
-      </div>
+      <Card className="rounded-2xl">
+        <div className="flex items-center gap-2 px-5 pb-2 pt-5">
+          <ClipboardList className="size-5 text-violet-600" />
+          <h2 className="text-lg font-extrabold text-violet-950">Actividades del grupo</h2>
+        </div>
+        {classActs.length === 0 ? (
+          <p className="px-5 pb-5 text-sm text-slate-500">Tu docente aún no publica actividades en este grupo.</p>
+        ) : (
+          <ul className="divide-y divide-slate-100 px-2 pb-3">
+            {classActs.map(({ a, latest, status }) => {
+              const sc = latest?.status === "graded" ? finalScore(latest, a) : null;
+              return (
+                <li key={a.id}>
+                  <Link href={`/actividades/${a.id}`} className="flex flex-wrap items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-violet-50/60">
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate font-semibold text-slate-900">{a.title}</div>
+                      <div className="text-xs text-slate-500">{a.due_at ? `Entrega: ${dueLabel(a.due_at)}` : "Sin fecha límite"}</div>
+                    </div>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${TRACK_INFO[status].cls}`}>
+                      {sc != null ? `${formatScore(sc)} / ${formatScore(Number(a.max_score))}` : TRACK_INFO[status].label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </Card>
+      <EmptyState icon={<BarChart3 className="size-9 text-violet-300" />} title="Calificaciones" description="Tu promedio del grupo con todas tus actividades. Muy pronto." />
     </div>
   );
 }

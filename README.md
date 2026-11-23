@@ -25,7 +25,8 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | Aula 1 | Roles docente/estudiante, grupos (crear, editar, archivar), invitación por enlace/código/QR, importación de alumnos por CSV con vista previa y reporte de errores, panel del estudiante | ✅ |
 | Mi perfil | Foto, datos de contacto; visibles solo entre docente y sus estudiantes | ✅ |
 | Aula 2 | Asistencia con QR dinámico (código cada 30 s), ubicación opcional con radio, tolerancia, edición manual con historial, justificantes con archivo privado, CSV | ✅ |
-| Aula 3–5 | Actividades y tareas · calificaciones y reportes · notificaciones y calendario | ⏳ |
+| Aula 3 | Actividades (tarea, investigación, interactiva con tus herramientas), equipos, entregas con archivos/enlace, intentos, retraso con descuento, rúbricas, calificación automática de fichas en servidor, seguimiento | ✅ |
+| Aula 4–5 | Calificaciones y reportes · notificaciones y calendario | ⏳ |
 
 ## Desarrollo local
 
