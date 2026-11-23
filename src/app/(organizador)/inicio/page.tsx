@@ -28,7 +28,9 @@ import { getMyAttendance } from "@/lib/aula/attendance-data";
 import { getMyActivities } from "@/lib/aula/activities-data";
 import { getMyGrades } from "@/lib/aula/gradebook-data";
 import { dueBadge, trackStatus } from "@/lib/aula/activities";
-import { countStatuses, formatRate } from "@/lib/aula/attendance";
+import { countStatuses, formatRate, localDate } from "@/lib/aula/attendance";
+import { getCalendarItems } from "@/lib/aula/calendar-data";
+import { AttendanceDonut, UpcomingDates } from "@/components/aula/dashboard-cards";
 import { scheduleSummary } from "@/lib/aula/types";
 import type { EventRow } from "@/lib/types";
 import { cn, formatDate, semesterLabel, STATUS_LABELS } from "@/lib/utils";
@@ -101,6 +103,13 @@ async function TeacherHome({ name }: { name: string }) {
   const active = classes.filter((c) => !c.archived_at);
   const students = active.reduce((n, c) => n + c.activeCount, 0);
   const firstClass = active[0];
+  const today = localDate(new Date());
+  const in14 = localDate(new Date(new Date().getTime() + 14 * 86400000));
+  const [upcoming, { data: recs }] = await Promise.all([
+    getCalendarItems(today, in14),
+    active.length ? supabase.from("attendance_records").select("status").in("class_id", active.map((c) => c.id)) : Promise.resolve({ data: [] }),
+  ]);
+  const attCounts = countStatuses(((recs ?? []) as { status: Parameters<typeof countStatuses>[0][number] }[]).map((r) => r.status));
 
   return (
     <div className="space-y-7">
@@ -123,7 +132,7 @@ async function TeacherHome({ name }: { name: string }) {
           <QuickAction href="/herramientas" icon={Sparkles} label="Crear actividad" tone="coral" />
           <QuickAction href={firstClass ? `/aula/${firstClass.id}/asistencia` : "/aula/nuevo"} icon={QrCode} label="Tomar asistencia" tone="turquoise" />
           <QuickAction href={firstClass ? `/aula/${firstClass.id}/actividades/nueva` : "/aula/nuevo"} icon={ClipboardList} label="Asignar tarea" tone="violet" />
-          <QuickAction href="#" icon={BarChart3} label="Ver reportes" tone="lilac" soon />
+          <QuickAction href="/reportes" icon={BarChart3} label="Ver reportes" tone="lilac" />
         </div>
       </section>
 
@@ -193,6 +202,11 @@ async function TeacherHome({ name }: { name: string }) {
           )}
         </Card>
       </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <UpcomingDates items={upcoming} today={today} />
+        <AttendanceDonut counts={attCounts} title="Asistencia del periodo" href={firstClass ? `/aula/${firstClass.id}/asistencia?v=resumen` : "/aula"} />
+      </div>
     </div>
   );
 }
@@ -233,6 +247,8 @@ async function StudentHome({ name }: { name: string }) {
   const myCounts = countStatuses(att.records.filter((r) => mine.has(r.student_id)).map((r) => r.status));
   const openNow = stillOpen(att.sessions);
   const pendingActs = pendingActivities(acts.activities, acts.submissions, new Set(active.map((c) => c.id)));
+  const today = localDate(new Date());
+  const upcoming = await getCalendarItems(today, localDate(new Date(new Date().getTime() + 14 * 86400000)));
   const classById = new Map(active.map((c) => [c.id, c]));
   return (
     <div className="space-y-7">
@@ -329,6 +345,11 @@ async function StudentHome({ name }: { name: string }) {
             )}
           </Card>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+        <AttendanceDonut counts={myCounts} title="Mi asistencia" href="/asistencia" />
+        <UpcomingDates items={upcoming} today={today} />
       </div>
     </div>
   );

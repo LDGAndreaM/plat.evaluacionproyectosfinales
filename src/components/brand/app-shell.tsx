@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ui/avatar";
+import { NotificationBell, type Reminder } from "@/components/aula/notification-bell";
 import type { Role } from "@/lib/aula/types";
 
 interface NavItem {
@@ -36,6 +37,7 @@ const TEACHER_NAV: NavItem[] = [
   { href: "/eventos", label: "Evaluación de proyectos", icon: Trophy },
   { href: "/herramientas", label: "Herramientas de actividades", icon: Wrench },
   { href: "/reportes", label: "Reportes y resultados", icon: BarChart3 },
+  { href: "/calendario", label: "Calendario académico", icon: CalendarDays },
 ];
 
 const STUDENT_NAV: NavItem[] = [
@@ -45,7 +47,7 @@ const STUDENT_NAV: NavItem[] = [
   { href: "/asistencia", label: "Asistencia", icon: QrCode },
   { href: "/calificaciones", label: "Calificaciones", icon: BarChart3 },
   { href: "/justificantes", label: "Justificantes", icon: FileCheck2 },
-  { href: "#calendario", label: "Calendario", icon: CalendarDays, soon: true },
+  { href: "/calendario", label: "Calendario", icon: CalendarDays },
 ];
 
 function NavLinks({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => void }) {
@@ -108,9 +110,11 @@ export function AppShell({
   fullName,
   email,
   avatarUrl,
+  reminders,
   signOutAction,
   children,
 }: {
+  reminders?: Reminder[];
   role: Role;
   fullName: string;
   email: string;
@@ -177,7 +181,8 @@ export function AppShell({
                 <img src="/brand/evaluaqr-logo.png" alt="EvalúaQR" className="h-8 w-auto" width={1200} height={365} />
               </Link>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <NotificationBell reminders={reminders} />
               <Link
                 href="/perfil"
                 className="flex min-w-0 items-center gap-3 rounded-full py-1 pl-1 pr-1 hover:bg-violet-50 sm:pr-3"

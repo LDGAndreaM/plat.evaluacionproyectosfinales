@@ -224,7 +224,16 @@ En la tabla capturas los rubros manuales (escribe y presiona Enter) y ves por es
 
 **Estudiantes:** en el menú *Calificaciones* ven su calificación actual con el desglose por rubro, su asistencia y sus entregas (si tú lo permites).
 
-> Próxima etapa: notificaciones y calendario.
+## 4f. Notificaciones y calendario
+
+**Notificaciones (campana arriba a la derecha):** el número indica cuántas tienes sin leer; toca una para ir directo a lo que avisa.
+- **Estudiantes:** nueva actividad (las programadas avisan en su fecha), calificación obtenida, devolución para corregir, pase de lista abierto, falta registrada, respuesta a su justificante y **recordatorio cuando una actividad vence en menos de 24 h** y no la han entregado.
+- **Docentes:** nueva entrega, nuevo justificante (o actualizado) y estudiante que se unió a un grupo.
+- *Ver todas* abre la lista completa, donde puedes marcar todo como leído o borrar las leídas. (Por ahora no se envían correos.)
+
+**Calendario** (menú *Calendario académico* / *Calendario*): vista por mes con entregas, publicaciones programadas (solo docente), días de clase según el horario del grupo, pases de lista y eventos de evaluación. Toca los filtros de colores para ocultar o mostrar cada tipo. Con **Agregar a mi calendario (.ics)** descargas las entregas y eventos de los próximos 6 meses para Google Calendar, Outlook o el calendario del celular (con aviso un día antes).
+
+**Inicio:** ahora muestra *Próximas fechas* y la gráfica de asistencia (del periodo para el docente; personal para el estudiante).
 
 ## 5. Preguntas frecuentes
 
