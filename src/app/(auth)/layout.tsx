@@ -1,7 +1,6 @@
-import { CheckCircle2, GraduationCap, QrCode } from "lucide-react";
 import Link from "next/link";
 
-/** Panel ilustrado (pantallas grandes) + tarjeta con el formulario. */
+/** Panel con logo y lema (pantallas grandes) + tarjeta con el formulario. */
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
     <main className="relative flex min-h-screen flex-col overflow-hidden bg-gradient-to-br from-violet-900 via-violet-700 to-lilac lg:flex-row">
@@ -21,27 +20,6 @@ export default function AuthLayout({ children }: LayoutProps<"/">) {
           Conecta. Enseña.
         </p>
         <span className="mt-3 hidden h-1.5 w-40 rounded-full bg-turquoise lg:block" aria-hidden />
-
-        {/* Ilustración: laptop con lista y QR */}
-        <div className="relative mt-12 hidden w-80 lg:block" aria-hidden>
-          <GraduationCap className="absolute -right-6 -top-14 size-24 rotate-12 text-violet-200 drop-shadow-lg" strokeWidth={1.5} />
-          <div className="rounded-2xl bg-violet-950/60 p-3 shadow-2xl ring-1 ring-white/20">
-            <div className="grid grid-cols-[1fr_auto] items-center gap-4 rounded-xl bg-white p-5">
-              <div className="space-y-3">
-                {[0, 1, 2].map((i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <CheckCircle2 className="size-6 shrink-0 text-turquoise-600" />
-                    <span className="h-2.5 flex-1 rounded-full bg-violet-200" />
-                  </div>
-                ))}
-              </div>
-              <QrCode className="size-20 text-violet-800" />
-            </div>
-          </div>
-          <div className="mx-auto h-3 w-[110%] -translate-x-[4.5%] rounded-b-2xl bg-violet-300/80" />
-          <div className="absolute -bottom-6 -left-10 h-6 w-24 rounded-md bg-sun shadow" />
-          <div className="absolute -bottom-12 -left-12 h-6 w-28 rounded-md bg-violet-500 shadow" />
-        </div>
       </section>
 
       <section className="relative flex flex-1 items-start justify-center px-4 pb-10 lg:items-center lg:py-12">
