@@ -216,7 +216,7 @@ export function FieldInput({
       return (
         <div role="radiogroup" aria-labelledby={`${id}-label`} className="space-y-2">
           {(c.options ?? []).map((o) => (
-            <Choice key={o.id} selected={value === o.id} disabled={disabled} onClick={() => onChange(o.id)}>
+            <Choice key={o.id} selected={(Array.isArray(value) ? value[0] : value) === o.id} disabled={disabled} onClick={() => onChange(o.id)}>
               {o.label}
             </Choice>
           ))}
@@ -224,11 +224,11 @@ export function FieldInput({
       );
 
     case "multiple_choice": {
-      const arr = Array.isArray(value) ? (value as string[]) : [];
+      const arr = Array.isArray(value) ? (value as string[]) : typeof value === "string" ? [value] : [];
       const limit = c.maxSelections && c.maxSelections > 0 ? c.maxSelections : Infinity;
       return (
-        <div className="space-y-2">
-          {Number.isFinite(limit) && <p className="text-xs text-slate-500">Elige hasta {limit}.</p>}
+        <div role="group" aria-labelledby={`${id}-label`} className="space-y-2">
+          <p className="text-xs font-medium text-slate-500">{Number.isFinite(limit) ? `Puedes elegir hasta ${limit}.` : "Puedes elegir varias."}</p>
           {(c.options ?? []).map((o) => {
             const on = arr.includes(o.id);
             return (
@@ -274,7 +274,7 @@ export function FieldInput({
         return (
           <div role="radiogroup" className="space-y-2">
             {opts.map((o) => (
-              <Choice key={o.id} selected={value === o.id} disabled={disabled} onClick={() => onChange(o.id)}>
+              <Choice key={o.id} selected={(Array.isArray(value) ? value[0] : value) === o.id} disabled={disabled} onClick={() => onChange(o.id)}>
                 {o.label}
               </Choice>
             ))}

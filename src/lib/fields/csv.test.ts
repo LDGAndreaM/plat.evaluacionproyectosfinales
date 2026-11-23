@@ -6,7 +6,7 @@ describe("CSV de formularios", () => {
   it("la plantilla se importa sin errores y suma 100 %", () => {
     const { fields, issues } = parseFormCsv(templateCsv(), "f");
     expect(issues.filter((i) => i.level === "error")).toEqual([]);
-    expect(fields).toHaveLength(14);
+    expect(fields).toHaveLength(15);
     const scored = fields.filter((f) => f.scored);
     expect(scored.map((f) => f.label)).toEqual(["Creatividad", "Concepto", "Ejecución técnica", "Presentación", "Viabilidad"]);
     expect(scored.reduce((a, f) => a + f.weight, 0)).toBe(100);
@@ -72,5 +72,19 @@ describe("CSV de formularios", () => {
         max: f.config.max,
       }));
     expect(strip(again)).toEqual(strip(original));
+  });
+});
+
+describe("tipos de opción en CSV", () => {
+  it("opcion_unica, seleccion_multiple y nombres anteriores", async () => {
+    const { parseFormCsv } = await import("./csv");
+    const csv =
+      "tipo,pregunta,opciones\n" +
+      "opcion_unica,Una,A|B\n" +
+      "seleccion_multiple,Varias,A|B\n" +
+      "opcion_multiple,Anterior una,A|B\n" +
+      "casillas,Anterior varias,A|B\n";
+    const r = parseFormCsv(csv, "form");
+    expect(r.fields.map((f) => f.type)).toEqual(["single_choice", "multiple_choice", "single_choice", "multiple_choice"]);
   });
 });

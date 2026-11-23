@@ -258,6 +258,24 @@ export function FieldSettings({
         </div>
       )}
 
+      {(field.type === "single_choice" || field.type === "multiple_choice") && (
+        <Toggle
+          checked={field.type === "multiple_choice"}
+          onChange={(multi) =>
+            onChange({
+              type: multi ? "multiple_choice" : "single_choice",
+              config: { ...c, maxSelections: multi ? c.maxSelections : undefined },
+            })
+          }
+          label="Permitir varias respuestas"
+          description={
+            field.type === "multiple_choice"
+              ? "Casillas (☐): se pueden marcar varias. Si puntúa, se suman los puntos de las opciones marcadas."
+              : "Círculos (○): solo se puede elegir una."
+          }
+        />
+      )}
+
       {["single_choice", "multiple_choice", "dropdown"].includes(field.type) && (
         <Field label="Opciones">
           <OptionsEditor options={c.options ?? []} onChange={(options) => setConfig({ options })} showPoints={field.scored} />

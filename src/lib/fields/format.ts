@@ -8,16 +8,17 @@ export function formatAnswer(field: FormField, value: unknown): string {
     case "single_choice":
     case "dropdown":
     case "likert": {
-      const o = c.options?.find((x) => x.id === value);
+      const v = Array.isArray(value) ? value[0] : value;
+      const o = c.options?.find((x) => x.id === v);
       return o ? (field.scored ? `${o.label} (${o.points})` : o.label) : "";
     }
-    case "multiple_choice":
-      return Array.isArray(value)
-        ? (c.options ?? [])
-            .filter((o) => (value as string[]).includes(o.id))
-            .map((o) => o.label)
-            .join(", ")
-        : "";
+    case "multiple_choice": {
+      const arr = Array.isArray(value) ? (value as string[]) : typeof value === "string" ? [value] : [];
+      return (c.options ?? [])
+        .filter((o) => arr.includes(o.id))
+        .map((o) => o.label)
+        .join(", ");
+    }
     case "matrix": {
       const ans = value as Record<string, string>;
       return (c.rows ?? [])

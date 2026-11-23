@@ -80,12 +80,15 @@ export function scoreField(field: FormField, value: unknown): { points: number; 
     case "single_choice":
     case "dropdown":
     case "likert": {
-      const opt = (c.options ?? []).find((o) => o.id === value);
+      // Si la pregunta antes era de selección múltiple, la respuesta puede venir como lista
+      const v = Array.isArray(value) ? value[0] : value;
+      const opt = (c.options ?? []).find((o) => o.id === v);
       const pts = opt ? Number(opt.points) || 0 : 0;
       return { points: pts, normalized: max > 0 ? clamp01(pts / max) : null };
     }
     case "multiple_choice": {
-      const selected = Array.isArray(value) ? value : [];
+      // Si la pregunta antes era de opción única, la respuesta puede venir como texto
+      const selected = Array.isArray(value) ? value : typeof value === "string" ? [value] : [];
       const pts = (c.options ?? [])
         .filter((o) => selected.includes(o.id))
         .reduce((a, o) => a + (Number(o.points) || 0), 0);

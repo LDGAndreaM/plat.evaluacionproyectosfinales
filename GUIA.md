@@ -106,6 +106,7 @@ Si agregas o cambias alguna, ve a **Deployments**, abre el menú **⋯** de la p
 3. **Proyectos**: agrega cada equipo (nombre, integrantes, **semestre**, categoría, stand) o usa **Importar CSV** con la plantilla descargable.
 4. **Formularios → Nuevo formulario**: usa la rúbrica precargada, una plantilla, o **Importar desde Excel (CSV)**.
    - Revisa las ponderaciones (deben sumar 100 %).
+   - Preguntas de opciones: **Opción única (○)** deja elegir solo una; **Selección múltiple (☐)** deja marcar varias (se suman sus puntos). En cualquiera de las dos puedes activar o quitar **Permitir varias respuestas** en el panel de la pregunta. En el CSV usa `opcion_unica` o `seleccion_multiple` (los nombres anteriores `opcion_multiple` = una sola y `casillas` = varias siguen funcionando).
    - Usa **Vista previa** para contestarlo como si fueras jurado.
    - Presiona **Guardar** y luego **Publicar**.
 5. **Ajustes**: PIN opcional, método de cálculo, cuántos lugares premiar y co-organizadores.

@@ -118,3 +118,20 @@ describe("aggregate", () => {
     expect(aggregate([], "average")).toBeNull();
   });
 });
+
+describe("cambio entre opción única y selección múltiple", () => {
+  const opts = [
+    { id: "a", label: "A", points: 2 },
+    { id: "b", label: "B", points: 3 },
+  ];
+  const base = { id: "f", form_id: "x", position: 0, label: "P", help: null, required: false, scored: true, weight: 1, logic: null };
+  it("una respuesta guardada como texto cuenta en selección múltiple", () => {
+    const f = { ...base, type: "multiple_choice", config: { options: opts } } as unknown as FormField;
+    expect(scoreField(f, "b").points).toBe(3);
+    expect(scoreField(f, ["a", "b"]).points).toBe(5);
+  });
+  it("una respuesta guardada como lista cuenta en opción única", () => {
+    const f = { ...base, type: "single_choice", config: { options: opts } } as unknown as FormField;
+    expect(scoreField(f, ["b"]).points).toBe(3);
+  });
+});
