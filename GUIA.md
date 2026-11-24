@@ -234,6 +234,8 @@ En la tabla capturas los rubros manuales (escribe y presiona Enter) y ves por es
 
 **Calendario** (menú *Calendario académico* / *Calendario*): vista por mes con entregas, publicaciones programadas (solo docente), días de clase según el horario del grupo, pases de lista y eventos de evaluación. Toca los filtros de colores para ocultar o mostrar cada tipo. Con **Agregar a mi calendario (.ics)** descargas las entregas y eventos de los próximos 6 meses para Google Calendar, Outlook o el calendario del celular (con aviso un día antes).
 
+**Avisos, co-docentes y más:** pestaña *Avisos* para anuncios al grupo (llegan como notificación); en *Configuración* agregas **co-docentes** por correo y **duplicas el grupo** para el siguiente periodo (con actividades como borrador, sin alumnos). En cada entrega hay **Comentarios** para conversar con el estudiante. La guía con capturas está en **Ayuda** (menú lateral o `/ayuda`).
+
 **Inicio:** ahora muestra *Próximas fechas* y la gráfica de asistencia (del periodo para el docente; personal para el estudiante).
 
 ## 5. Preguntas frecuentes

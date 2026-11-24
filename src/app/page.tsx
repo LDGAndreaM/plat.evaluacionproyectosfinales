@@ -1,4 +1,5 @@
-import { BarChart3, CheckCircle2, ClipboardList, Disc3, Grid3x3, LayoutGrid, Network, NotebookPen, QrCode, Smartphone, Trophy, Workflow } from "lucide-react";
+import { BarChart3, Bell, CalendarDays, CheckCircle2, ClipboardList, Disc3, FileSpreadsheet, Grid3x3, LayoutGrid, Megaphone, Network, NotebookPen, QrCode, ScanLine, Smartphone, Trophy, Users, Workflow } from "lucide-react";
+import Link from "next/link";
 import { AppLogo } from "@/components/brand/logo";
 import { LinkButton } from "@/components/ui/button";
 
@@ -8,6 +9,17 @@ const FEATURES = [
   { icon: QrCode, title: "Un QR por stand", text: "Imprime los códigos y pégalos en cada proyecto.", color: "#008574", tint: "#C2F5EE" },
   { icon: Smartphone, title: "Evaluar desde el celular", text: "El jurado no necesita crear cuenta.", color: "#A855F7", tint: "#F3E8FF" },
   { icon: BarChart3, title: "Ranking en vivo", text: "Podio, desglose por criterio y exportación a Excel y PDF.", color: "#B7791F", tint: "#FFF4D6" },
+];
+
+const AULA = [
+  { icon: Users, title: "Grupos e invitaciones", text: "Importa tu lista en CSV o comparte un código o QR para que se unan.", color: "#6A11CB", tint: "#EDE9FE" },
+  { icon: ScanLine, title: "Asistencia con QR", text: "Código que cambia cada 30 s, ubicación opcional y justificantes.", color: "#008574", tint: "#C2F5EE" },
+  { icon: ClipboardList, title: "Tareas y rúbricas", text: "Entregas con archivos, equipos, fechas límite y comentarios.", color: "#E0466A", tint: "#FFE4EA" },
+  { icon: FileSpreadsheet, title: "Calificaciones y reportes", text: "Ponderaciones, estudiantes en riesgo y reportes en Excel o PDF.", color: "#B7791F", tint: "#FFF4D6" },
+  { icon: Megaphone, title: "Avisos del grupo", text: "Anuncios que llegan como notificación a tus estudiantes.", color: "#A855F7", tint: "#F3E8FF" },
+  { icon: CalendarDays, title: "Calendario", text: "Entregas, clases y pases de lista; descárgalo a tu celular.", color: "#008574", tint: "#C2F5EE" },
+  { icon: Bell, title: "Notificaciones", text: "Entregas nuevas, calificaciones y recordatorios de vencimiento.", color: "#6A11CB", tint: "#EDE9FE" },
+  { icon: Smartphone, title: "Panel del estudiante", text: "Sus grupos, tareas, asistencia y calificaciones desde el celular.", color: "#E0466A", tint: "#FFE4EA" },
 ];
 
 const TOOLS = [
@@ -37,15 +49,20 @@ export default function Home() {
     <main className="flex min-h-screen flex-col bg-gradient-to-b from-lavender via-white to-white">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-4">
         <AppLogo size="md" />
-        <LinkButton href="/login" variant="secondary">
-          Iniciar sesión
-        </LinkButton>
+        <div className="flex items-center gap-2">
+          <Link href="/ayuda" className="hidden rounded-lg px-3 py-2 text-sm font-semibold text-violet-800 hover:bg-white/70 sm:inline-block">
+            Ayuda
+          </Link>
+          <LinkButton href="/login" variant="secondary">
+            Iniciar sesión
+          </LinkButton>
+        </div>
       </header>
 
       <section className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 pb-6 pt-8 sm:pt-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-sm font-semibold text-violet-700 shadow-sm ring-1 ring-violet-200">
-            <span className="size-2 rounded-full bg-turquoise" /> Para eventos académicos
+            <span className="size-2 rounded-full bg-turquoise" /> Para docentes y estudiantes · Gratis
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-extrabold leading-tight text-violet-950 sm:text-5xl">
             Califica proyectos finales <span className="text-violet-600">escaneando un código</span>{" "}
@@ -55,8 +72,8 @@ export default function Home() {
             </span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-slate-600">
-            Registra tu evento, da de alta a los equipos, diseña la rúbrica y deja que el jurado evalúe desde su celular. Al
-            final, el ranking se calcula solo.
+            Registra tu evento, diseña la rúbrica y deja que el jurado evalúe desde su celular: el ranking se calcula solo. Y en el
+            día a día, organiza tu aula: asistencia con QR, tareas, calificaciones y avisos.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <LinkButton href="/registro" size="lg">
@@ -113,6 +130,14 @@ export default function Home() {
           ))}
         </div>
 
+        <h2 className="mt-16 text-2xl font-bold text-violet-950">EvalúaQR Aula: tu clase organizada</h2>
+        <p className="mt-1 text-slate-600">Grupos, asistencia, tareas y calificaciones en un solo lugar, para ti y tus estudiantes.</p>
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {AULA.map((f) => (
+            <Card key={f.title} f={f} />
+          ))}
+        </div>
+
         <h2 className="mt-16 text-2xl font-bold text-violet-950">Además: herramientas gratuitas para tu clase</h2>
         <p className="mt-1 text-slate-600">Con tu misma cuenta. Todo se guarda para que lo vuelvas a usar.</p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -121,6 +146,23 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <footer className="border-t border-violet-100 bg-white/60">
+        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-slate-500">
+          <span>© {new Date().getFullYear()} EvalúaQR</span>
+          <nav aria-label="Enlaces" className="flex flex-wrap gap-x-5 gap-y-1">
+            <Link href="/ayuda" className="hover:text-violet-700">
+              Ayuda
+            </Link>
+            <Link href="/registro" className="hover:text-violet-700">
+              Crear cuenta
+            </Link>
+            <Link href="/unirse" className="hover:text-violet-700">
+              Unirme a un grupo
+            </Link>
+          </nav>
+        </div>
+      </footer>
     </main>
   );
 }

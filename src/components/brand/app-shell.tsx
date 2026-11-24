@@ -15,6 +15,7 @@ import {
   QrCode,
   Trophy,
   UserCog,
+  HelpCircle,
   Wrench,
   X,
   type LucideIcon,
@@ -96,7 +97,13 @@ function SidebarContent({ role, onNavigate }: { role: Role; onNavigate?: () => v
       <nav aria-label="Secciones" className="flex-1 overflow-y-auto px-3">
         <NavLinks items={role === "teacher" ? TEACHER_NAV : STUDENT_NAV} onNavigate={onNavigate} />
         <div className="my-3 border-t border-white/15" />
-        <NavLinks items={[{ href: "/perfil", label: "Mi perfil", icon: UserCog }]} onNavigate={onNavigate} />
+        <NavLinks
+          items={[
+            { href: "/perfil", label: "Mi perfil", icon: UserCog },
+            { href: "/ayuda", label: "Ayuda", icon: HelpCircle },
+          ]}
+          onNavigate={onNavigate}
+        />
       </nav>
       <div className="m-4 rounded-2xl bg-white/10 p-4 text-center text-sm font-semibold leading-snug text-white">
         {role === "teacher" ? "Evalúa, gestiona y da seguimiento a tus grupos." : "Organiza tus clases, tareas y asistencia en un solo lugar."}
