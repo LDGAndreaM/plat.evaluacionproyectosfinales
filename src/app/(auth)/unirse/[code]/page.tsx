@@ -50,8 +50,11 @@ export default async function InvitePage({ params }: PageProps<"/unirse/[code]">
       supabase.from("organizers").select("role").eq("id", claims.sub).maybeSingle(),
       supabase.from("class_students").select("id").eq("class_id", cls.id).eq("user_id", claims.sub).maybeSingle(),
     ]);
-    const { data: owned } = await supabase.from("classes").select("id").eq("id", cls.id).eq("owner_id", claims.sub).maybeSingle();
-    if (owned) state = "owner";
+    const [{ data: owned }, { data: coTeacher }] = await Promise.all([
+      supabase.from("classes").select("id").eq("id", cls.id).eq("owner_id", claims.sub).maybeSingle(),
+      supabase.from("class_teachers").select("class_id").eq("class_id", cls.id).eq("user_id", claims.sub).maybeSingle(),
+    ]);
+    if (owned || coTeacher) state = "owner";
     else if (membership) state = "member";
     else if (me?.role === "teacher") state = "teacher";
     else state = "can-join";
@@ -87,7 +90,7 @@ export default async function InvitePage({ params }: PageProps<"/unirse/[code]">
           </div>
         ) : state === "owner" ? (
           <div className="space-y-4 text-center">
-            <p className="text-slate-600">Eres el docente de este grupo. Comparte este enlace con tus estudiantes.</p>
+            <p className="text-slate-600">Eres docente de este grupo. Comparte este enlace con tus estudiantes.</p>
             <LinkButton href={`/aula/${cls.id}`} size="lg" className="w-full rounded-xl">
               Ir al grupo
             </LinkButton>

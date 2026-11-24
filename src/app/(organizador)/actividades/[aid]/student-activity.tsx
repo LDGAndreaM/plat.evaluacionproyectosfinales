@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Input, Textarea } from "@/components/ui/form";
 import { ResourceList, SubmissionFiles } from "@/components/aula/activity-bits";
+import { SubmissionComments } from "@/components/aula/submission-comments";
 import { WorksheetPlayer } from "@/components/worksheet/player";
 import { SharedTool } from "@/app/h/[code]/shared-tool";
 import {
@@ -198,6 +199,7 @@ export function StudentActivity({
                   </a>
                 )}
                 <SubmissionFiles files={s.files ?? []} getUrl={fileUrl} />
+                <SubmissionComments submissionId={s.id} classId={s.class_id} />
               </li>
             ))}
           </ul>

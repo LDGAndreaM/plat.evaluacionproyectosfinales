@@ -12,8 +12,9 @@ import { countStatuses, formatRate } from "@/lib/aula/attendance";
 import { studentName } from "@/lib/aula/types";
 import { formatDate } from "@/lib/utils";
 
-export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]">) {
+export default async function ClassSummaryPage({ params, searchParams }: PageProps<"/aula/[id]">) {
   const { id } = await params;
+  const duplicated = (await searchParams).duplicado === "1";
   const { cls, students } = await getTeacherClass(id);
   const att = await getClassAttendance(id);
   const attRate = countStatuses(att.records.map((r) => r.status)).rate;
@@ -31,6 +32,15 @@ export default async function ClassSummaryPage({ params }: PageProps<"/aula/[id]
 
   return (
     <div className="space-y-6">
+      {duplicated && (
+        <p className="rounded-2xl bg-turquoise-50 px-4 py-3 text-sm text-slate-700 ring-1 ring-turquoise-100">
+          <strong className="text-slate-900">Grupo duplicado.</strong> Las actividades copiadas están como borrador y sin fechas en{" "}
+          <Link href={`/aula/${id}/actividades`} className="font-semibold text-violet-700 hover:underline">
+            Actividades y tareas
+          </Link>
+          . Invita a tus estudiantes nuevos con el código de abajo.
+        </p>
+      )}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard icon={Users} value={active.length} label="Estudiantes activos" tone="violet" />
         <StatCard icon={Hourglass} value={invited.length} label="Invitaciones pendientes" tone="sun" />

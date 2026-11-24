@@ -6,9 +6,10 @@ import { ClassBadge } from "@/components/aula/stat-card";
 import { requireUser } from "@/lib/auth";
 import { getStudentClasses, getTeacherClass } from "@/lib/aula/data";
 import { scheduleSummary } from "@/lib/aula/types";
-import { semesterLabel } from "@/lib/utils";
+import { cn, formatDate, semesterLabel } from "@/lib/utils";
 import { ClassTabs } from "./tabs";
-import { ClipboardList, QrCode, BarChart3, Phone, AtSign } from "lucide-react";
+import { ClipboardList, QrCode, BarChart3, Phone, AtSign, Megaphone } from "lucide-react";
+import { sortAnnouncements, type Announcement } from "@/lib/aula/announcements";
 import { Avatar } from "@/components/ui/avatar";
 import { getProfile } from "@/lib/profile";
 import { getMyAttendance } from "@/lib/aula/attendance-data";
@@ -23,7 +24,7 @@ export default async function ClassLayout({ children, params }: LayoutProps<"/au
   const { role } = await requireUser();
   if (role === "student") return <StudentClassView id={id} />;
 
-  const { cls } = await getTeacherClass(id);
+  const { cls, isOwner } = await getTeacherClass(id);
   return (
     <div className="space-y-5">
       <Link href="/aula" className="no-print inline-flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900">
@@ -39,6 +40,7 @@ export default async function ClassLayout({ children, params }: LayoutProps<"/au
                 <Archive className="size-3" /> Archivado
               </Badge>
             )}
+            {!isOwner && <Badge tone="violet">Co-docente</Badge>}
           </div>
           <p className="mt-0.5 text-slate-600">
             {[cls.subject, semesterLabel(cls.grade), cls.period].filter(Boolean).join(" · ") || "Sin materia"}
@@ -66,6 +68,8 @@ async function StudentClassView({ id }: { id: string }) {
   const att = await getMyAttendance();
   const myRate = countStatuses(att.records.filter((r) => r.student_id === att.studentIds.get(c.id)).map((r) => r.status)).rate;
   const acts = await getMyActivities();
+  const { data: annData } = await supabase.from("class_announcements").select("*").eq("class_id", c.id).order("created_at", { ascending: false }).limit(20);
+  const announcements = sortAnnouncements((annData ?? []) as Announcement[]);
   const myGrade = (await getMyGrades()).find((x) => x.cls.id === c.id);
   const now = new Date().getTime();
   const classActs = acts.activities
@@ -124,6 +128,26 @@ async function StudentClassView({ id }: { id: string }) {
       </Card>
       {c.archived && (
         <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">Este grupo pertenece a un periodo que ya terminó.</p>
+      )}
+      {announcements.length > 0 && (
+        <Card className="rounded-2xl">
+          <div className="flex items-center gap-2 px-5 pb-2 pt-5">
+            <Megaphone className="size-5 text-violet-600" />
+            <h2 className="text-lg font-extrabold text-violet-950">Avisos</h2>
+          </div>
+          <ul className="space-y-2 px-5 pb-5">
+            {announcements.slice(0, 5).map((a) => (
+              <li key={a.id} className={cn("rounded-xl p-3", a.pinned ? "bg-[#fffbeb] ring-1 ring-sun/60" : "bg-slate-50")}>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                  {a.pinned && <span className="font-bold text-[#8a5a00]">Fijado</span>}
+                  {formatDate(a.created_at)}
+                </div>
+                <div className="font-bold text-slate-900">{a.title}</div>
+                {a.body && <p className="mt-0.5 whitespace-pre-line text-sm text-slate-700">{a.body}</p>}
+              </li>
+            ))}
+          </ul>
+        </Card>
       )}
       <Link href="/asistencia" className="block">
         <Card className="flex items-center gap-4 rounded-2xl p-5 hover:shadow-md">

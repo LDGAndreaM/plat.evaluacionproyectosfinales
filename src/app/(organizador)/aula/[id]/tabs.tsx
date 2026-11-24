@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, ClipboardList, FileSpreadsheet, LayoutDashboard, QrCode, Settings, Users } from "lucide-react";
+import { BarChart3, ClipboardList, FileSpreadsheet, LayoutDashboard, Megaphone, QrCode, Settings, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ClassTabs({ id }: { id: string }) {
@@ -10,6 +10,7 @@ export function ClassTabs({ id }: { id: string }) {
   const base = `/aula/${id}`;
   const tabs = [
     { href: base, label: "Resumen", icon: LayoutDashboard },
+    { href: `${base}/avisos`, label: "Avisos", icon: Megaphone },
     { href: `${base}/estudiantes`, label: "Estudiantes", icon: Users },
     { href: `${base}/asistencia`, label: "Asistencia", icon: QrCode },
     { href: `${base}/actividades`, label: "Actividades y tareas", icon: ClipboardList },

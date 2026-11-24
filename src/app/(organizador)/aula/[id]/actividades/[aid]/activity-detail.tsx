@@ -26,6 +26,7 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Input, Select, Textarea } from "@/components/ui/form";
 import { Modal } from "@/components/ui/modal";
 import { ResourceList, SubmissionFiles } from "@/components/aula/activity-bits";
+import { SubmissionComments } from "@/components/aula/submission-comments";
 import { WorksheetPlayer } from "@/components/worksheet/player";
 import {
   finalScore,
@@ -432,6 +433,8 @@ function GradePanel({
           </div>
         )}
       </div>
+
+      <SubmissionComments key={sub.id} submissionId={sub.id} classId={classId} />
 
       {idx === 0 ? (
         <div className="space-y-4">

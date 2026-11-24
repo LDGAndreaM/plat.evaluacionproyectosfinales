@@ -1,4 +1,4 @@
-import { ClipboardList, FileCheck2, QrCode, Star, UserPlus, UserX, type LucideIcon } from "lucide-react";
+import { ClipboardList, FileCheck2, Megaphone, MessageSquareText, QrCode, Star, UserPlus, UserX, type LucideIcon } from "lucide-react";
 
 export interface Notice {
   id: number;
@@ -25,6 +25,8 @@ export const NOTICE_ICONS: Record<string, { icon: LucideIcon; cls: string }> = {
   attendance: { icon: QrCode, cls: "bg-turquoise-50 text-turquoise-700" },
   absence: { icon: UserX, cls: "bg-red-100 text-red-700" },
   joined: { icon: UserPlus, cls: "bg-emerald-100 text-emerald-800" },
+  announcement: { icon: Megaphone, cls: "bg-[#fff8e6] text-[#9a6400]" },
+  comment: { icon: MessageSquareText, cls: "bg-lavender text-violet-700" },
 };
 
 export function timeAgo(iso: string, now: number) {

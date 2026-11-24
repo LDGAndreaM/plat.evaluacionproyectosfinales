@@ -79,6 +79,7 @@ export default async function AulaPage({ searchParams }: PageProps<"/aula">) {
                     <ClassBadge color={c.color} name={c.name} />
                     <div className="min-w-0 flex-1">
                       <h2 className="font-bold leading-tight text-slate-900 group-hover:text-violet-700">{c.name}</h2>
+                      {c.isCoTeacher && <span className="mt-1 inline-block rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-800">Co-docente</span>}
                       <p className="mt-0.5 truncate text-sm text-slate-500">
                         {[c.subject, semesterLabel(c.grade)].filter(Boolean).join(" · ") || "Sin materia"}
                       </p>

@@ -7,15 +7,25 @@ import type { ClassRow, ClassStudent, MyClass } from "./types";
 export interface ClassWithStats extends ClassRow {
   activeCount: number;
   invitedCount: number;
+  /** true si el usuario es co-docente (no titular). */
+  isCoTeacher: boolean;
 }
 
-/** Grupos del docente con conteo de estudiantes. */
+/** Ids de los grupos donde el usuario es co-docente. */
+const coTaughtIds = cache(async () => {
+  const { supabase, userId } = await requireUser();
+  const { data } = await supabase.from("class_teachers").select("class_id").eq("user_id", userId);
+  return (data ?? []).map((r) => r.class_id as string);
+});
+
+/** Grupos del docente (titular o co-docente) con conteo de estudiantes. */
 export const getTeacherClasses = cache(async (): Promise<ClassWithStats[]> => {
   const { supabase, userId } = await requireUser();
-  const [{ data: classes }, { data: students }] = await Promise.all([
-    supabase.from("classes").select("*").eq("owner_id", userId).order("created_at", { ascending: false }),
-    supabase.from("class_students").select("class_id, status, classes!inner(owner_id)").eq("classes.owner_id", userId),
-  ]);
+  const co = await coTaughtIds();
+  const filter = co.length ? `owner_id.eq.${userId},id.in.(${co.join(",")})` : `owner_id.eq.${userId}`;
+  const { data: classes } = await supabase.from("classes").select("*").or(filter).order("created_at", { ascending: false });
+  const ids = (classes ?? []).map((c) => c.id);
+  const { data: students } = ids.length ? await supabase.from("class_students").select("class_id, status").in("class_id", ids) : { data: [] };
   const counts = new Map<string, { a: number; i: number }>();
   for (const s of students ?? []) {
     const c = counts.get(s.class_id) ?? { a: 0, i: 0 };
@@ -27,19 +37,21 @@ export const getTeacherClasses = cache(async (): Promise<ClassWithStats[]> => {
     ...c,
     activeCount: counts.get(c.id)?.a ?? 0,
     invitedCount: counts.get(c.id)?.i ?? 0,
+    isCoTeacher: c.owner_id !== userId,
   }));
 });
 
-/** Grupo + lista de estudiantes (solo su docente). */
+/** Grupo + lista de estudiantes (solo para sus docentes: titular o co-docente). */
 export const getTeacherClass = cache(async (id: string) => {
   const { supabase, userId } = await requireUser();
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
+  const co = await coTaughtIds();
   const [{ data: cls }, { data: students }] = await Promise.all([
-    supabase.from("classes").select("*").eq("id", id).eq("owner_id", userId).maybeSingle(),
+    supabase.from("classes").select("*").eq("id", id).maybeSingle(),
     supabase.from("class_students").select("*").eq("class_id", id),
   ]);
-  if (!cls) notFound();
-  return { cls: cls as ClassRow, students: (students ?? []) as ClassStudent[] };
+  if (!cls || (cls.owner_id !== userId && !co.includes(id))) notFound();
+  return { cls: cls as ClassRow, students: (students ?? []) as ClassStudent[], isOwner: cls.owner_id === userId };
 });
 
 /** Grupos del estudiante (con nombre del docente). */
