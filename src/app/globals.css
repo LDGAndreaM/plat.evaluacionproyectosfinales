@@ -86,3 +86,16 @@ dialog::backdrop {
     break-before: page;
   }
 }
+
+/* Documentos legales */
+.legal h1 { font-size: 1.875rem; line-height: 1.2; font-weight: 800; color: #24054a; margin-bottom: 0.5rem; }
+.legal h2 { font-size: 1.2rem; font-weight: 800; color: #3a0a71; margin-top: 1.75rem; margin-bottom: 0.5rem; }
+.legal p, .legal li { color: #334155; line-height: 1.65; }
+.legal p + p { margin-top: 0.6rem; }
+.legal ul { list-style: disc; padding-left: 1.25rem; margin: 0.5rem 0; }
+.legal li + li { margin-top: 0.25rem; }
+.legal table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; font-size: 0.9rem; }
+.legal th, .legal td { border: 1px solid #e2e8f0; padding: 0.5rem 0.6rem; text-align: left; vertical-align: top; }
+.legal th { background: #ede9fe; color: #3a0a71; }
+.legal a { color: #5a0eae; text-decoration: underline; }
+.legal .note { background: #fff8e6; color: #7a5000; border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 0.9rem; }

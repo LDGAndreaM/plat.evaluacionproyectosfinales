@@ -28,6 +28,7 @@ Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Postgres, A
 | Aula 3 | Actividades (tarea, investigación, interactiva con tus herramientas), equipos, entregas con archivos/enlace, intentos, retraso con descuento, rúbricas, calificación automática de fichas en servidor, seguimiento | ✅ |
 | Aula 4 | Calificaciones con rubros ponderados (actividades, asistencia, captura manual), escala 0–10/0–100, indicadores de asistencia y entregas, vista del estudiante, 9 reportes en Excel/CSV/PDF | ✅ |
 | Extras | Avisos del grupo, co-docentes, duplicar grupo para otro periodo, comentarios en entregas, sección Ayuda con capturas | ✅ |
+| Privacidad | Aviso de privacidad, términos y política de cookies; consentimiento al registrarse (y consentimiento expreso para justificantes con datos de salud); eliminar mi cuenta con sus archivos | ✅ |
 | Aula 5 | Notificaciones en la plataforma (campana, recordatorios de vencimiento), calendario mensual con exportación .ics, paneles de inicio con próximas fechas y asistencia | ✅ |
 
 ## Desarrollo local

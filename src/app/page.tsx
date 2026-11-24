@@ -1,5 +1,6 @@
 import { BarChart3, Bell, CalendarDays, CheckCircle2, ClipboardList, Disc3, FileSpreadsheet, Grid3x3, LayoutGrid, Megaphone, Network, NotebookPen, QrCode, ScanLine, Smartphone, Trophy, Users, Workflow } from "lucide-react";
 import Link from "next/link";
+import { LegalLinks } from "@/components/brand/legal-links";
 import { AppLogo } from "@/components/brand/logo";
 import { LinkButton } from "@/components/ui/button";
 
@@ -44,7 +45,8 @@ function Card({ f }: { f: (typeof FEATURES)[number] }) {
   );
 }
 
-export default function Home() {
+export default async function Home({ searchParams }: PageProps<"/">) {
+  const deleted = (await searchParams).cuenta === "eliminada";
   return (
     <main className="flex min-h-screen flex-col bg-gradient-to-b from-lavender via-white to-white">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-4">
@@ -59,6 +61,11 @@ export default function Home() {
         </div>
       </header>
 
+      {deleted && (
+        <p role="status" className="mx-auto mt-2 w-[calc(100%-2rem)] max-w-6xl rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+          Tu cuenta y tus datos se eliminaron. Gracias por usar EvalúaQR.
+        </p>
+      )}
       <section className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-10 px-4 pb-6 pt-8 sm:pt-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <div>
           <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-sm font-semibold text-violet-700 shadow-sm ring-1 ring-violet-200">
@@ -160,6 +167,7 @@ export default function Home() {
             <Link href="/unirse" className="hover:text-violet-700">
               Unirme a un grupo
             </Link>
+            <LegalLinks />
           </nav>
         </div>
       </footer>

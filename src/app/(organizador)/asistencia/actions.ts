@@ -65,6 +65,7 @@ function validate(f: ReturnType<typeof excuseFields>, userId: string, classId: s
 
 export async function submitExcuse(_prev: ActionResult, fd: FormData): Promise<ActionResult> {
   const { supabase, userId } = await requireUser();
+  if (fd.get("sensitive_consent") !== "on") return { ok: false, error: "Marca la autorización para enviar el justificante." };
   const classId = String(fd.get("class_id") ?? "");
   const f = excuseFields(fd);
   const err = validate(f, userId, classId);
@@ -85,6 +86,7 @@ export async function submitExcuse(_prev: ActionResult, fd: FormData): Promise<A
 
 export async function resubmitExcuse(_prev: ActionResult, fd: FormData): Promise<ActionResult> {
   const { supabase, userId } = await requireUser();
+  if (fd.get("sensitive_consent") !== "on") return { ok: false, error: "Marca la autorización para enviar el justificante." };
   const id = String(fd.get("id") ?? "");
   const { data: current } = await supabase.from("excuses").select("class_id, file_path").eq("id", id).maybeSingle();
   if (!current) return { ok: false, error: "No se encontró el justificante." };

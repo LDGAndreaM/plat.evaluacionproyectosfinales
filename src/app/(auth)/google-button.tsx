@@ -36,7 +36,12 @@ export function GoogleButton({
   next,
   label = "Continuar con Google",
   role,
+  acceptPrivacy,
+  disabled,
 }: {
+  /** Versión del aviso aceptado en la casilla (al registrarse). */
+  acceptPrivacy?: string;
+  disabled?: boolean;
   next?: string;
   label?: string;
   /** Al registrarse: rol elegido ("teacher" | "student"). Solo se aplica si la cuenta aún no tiene uno. */
@@ -67,6 +72,7 @@ export function GoogleButton({
       const { error: err } = await supabase.auth.signInWithIdToken({ provider: "google", token: idToken });
       if (err) throw err;
       if (role) await supabase.rpc("set_my_role", { new_role: role });
+      if (acceptPrivacy) await supabase.rpc("accept_privacy", { version: acceptPrivacy });
       const safeNext = next && next.startsWith("/") && !next.startsWith("//") ? next : "/inicio";
       window.location.assign(safeNext);
     } catch (e) {
@@ -81,7 +87,7 @@ export function GoogleButton({
       <button
         type="button"
         onClick={go}
-        disabled={busy}
+        disabled={busy || disabled}
         className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 disabled:opacity-60"
       >
         {busy ? <Loader2 className="size-5 animate-spin" /> : <GoogleLogo />}

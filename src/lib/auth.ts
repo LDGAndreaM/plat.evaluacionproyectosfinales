@@ -14,7 +14,7 @@ export const requireUser = cache(async () => {
   const claims = data?.claims;
   if (!claims || claims.is_anonymous) redirect("/login");
   const load = () =>
-    supabase.from("organizers").select("id, full_name, institution, email, role").eq("id", claims.sub).maybeSingle();
+    supabase.from("organizers").select("id, full_name, institution, email, role, privacy_accepted_at").eq("id", claims.sub).maybeSingle();
   let { data: profile } = await load();
   if (!profile?.role) {
     // Si lo invitaron con su correo, queda como estudiante automáticamente
@@ -22,7 +22,7 @@ export const requireUser = cache(async () => {
     if (claimed) ({ data: profile } = await load());
   }
   const role = (profile?.role ?? null) as Role | null;
-  if (!role) redirect("/bienvenida");
+  if (!role || !profile?.privacy_accepted_at) redirect("/bienvenida");
   return {
     supabase,
     userId: claims.sub as string,

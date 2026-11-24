@@ -9,6 +9,8 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { cn } from "@/lib/utils";
 import { requestPasswordReset, signIn, signUp, updatePassword } from "./actions";
 import { GoogleButton, OrDivider } from "./google-button";
+import { PrivacyConsent } from "@/components/brand/privacy-consent";
+import { PRIVACY_VERSION } from "@/lib/legal";
 
 /** Botón principal de las pantallas de acceso (turquesa, como en la identidad). */
 export const AUTH_BUTTON = "w-full rounded-xl bg-turquoise-700 text-base font-semibold hover:bg-[#006b5d] disabled:bg-turquoise-600/60";
@@ -94,17 +96,20 @@ export function RolePicker({ value, onChange }: { value: Role | null; onChange: 
 export function SignUpForm({ next, initialRole }: { next?: string; initialRole?: Role }) {
   const [state, action] = useActionState(signUp, null);
   const [role, setRole] = useState<Role | null>(initialRole ?? null);
+  const [accepted, setAccepted] = useState(false);
   if (state?.ok) return <FormMessage state={state} />;
   return (
     <div className="space-y-5">
       <RolePicker value={role} onChange={setRole} />
       {role ? (
         <>
-          <GoogleButton label="Registrarme con Google" role={role} next={next} />
+          <PrivacyConsent checked={accepted} onChange={setAccepted} name="privacy_google" />
+          <GoogleButton label="Registrarme con Google" role={role} next={next} acceptPrivacy={PRIVACY_VERSION} disabled={!accepted} />
           <OrDivider text="o con tu correo" />
           <form action={action} className="space-y-4">
             <input type="hidden" name="role" value={role} />
             <input type="hidden" name="next" value={next ?? ""} />
+            <input type="hidden" name="privacy" value={accepted ? "on" : ""} />
             <Field label="Nombre completo" htmlFor="full_name" required>
               <IconInput
                 icon={<User className="size-5" />}
@@ -135,7 +140,8 @@ export function SignUpForm({ next, initialRole }: { next?: string; initialRole?:
               <PasswordInput icon={<Lock className="size-5" />} id="confirm" name="confirm" autoComplete="new-password" minLength={8} required />
             </Field>
             <FormMessage state={state} />
-            <SubmitButton className={AUTH_BUTTON} size="lg" pendingText="Creando cuenta…">
+            {!accepted && <p className="text-center text-xs text-slate-500">Acepta el aviso de privacidad (arriba) para crear tu cuenta.</p>}
+            <SubmitButton className={AUTH_BUTTON} size="lg" pendingText="Creando cuenta…" disabled={!accepted}>
               Crear cuenta
             </SubmitButton>
           </form>

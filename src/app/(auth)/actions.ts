@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/lib/types";
 import { siteUrl } from "@/lib/utils";
+import { PRIVACY_VERSION } from "@/lib/legal";
 
 async function origin() {
   const h = await headers();
@@ -53,6 +54,7 @@ export async function signUp(_prev: ActionResult, formData: FormData): Promise<A
   const next = safeNext(formData.get("next"));
 
   if (role !== "teacher" && role !== "student") return { ok: false, error: "Elige si eres docente o estudiante." };
+  if (formData.get("privacy") !== "on") return { ok: false, error: "Debes aceptar el Aviso de privacidad y los Términos para crear tu cuenta." };
   if (!fullName) return { ok: false, error: "Escribe tu nombre." };
   if (!email) return { ok: false, error: "Escribe tu correo." };
   if (password.length < 8) return { ok: false, error: "La contraseña debe tener al menos 8 caracteres." };
@@ -63,7 +65,7 @@ export async function signUp(_prev: ActionResult, formData: FormData): Promise<A
     email,
     password,
     options: {
-      data: { full_name: fullName, institution, role },
+      data: { full_name: fullName, institution, role, privacy_version: PRIVACY_VERSION },
       emailRedirectTo: `${await origin()}/auth/callback?next=${encodeURIComponent(next)}`,
     },
   });

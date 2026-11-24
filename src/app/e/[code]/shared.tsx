@@ -198,7 +198,11 @@ export function JoinForm({ projectName }: { projectName?: string }) {
         {busy && <Loader2 className="size-5 animate-spin" />} Comenzar a evaluar
       </button>
       <p className="text-center text-xs text-slate-500">
-        No necesitas crear cuenta. Tu nombre se guarda en este dispositivo para no pedírtelo en cada proyecto.
+        No necesitas crear cuenta. Tu nombre se guarda en este dispositivo para no pedírtelo en cada proyecto. Al continuar aceptas el{" "}
+        <a href="/privacidad" target="_blank" className="underline">
+          Aviso de privacidad
+        </a>
+        .
       </p>
     </form>
   );

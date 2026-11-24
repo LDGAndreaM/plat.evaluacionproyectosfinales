@@ -238,6 +238,14 @@ En la tabla capturas los rubros manuales (escribe y presiona Enter) y ves por es
 
 **Inicio:** ahora muestra *Próximas fechas* y la gráfica de asistencia (del periodo para el docente; personal para el estudiante).
 
+## 4g. Privacidad y datos personales
+
+- **Aviso de privacidad, Términos y Cookies** están en `/privacidad`, `/terminos` y `/cookies`, enlazados desde la página principal, el inicio de sesión y Mi perfil.
+- **Antes de publicar**, completa en `src/lib/legal.ts` el nombre del responsable, el correo de contacto y el domicilio (`LEGAL.owner`, `LEGAL.contactEmail`, `LEGAL.address`). Mientras estén vacíos, los textos muestran un texto genérico. Si cambias el aviso, sube `PRIVACY_VERSION` y `LEGAL_UPDATED`.
+- Al **crear cuenta** (correo o Google) hay que aceptar el aviso. Las cuentas que ya existían lo aceptan una sola vez en la pantalla de bienvenida.
+- Al subir un **justificante** el estudiante da consentimiento expreso, porque puede contener datos de salud.
+- **Eliminar mi cuenta** (Mi perfil → Privacidad): se escribe ELIMINAR para confirmar. Se borran la cuenta y sus archivos; si es docente, también sus grupos, eventos y herramientas.
+
 ## 5. Preguntas frecuentes
 
 **Un evaluador cambió de celular o borró su navegador.** Al volver a escanear se le pide su nombre otra vez y aparece como evaluador nuevo. Sus evaluaciones anteriores se conservan con su nombre original.

@@ -108,6 +108,13 @@ export function StudentWorksheet({ code, data }: { code: string; data: Worksheet
             <span className="font-medium text-slate-800">Grupo (opcional)</span>
             <Input value={group} onChange={(e) => setGroup(e.target.value)} maxLength={80} placeholder="Ej. 3°A" />
           </label>
+          <p className="text-xs text-slate-500 sm:col-span-2">
+            Tu nombre y respuestas se envían a tu docente. Consulta el{" "}
+            <a href="/privacidad" target="_blank" className="underline">
+              Aviso de privacidad
+            </a>
+            .
+          </p>
         </div>
       )}
 

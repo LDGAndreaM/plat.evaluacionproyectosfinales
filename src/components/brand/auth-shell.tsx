@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { FeaturesPanel } from "./auth-panels";
+import { LegalLinks } from "./legal-links";
 
 /** Fondo de las pantallas de acceso: panel informativo (pantallas grandes) + tarjeta con el formulario. */
 export function AuthShell({ children }: { children: ReactNode }) {
@@ -24,7 +25,12 @@ export function AuthShell({ children }: { children: ReactNode }) {
       </section>
 
       <section className="relative flex flex-1 items-start justify-center px-4 pb-10 lg:items-center lg:py-12">
-        <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl sm:p-9">{children}</div>
+        <div className="w-full max-w-md">
+          <div className="rounded-3xl bg-white p-6 shadow-2xl sm:p-9">{children}</div>
+          <nav aria-label="Documentos legales" className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-violet-100">
+            <LegalLinks />
+          </nav>
+        </div>
       </section>
     </main>
   );

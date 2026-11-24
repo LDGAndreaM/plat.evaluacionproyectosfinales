@@ -59,6 +59,23 @@ function FilePicker({ classId, userId, current }: { classId: string; userId: str
   );
 }
 
+/** Consentimiento expreso: el comprobante puede contener datos de salud. */
+function SensitiveConsent() {
+  return (
+    <label className="flex items-start gap-3 rounded-xl bg-lavender/60 p-3 text-xs text-slate-700">
+      <input type="checkbox" name="sensitive_consent" required className="mt-0.5 size-4 shrink-0 accent-violet-600" />
+      <span>
+        Autorizo que mi docente vea este justificante y su comprobante, que puede contener <strong>datos de salud</strong>, solo para
+        justificar mi falta, como indica el{" "}
+        <a href="/privacidad" target="_blank" className="font-semibold text-violet-700 underline">
+          Aviso de privacidad
+        </a>
+        .
+      </span>
+    </label>
+  );
+}
+
 export function ExcuseForm({
   userId,
   classes,
@@ -103,6 +120,7 @@ export function ExcuseForm({
         <Textarea id="ex-reason" name="reason" required minLength={3} maxLength={1500} placeholder="Explica brevemente por qué faltaste." />
       </Field>
       <FilePicker key={classId} classId={classId} userId={userId} />
+      <SensitiveConsent />
       <FormMessage state={state} />
       <SubmitButton size="lg" className="rounded-xl" pendingText="Enviando…">
         Enviar justificante
@@ -154,6 +172,7 @@ export function MyExcuseCard({ e, className, userId }: { e: Excuse; className: s
             <Textarea id={`r-${e.id}`} name="reason" defaultValue={e.reason} maxLength={1500} required />
           </Field>
           <FilePicker classId={e.class_id} userId={userId} current={e.file_name} />
+          <SensitiveConsent />
           <FormMessage state={state} />
           <div className="flex gap-2">
             <SubmitButton size="sm">Enviar de nuevo</SubmitButton>
