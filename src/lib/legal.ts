@@ -1,6 +1,5 @@
 /**
  * Datos legales de EvalúaQR.
- * ⚠️ PENDIENTE: completar el domicilio (ciudad y estado).
  * Si cambias el contenido del aviso de privacidad, sube PRIVACY_VERSION para que todos lo acepten de nuevo.
  */
 export const LEGAL = {
@@ -9,7 +8,7 @@ export const LEGAL = {
   /** Correo para dudas y derechos ARCO. */
   contactEmail: "andrea.martinez218685@potros.itson.edu.mx",
   /** Domicilio (ciudad y estado basta para empezar). */
-  address: "",
+  address: "Guaymas, Sonora",
   siteName: "EvalúaQR",
 };
 
