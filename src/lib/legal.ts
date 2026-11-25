@@ -13,6 +13,11 @@ export const LEGAL = {
   siteName: "EvalúaQR",
 };
 
+/** Aclaración de independencia: la herramienta no es oficial de ninguna institución. */
+export const INDEPENDENCE_NOTICE =
+  "EvalúaQR es una herramienta independiente creada por un docente para facilitar su trabajo y mejorar los procesos de evaluación y calificación de los trabajos. No es una herramienta oficial: no está autorizada, administrada ni respaldada por el Instituto Tecnológico de Sonora (ITSON) ni por ninguna otra institución educativa.";
+export const INDEPENDENCE_SHORT = "Herramienta independiente creada por un docente. No es oficial ni está autorizada o administrada por ITSON.";
+
 export const PRIVACY_VERSION = "2026-11-25";
 export const LEGAL_UPDATED = "25 de noviembre de 2026";
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LEGAL, contactLabel, ownerLabel } from "@/lib/legal";
+import { INDEPENDENCE_NOTICE, LEGAL, contactLabel, ownerLabel } from "@/lib/legal";
 
 export const metadata: Metadata = { title: "Aviso de privacidad" };
 
@@ -20,6 +20,11 @@ export default function PrivacyPage() {
         El responsable del tratamiento de tus datos es <strong>{ownerLabel()}</strong>
         {LEGAL.address ? `, con domicilio en ${LEGAL.address}` : ""}. Para cualquier asunto relacionado con tus datos puedes escribir a{" "}
         {email ? <a href={`mailto:${email}`}>{email}</a> : contactLabel()}.
+      </p>
+      <p>
+        {INDEPENDENCE_NOTICE} El Instituto Tecnológico de Sonora no es responsable del tratamiento de los datos personales que se registran en{" "}
+        {LEGAL.siteName}, no tiene acceso a ellos y no interviene en su administración. Los registros oficiales de calificaciones y asistencia
+        son los que cada docente captura en los sistemas de su institución.
       </p>
 
       <h2>2. Datos que tratamos</h2>

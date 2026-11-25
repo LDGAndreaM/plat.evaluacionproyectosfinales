@@ -1,6 +1,7 @@
 import { BarChart3, Bell, CalendarDays, CheckCircle2, ClipboardList, Disc3, FileSpreadsheet, Grid3x3, LayoutGrid, Megaphone, Network, NotebookPen, QrCode, ScanLine, Smartphone, Trophy, Users, Workflow } from "lucide-react";
 import Link from "next/link";
 import { LegalLinks } from "@/components/brand/legal-links";
+import { INDEPENDENCE_SHORT } from "@/lib/legal";
 import { AppLogo } from "@/components/brand/logo";
 import { LinkButton } from "@/components/ui/button";
 
@@ -156,7 +157,10 @@ export default async function Home({ searchParams }: PageProps<"/">) {
 
       <footer className="border-t border-violet-100 bg-white/60">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-slate-500">
-          <span>© {new Date().getFullYear()} EvalúaQR</span>
+          <div className="max-w-md space-y-1">
+            <span>© {new Date().getFullYear()} EvalúaQR</span>
+            <p className="text-xs leading-relaxed text-slate-500">{INDEPENDENCE_SHORT}</p>
+          </div>
           <nav aria-label="Enlaces" className="flex flex-wrap gap-x-5 gap-y-1">
             <Link href="/ayuda" className="hover:text-violet-700">
               Ayuda

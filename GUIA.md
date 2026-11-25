@@ -240,6 +240,7 @@ En la tabla capturas los rubros manuales (escribe y presiona Enter) y ves por es
 
 ## 4g. Privacidad y datos personales
 
+- **Herramienta no oficial:** la página principal, el inicio de sesión y los documentos legales aclaran que EvalúaQR la creó un docente para facilitar su trabajo, y que no está autorizada, administrada ni respaldada por ITSON. El texto está en `src/lib/legal.ts` (`INDEPENDENCE_NOTICE` y `INDEPENDENCE_SHORT`).
 - **Aviso de privacidad, Términos y Cookies** están en `/privacidad`, `/terminos` y `/cookies`, enlazados desde la página principal, el inicio de sesión y Mi perfil.
 - **Antes de publicar**, completa en `src/lib/legal.ts` el nombre del responsable, el correo de contacto y el domicilio (`LEGAL.owner`, `LEGAL.contactEmail`, `LEGAL.address`). Mientras estén vacíos, los textos muestran un texto genérico. Si cambias el aviso, sube `PRIVACY_VERSION` y `LEGAL_UPDATED`.
 - Al **crear cuenta** (correo o Google) hay que aceptar el aviso. Las cuentas que ya existían lo aceptan una sola vez en la pantalla de bienvenida.

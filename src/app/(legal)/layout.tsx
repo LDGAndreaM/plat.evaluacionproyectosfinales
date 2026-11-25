@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { AppLogo } from "@/components/brand/logo";
 import { LegalLinks } from "@/components/brand/legal-links";
-import { LEGAL_UPDATED } from "@/lib/legal";
+import { Info } from "lucide-react";
+import { INDEPENDENCE_NOTICE, LEGAL_UPDATED } from "@/lib/legal";
 
 export default function LegalLayout({ children }: LayoutProps<"/">) {
   return (
@@ -18,6 +19,12 @@ export default function LegalLayout({ children }: LayoutProps<"/">) {
         <nav className="mb-6 flex flex-wrap gap-2 text-sm" aria-label="Documentos legales">
           <LegalLinks pills />
         </nav>
+        <p role="note" className="mb-6 flex items-start gap-3 rounded-2xl bg-amber-50 p-4 text-sm leading-relaxed text-amber-950 ring-1 ring-amber-200">
+          <Info className="mt-0.5 size-5 shrink-0 text-amber-600" />
+          <span>
+            <strong>Aviso importante.</strong> {INDEPENDENCE_NOTICE}
+          </span>
+        </p>
         <article className="legal rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-10">{children}</article>
         <p className="mt-4 text-center text-xs text-slate-500">Última actualización: {LEGAL_UPDATED}</p>
       </main>

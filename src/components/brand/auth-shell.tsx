@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { FeaturesPanel } from "./auth-panels";
 import { LegalLinks } from "./legal-links";
+import { INDEPENDENCE_SHORT } from "@/lib/legal";
 
 /** Fondo de las pantallas de acceso: panel informativo (pantallas grandes) + tarjeta con el formulario. */
 export function AuthShell({ children }: { children: ReactNode }) {
@@ -30,6 +31,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
           <nav aria-label="Documentos legales" className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-violet-100">
             <LegalLinks />
           </nav>
+          <p className="mx-auto mt-2 max-w-sm text-center text-[11px] leading-snug text-violet-200/90">{INDEPENDENCE_SHORT}</p>
         </div>
       </section>
     </main>

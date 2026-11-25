@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LEGAL, contactLabel, ownerLabel } from "@/lib/legal";
+import { INDEPENDENCE_NOTICE, LEGAL, contactLabel, ownerLabel } from "@/lib/legal";
 
 export const metadata: Metadata = { title: "Términos y condiciones" };
 
@@ -19,6 +19,10 @@ export default function TermsPage() {
         {LEGAL.siteName} ofrece de forma gratuita herramientas para evaluar proyectos con códigos QR, organizar grupos, pasar lista, asignar y
         calificar actividades, generar reportes y crear actividades interactivas. Podemos agregar, cambiar o retirar funciones para mejorar el
         servicio.
+      </p>
+      <p>
+        <strong>Herramienta no oficial.</strong> {INDEPENDENCE_NOTICE} Su uso es voluntario y complementario: no sustituye los sistemas ni
+        los procedimientos oficiales de la institución, y lo que se registre aquí no constituye un registro oficial de la institución.
       </p>
 
       <h2>2. Cuentas</h2>
@@ -61,7 +65,7 @@ export default function TermsPage() {
       <p>
         El servicio se ofrece gratuitamente y “tal cual”. Hacemos lo posible por que funcione de forma continua y segura, pero puede haber
         interrupciones o errores. Te recomendamos descargar periódicamente tus reportes. Las decisiones académicas (calificaciones, asistencia)
-        son responsabilidad del docente y de la institución.
+        son responsabilidad del docente, quien debe registrarlas en los sistemas oficiales de su institución.
       </p>
 
       <h2>8. Privacidad</h2>
