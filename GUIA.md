@@ -247,6 +247,17 @@ En la tabla capturas los rubros manuales (escribe y presiona Enter) y ves por es
 - Al subir un **justificante** el estudiante da consentimiento expreso, porque puede contener datos de salud.
 - **Eliminar mi cuenta** (Mi perfil → Privacidad): se escribe ELIMINAR para confirmar. Se borran la cuenta y sus archivos; si es docente, también sus grupos, eventos y herramientas.
 
+## 4h. Respaldo, app instalable y correos
+
+- **Respaldo del grupo:** en *Reportes* está "Descargar respaldo". Genera un ZIP con los reportes en Excel, la calificación final en PDF, un PDF por estudiante, las entregas, los justificantes y el material de las actividades. Se arma en el navegador, así que no tiene límite de tamaño del servidor.
+- **App instalable:** en Android/Chrome aparece "Instalar app" en el menú lateral. En iPhone, el botón muestra los pasos (Safari → Compartir → Agregar a inicio).
+- **Tarea diaria (Vercel Cron, `vercel.json`):** todos los días a las 7:00 (hora de Sonora) llama a `/api/cron/diario`. Esa llamada hace una consulta mínima para que el plan gratuito de Supabase no pause el proyecto y, si el correo está configurado, envía el resumen diario.
+- **Resumen diario por correo:** cada usuario lo activa o desactiva en *Mi perfil → Correos*; viene activado. Solo se envía si hay novedades o tareas que vencen en las próximas 30 horas. Para que funcione, agrega en Vercel → Settings → Environment Variables:
+  - `CRON_SECRET`: un texto largo al azar que inventes.
+  - `SUPABASE_SERVICE_ROLE_KEY`: en Supabase → Project Settings → API Keys (la llave secreta).
+  - `GMAIL_USER` y `GMAIL_APP_PASSWORD`: la cuenta de Gmail que envía y su contraseña de aplicación.
+  Después de guardarlas, vuelve a desplegar (Deployments → Redeploy).
+
 ## 5. Preguntas frecuentes
 
 **Un evaluador cambió de celular o borró su navegador.** Al volver a escanear se le pide su nombre otra vez y aparece como evaluador nuevo. Sus evaluaciones anteriores se conservan con su nombre original.

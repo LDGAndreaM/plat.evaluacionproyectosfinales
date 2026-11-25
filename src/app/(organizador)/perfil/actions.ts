@@ -108,3 +108,11 @@ export async function deleteMyAccount(confirmText: string) {
   await supabase.auth.signOut();
   return { ok: true };
 }
+
+/** Activa o desactiva el resumen diario por correo. */
+export async function setEmailDigest(on: boolean) {
+  const { supabase, userId } = await requireUser();
+  const { error } = await supabase.from("organizers").update({ email_digest: on }).eq("id", userId);
+  revalidatePath("/perfil");
+  return { ok: !error };
+}

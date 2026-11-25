@@ -7,6 +7,7 @@ import { getProfile } from "@/lib/profile";
 import { AvatarUpload } from "./avatar-upload";
 import { ProfileForm } from "./profile-form";
 import { PrivacyCard } from "./delete-account";
+import { EmailDigestCard } from "./email-digest";
 
 export const metadata: Metadata = { title: "Mi perfil" };
 
@@ -14,7 +15,7 @@ export default async function PerfilPage() {
   const { supabase, userId, email, fullName, role } = await requireUser();
   const [profile, { data: org }, { data: auth }] = await Promise.all([
     getProfile(supabase, userId),
-    supabase.from("organizers").select("institution, privacy_accepted_at").eq("id", userId).maybeSingle(),
+    supabase.from("organizers").select("institution, privacy_accepted_at, email_digest, email").eq("id", userId).maybeSingle(),
     supabase.auth.getUser(),
   ]);
   const providers = (auth.user?.app_metadata?.providers as string[] | undefined) ?? [];
@@ -72,6 +73,7 @@ export default async function PerfilPage() {
               </LinkButton>
             </div>
           </Card>
+          <EmailDigestCard enabled={org?.email_digest ?? true} email={org?.email ?? null} role={role} />
           <PrivacyCard role={role} acceptedAt={org?.privacy_accepted_at ?? null} />
         </div>
 

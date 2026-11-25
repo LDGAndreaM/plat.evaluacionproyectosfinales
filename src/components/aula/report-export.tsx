@@ -7,13 +7,17 @@ import { downloadBlob } from "@/lib/qr";
 export type ReportFormat = "xlsx" | "csv" | "pdf";
 
 export async function exportReport(format: ReportFormat, tables: ReportTable[], opts: { fileName: string; heading: string; meta: string }) {
+  downloadBlob(`${opts.fileName}.${format}`, await renderReport(format, tables, opts));
+}
+
+/** Genera el archivo del reporte (sin descargarlo). */
+export async function renderReport(format: ReportFormat, tables: ReportTable[], opts: { heading: string; meta: string }): Promise<Blob> {
   if (format === "csv") {
     const parts = tables.map((t) => {
       const csv = Papa.unparse({ fields: t.columns.map((c) => c.label.replace(/\n/g, " ")), data: t.rows.map((r) => r.map((v) => v ?? "")) });
       return (tables.length > 1 ? `${t.title}\n` : "") + csv + (t.note ? `\n${t.note}` : "");
     });
-    downloadBlob(`${opts.fileName}.csv`, new Blob(["﻿" + `${opts.heading}\n${opts.meta}\n\n` + parts.join("\n\n")], { type: "text/csv;charset=utf-8" }));
-    return;
+    return new Blob(["﻿" + `${opts.heading}\n${opts.meta}\n\n` + parts.join("\n\n")], { type: "text/csv;charset=utf-8" });
   }
 
   if (format === "xlsx") {
@@ -53,12 +57,10 @@ export async function exportReport(format: ReportFormat, tables: ReportTable[], 
       });
     }
     const buf = await wb.xlsx.writeBuffer();
-    downloadBlob(`${opts.fileName}.xlsx`, new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
-    return;
+    return new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   }
 
   const [{ pdf }, { ReportPdf }] = await Promise.all([import("@react-pdf/renderer"), import("./report-pdf")]);
   const landscape = tables.some((t) => t.columns.length > 6);
-  const blob = await pdf(<ReportPdf heading={opts.heading} meta={opts.meta} tables={tables} landscape={landscape} />).toBlob();
-  downloadBlob(`${opts.fileName}.pdf`, blob);
+  return pdf(<ReportPdf heading={opts.heading} meta={opts.meta} tables={tables} landscape={landscape} />).toBlob();
 }

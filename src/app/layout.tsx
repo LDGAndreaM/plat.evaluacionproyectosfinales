@@ -2,12 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CookieNotice } from "@/components/brand/cookie-notice";
+import { PwaRegister } from "@/components/brand/pwa";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: { default: "EvalúaQR — Evaluación de proyectos finales", template: "%s · EvalúaQR" },
   description: "Califica proyectos finales en eventos académicos escaneando un código QR.",
+  applicationName: "EvalúaQR",
+  appleWebApp: { capable: true, title: "EvalúaQR", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
@@ -22,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col font-sans">
         {children}
         <CookieNotice />
+        <PwaRegister />
       </body>
     </html>
   );

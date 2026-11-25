@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { InstallAppButton } from "./pwa";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   BarChart3,
@@ -105,6 +106,7 @@ function SidebarContent({ role, onNavigate }: { role: Role; onNavigate?: () => v
           onNavigate={onNavigate}
         />
       </nav>
+      <InstallAppButton className="mx-4 mt-4 bg-turquoise text-violet-950 hover:bg-[#33e0c8]" />
       <div className="m-4 rounded-2xl bg-white/10 p-4 text-center text-sm font-semibold leading-snug text-white">
         {role === "teacher" ? "Evalúa, gestiona y da seguimiento a tus grupos." : "Organiza tus clases, tareas y asistencia en un solo lugar."}
       </div>

@@ -8,6 +8,7 @@ import { exportReport, type ReportFormat } from "@/components/aula/report-export
 import { buildReport, reportFileName, REPORTS, type ReportData, type ReportKey } from "@/lib/aula/reports";
 import { studentName } from "@/lib/aula/types";
 import { cn } from "@/lib/utils";
+import { BackupCard } from "./backup";
 
 const ICONS: Record<ReportKey, { icon: LucideIcon; cls: string }> = {
   students: { icon: Users, cls: "bg-violet-100 text-violet-700" },
@@ -56,6 +57,7 @@ export function ReportsPanel({ data }: { data: ReportData }) {
         {data.students.length} estudiantes · {data.sessions.length} sesiones de asistencia · {data.activities.length} actividades publicadas. Los
         archivos se generan en tu navegador con los datos actuales.
       </p>
+      <BackupCard data={data} meta={meta} />
       {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-800">{error}</p>}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {REPORTS.map((r) => {
