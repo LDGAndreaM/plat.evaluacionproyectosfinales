@@ -38,5 +38,6 @@ export async function GET(request: Request) {
       }
     }
   }
+  console.log("[cron diario]", JSON.stringify(result));
   return Response.json(result, { status: pingError ? 500 : 200 });
 }
