@@ -1,6 +1,5 @@
 import { CheckCircle2, QrCode, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Sparks } from "./sparks";
 
 /**
  * Ilustración del inicio, hecha con HTML. Todas las medidas están en "em" y el tamaño de letra
@@ -16,9 +15,6 @@ export function HeroArt({ qrSvg, compact = false }: { qrSvg: string; compact?: b
         <div className="absolute rounded-full bg-violet-300/30 blur-2xl" style={{ left: compact ? "14em" : "26em", top: "16em", width: "30em", height: "22em" }} />
         <div className="absolute rounded-full bg-sun" style={{ left: compact ? "30em" : "33em", top: "-0.5em", width: "9em", height: "9em" }} />
         <div className="absolute rounded-full bg-coral/70" style={{ left: "1em", top: "26em", width: "9em", height: "9em" }} />
-        <div className="absolute" style={{ left: "2em", top: "1em", width: "5em" }}>
-          <Sparks className="w-full" flip />
-        </div>
 
         {/* Celular con QR */}
         <div

@@ -8,7 +8,6 @@ import { MORE_TOOLS, TONES } from "@/components/landing/content";
 import { FeatureTabs } from "@/components/landing/feature-tabs";
 import { HeroArt } from "@/components/landing/hero-art";
 import { SiteHeader } from "@/components/landing/site-header";
-import { Sparks } from "@/components/landing/sparks";
 import { INDEPENDENCE_SHORT } from "@/lib/legal";
 import { siteUrl } from "@/lib/utils";
 
@@ -40,10 +39,7 @@ export default async function Home({ searchParams }: PageProps<"/">) {
           <div className="pointer-events-none absolute -right-40 top-10 size-[36rem] rounded-full bg-violet-200/40 blur-3xl" aria-hidden />
           <div className="relative mx-auto grid w-full max-w-6xl items-center gap-8 px-4 pb-10 pt-8 sm:pt-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)] lg:gap-6">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-violet-700 shadow-sm ring-1 ring-violet-200">
-                <span className="size-2 rounded-full bg-turquoise" /> Para docentes y estudiantes · Gratis
-              </p>
-              <h1 className="mt-5 text-[2.5rem] font-extrabold leading-[1.08] tracking-tight text-violet-950 sm:text-5xl lg:text-[3.1rem]">
+              <h1 className="text-[2.5rem] font-extrabold leading-[1.08] tracking-tight text-violet-950 sm:text-5xl lg:text-[3.1rem]">
                 Evalúa proyectos y organiza tu clase desde un solo lugar{" "}
                 <span className="relative whitespace-nowrap text-turquoise-600">
                   QR
@@ -102,9 +98,8 @@ export default async function Home({ searchParams }: PageProps<"/">) {
 
         {/* Todo lo que necesitas */}
         <section id="evaluacion" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 py-14">
-          <h2 className="relative mx-auto w-fit text-center text-3xl font-extrabold text-violet-950 sm:text-4xl">
+          <h2 className="mx-auto w-fit text-center text-3xl font-extrabold text-violet-950 sm:text-4xl">
             Todo lo que necesitas para tu clase
-            <Sparks className="absolute -right-10 -top-5 size-9" />
           </h2>
           <div className="mt-8">
             <FeatureTabs />
@@ -115,7 +110,6 @@ export default async function Home({ searchParams }: PageProps<"/">) {
         <section id="aula" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4">
           <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-r from-[#efe6ff] via-[#f5efff] to-[#ece3ff] px-6 py-8 sm:px-10">
             <div className="pointer-events-none absolute -bottom-24 -right-16 size-44 rounded-full bg-turquoise/60" aria-hidden />
-            <Sparks className="absolute left-4 top-4 size-10" flip />
             <div className="relative grid items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)_minmax(0,0.8fr)]">
               <div className="mx-auto w-full max-w-md">
                 <AulaLaptop />
@@ -148,9 +142,8 @@ export default async function Home({ searchParams }: PageProps<"/">) {
 
         {/* Más herramientas */}
         <section id="herramientas" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 py-14">
-          <h2 className="relative mx-auto w-fit text-center text-3xl font-extrabold text-violet-950 sm:text-4xl">
+          <h2 className="mx-auto w-fit text-center text-3xl font-extrabold text-violet-950 sm:text-4xl">
             Más herramientas para activar tu clase
-            <Sparks className="absolute -right-10 -top-5 size-9" />
           </h2>
           <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {MORE_TOOLS.map((t, i) => {
